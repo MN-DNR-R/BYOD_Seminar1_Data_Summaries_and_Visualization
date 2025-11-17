@@ -101,25 +101,18 @@ kable(packages_info, caption = "Essential R Packages for tidying and visualizing
 
 ## Let's load packages and read-in data!
 
-```{r eval=T, warning=F}
+```{r eval=F}
+# Load library
+library(tidyverse) # this automatically loads readr, readxl, tidyr, etc.
 
-# we can look at the tidyverse packages by by running the following line
+# we can check what packages were loaded by running the following command line:
 tidyverse_packages()
-
-# load group of tidyverse packages
-library(tidyverse) # this automatically loads readr, tidyr, etc.
-
-# load readxl package
-library(readxl)
-
 ```
  
 ## Let's load a few datasets in different formats
 
 ```{r eval=F}
-mydat_csv <- read_csv("data/penguin_data_final.csv") # load a .csv file into your R environment
 
-mydat_xls <- read_excel("data/penguin_data_final.xlsx") # load a .xlsx file into your R environment
 
 ```
 
@@ -289,6 +282,7 @@ unique(cleandat$comments)
 
 ## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.
 
+
 cleandat <-cleandat %>% mutate(usable_adult_data=case_when(comments=="Adult not sampled."~"no",comments=="Adult not sampled. Nest never observed with full clutch."~"no",TRUE~"yes"))
 
 # We can now filter-out that comment column as it will no longer be necessary for our work. 
@@ -353,8 +347,6 @@ full_time_sequence <- seq(min_start_time, max_end_time, 10*60)
 # For each record, sample a random number from the full time sequence created above
 cleandat <- cleandat %>% mutate(time_sec=sample(full_time_sequence,n(),replace=TRUE)) 
 
-# Let's look at the times generate
-hist(cleandat$time_sec,breaks=20)
 ```
 
 ### Formatting dates and times
@@ -414,18 +406,18 @@ glimpse(cleandat)
 cleandat <- cleandat %>% filter(usable_adult_data!="no") # using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!
 
 # cleandat contains columns which for simplicity we may want to remove
-cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date.time & !date_time_utc)
+cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date_time_utc)
 
 glimpse(cleandat) # Much better!!!
 
 # Let's save our cleaned dataset
-write_csv(cleandat,"data/clean_peanguindat.csv")
+write_csv(cleandat,"/data/clean_peanguindat.csv")
 
 ```
 
 Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarize` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.  Note that if there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.   
 
-```{r,eval=T,echo=F,message=F,warning=F}
+```{r read dat,eval=T,echo=F,message=F,warning=F}
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
 cleandat<-read_csv("clean_peanguindat.csv")
 
@@ -477,7 +469,18 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 
 ## Key Data Visualization principes
 
+## 
 
+```{r}
+aes_options <- data.frame("Aesthetics"=c("x =","y =","size =","alpha =", "fill =", "colour =","shape ="),"Description"=c("Variable to be plotted on the X axis","Variable to be plotted on the Y axis","Size of the point, column or line","Transparency of the object","The fill colour of a column area","The colour for points and lines, or the outline colour for columns and areas","The shape of the point when making a scatter plot"))
+
+kable(aes_options, caption = "Options to be passed into the `aes` statement") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+## Histograms and Bar
+
+Histogram are often useful to look at the distribution of the data
 
 ## Scatterplots
 
@@ -519,9 +522,7 @@ ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species,shape=isl
   geom_point(size=5)
 ```
 
-
-
-###
+### Visualizing different groups with `facet_wrap`
 
 
 ## Exporting datasets in nice format for publication
