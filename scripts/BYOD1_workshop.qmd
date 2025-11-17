@@ -101,20 +101,25 @@ kable(packages_info, caption = "Essential R Packages for tidying and visualizing
 
 ## Let's load packages and read-in data!
 
-```{r eval=F}
-# Load library
-library(tidyverse) # this automatically loads readr, readxl, tidyr, etc.
+```{r eval=T, warning=F}
 
-# we can check what packages were loaded by running the following command line:
+# we can look at the tidyverse packages by by running the following line
 tidyverse_packages()
+
+# load group of tidyverse packages
+library(tidyverse) # this automatically loads readr, tidyr, etc.
+
+# load readxl package
+library(readxl)
+
 ```
  
 ## Let's load a few datasets in different formats
 
 ```{r eval=F}
-mydat.csv<-read_csv("data/.......csv") # load a .csv file into your R environment
+mydat_csv <- read_csv("data/penguin_data_final.csv") # load a .csv file into your R environment
 
-mydat.xls<-read_excel("data/.....xlsx") # load a .xlsx file into your R environment
+mydat_xls <- read_excel("data/penguin_data_final.xlsx") # load a .xlsx file into your R environment
 
 ```
 
