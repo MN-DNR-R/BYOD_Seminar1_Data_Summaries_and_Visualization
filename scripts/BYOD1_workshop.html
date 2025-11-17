@@ -135,13 +135,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization"><span class="header-section-number">6</span> Data visualization</a>
   <ul class="collapse">
   <li><a href="#key-data-visualization-principes" id="toc-key-data-visualization-principes" class="nav-link" data-scroll-target="#key-data-visualization-principes"><span class="header-section-number">6.1</span> Key Data Visualization principes</a></li>
-  <li><a href="#scatterplots" id="toc-scatterplots" class="nav-link" data-scroll-target="#scatterplots"><span class="header-section-number">6.2</span> Scatterplots</a>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">6.2</span> </a></li>
+  <li><a href="#histograms-and-bar" id="toc-histograms-and-bar" class="nav-link" data-scroll-target="#histograms-and-bar"><span class="header-section-number">6.3</span> Histograms and Bar</a></li>
+  <li><a href="#scatterplots" id="toc-scatterplots" class="nav-link" data-scroll-target="#scatterplots"><span class="header-section-number">6.4</span> Scatterplots</a>
   <ul class="collapse">
-  <li><a href="#blank-canvas" id="toc-blank-canvas" class="nav-link" data-scroll-target="#blank-canvas"><span class="header-section-number">6.2.1</span> Blank canvas</a></li>
-  <li><a href="#now-we-add-aesthetics-with-aes" id="toc-now-we-add-aesthetics-with-aes" class="nav-link" data-scroll-target="#now-we-add-aesthetics-with-aes"><span class="header-section-number">6.2.2</span> Now we add aesthetics with <code>aes()</code></a></li>
-  <li><a href="#add-geoms" id="toc-add-geoms" class="nav-link" data-scroll-target="#add-geoms"><span class="header-section-number">6.2.3</span> Add geom’s</a></li>
+  <li><a href="#blank-canvas" id="toc-blank-canvas" class="nav-link" data-scroll-target="#blank-canvas"><span class="header-section-number">6.4.1</span> Blank canvas</a></li>
+  <li><a href="#now-we-add-aesthetics-with-aes" id="toc-now-we-add-aesthetics-with-aes" class="nav-link" data-scroll-target="#now-we-add-aesthetics-with-aes"><span class="header-section-number">6.4.2</span> Now we add aesthetics with <code>aes()</code></a></li>
+  <li><a href="#add-geoms" id="toc-add-geoms" class="nav-link" data-scroll-target="#add-geoms"><span class="header-section-number">6.4.3</span> Add geom’s</a></li>
+  <li><a href="#visualizing-different-groups-with-facet_wrap" id="toc-visualizing-different-groups-with-facet_wrap" class="nav-link" data-scroll-target="#visualizing-different-groups-with-facet_wrap"><span class="header-section-number">6.4.4</span> Visualizing different groups with <code>facet_wrap</code></a></li>
   </ul></li>
-  <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.3</span> Exporting datasets in nice format for publication</a></li>
+  <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.5</span> Exporting datasets in nice format for publication</a></li>
   </ul></li>
   <li><a href="#simple-statistics-if-time-allows" id="toc-simple-statistics-if-time-allows" class="nav-link" data-scroll-target="#simple-statistics-if-time-allows"><span class="header-section-number">7</span> Simple statistics (if time allows)</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
@@ -292,9 +295,9 @@ The goal of this workshop is to provide the tools and hands-on experience necess
 <section id="lets-load-a-few-datasets-in-different-formats" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="lets-load-a-few-datasets-in-different-formats"><span class="header-section-number">2.2</span> Let’s load a few datasets in different formats</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mydat.csv<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"data/.......csv"</span>) <span class="co"># load a .csv file into your R environment</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mydat_csv <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/penguin_data_final.csv"</span>) <span class="co"># load a .csv file into your R environment</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mydat.xls<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"data/.....xlsx"</span>) <span class="co"># load a .xlsx file into your R environment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mydat_xls <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/penguin_data_final.xlsx"</span>) <span class="co"># load a .xlsx file into your R environment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can look in the environment and make sure that the files were loaded properly! We will also demonstrate ways to explore your data in the next section.</p>
 </section>
@@ -516,10 +519,11 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">usable_adult_data=</span><span class="fu">case_when</span>(comments<span class="sc">==</span><span class="st">"Adult not sampled."</span><span class="sc">~</span><span class="st">"no"</span>,comments<span class="sc">==</span><span class="st">"Adult not sampled. Nest never observed with full clutch."</span><span class="sc">~</span><span class="st">"no"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"yes"</span>))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">usable_adult_data=</span><span class="fu">case_when</span>(comments<span class="sc">==</span><span class="st">"Adult not sampled."</span><span class="sc">~</span><span class="st">"no"</span>,comments<span class="sc">==</span><span class="st">"Adult not sampled. Nest never observed with full clutch."</span><span class="sc">~</span><span class="st">"no"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"yes"</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-new-variables" class="level3" data-number="4.5.4">
@@ -564,10 +568,7 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>full_time_sequence <span class="ot">&lt;-</span> <span class="fu">seq</span>(min_start_time, max_end_time, <span class="dv">10</span><span class="sc">*</span><span class="dv">60</span>)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For each record, sample a random number from the full time sequence created above</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">time_sec=</span><span class="fu">sample</span>(full_time_sequence,<span class="fu">n</span>(),<span class="at">replace=</span><span class="cn">TRUE</span>)) </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's look at the times generate</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(cleandat<span class="sc">$</span>time_sec,<span class="at">breaks=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">time_sec=</span><span class="fu">sample</span>(full_time_sequence,<span class="fu">n</span>(),<span class="at">replace=</span><span class="cn">TRUE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="formatting-dates-and-times-1" class="level3" data-number="4.6.3">
@@ -622,14 +623,12 @@ We will summarize the penguin data to illustrate what can be done with these two
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(usable_adult_data<span class="sc">!=</span><span class="st">"no"</span>) <span class="co"># using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># cleandat contains columns which for simplicity we may want to remove</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>usable_adult_data <span class="sc">&amp;</span> <span class="sc">!</span>time_sec <span class="sc">&amp;</span> <span class="sc">!</span>date <span class="sc">&amp;</span> <span class="sc">!</span>date.time <span class="sc">&amp;</span> <span class="sc">!</span>date_time_utc)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>usable_adult_data <span class="sc">&amp;</span> <span class="sc">!</span>time_sec <span class="sc">&amp;</span> <span class="sc">!</span>date <span class="sc">&amp;</span> <span class="sc">!</span>date_time_utc)</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat) <span class="co"># Much better!!!</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's save our cleaned dataset</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>out.path <span class="ot">&lt;-</span> <span class="st">"C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="fu">paste</span>(out.path,<span class="st">"clean_peanguindat.csv"</span>,<span class="at">sep=</span><span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="st">"data/clean_peanguindat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s compare flipper length and body mass across species. The <code>group_by</code> function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The <code>summarize</code> function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the <code>group_by</code> function. Note that if there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.</p>
 <section id="summarizing-flipper-lengths" class="level3" data-number="5.1.1">
@@ -759,7 +758,7 @@ Above we created a summary of mean, standard deviation, mininmum, and maximum fl
 </table>
 </div>
 </div>
-<p>Now let’s say that we want to sumarise flipper length by species AND island. Let’s take a few minutes to try creating different summaries based on multiple grouping varibles. Hint: the grouping variables can be added within that <code>group_by()</code> function separated by a <code>comma</code>. You can use the <code>names()</code> or <code>glimpse</code> function to remember the name of the different variables available to use.</p>
+<p>Now let’s say that we want to summarise flipper length by species AND island. Let’s take a few minutes to try creating different summaries based on multiple grouping variables. Hint: the grouping variables can be added within that <code>group_by()</code> function separated by a <code>comma</code>. You can use the <code>names()</code> or <code>glimpse</code> function to remember the name of the different variables available to use.</p>
 </section>
 </section>
 </section>
@@ -771,13 +770,67 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 <section id="key-data-visualization-principes" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="key-data-visualization-principes"><span class="header-section-number">6.1</span> Key Data Visualization principes</h2>
 </section>
-<section id="scatterplots" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="scatterplots"><span class="header-section-number">6.2</span> Scatterplots</h2>
-<p>Let’s create a scatterplot showing the relationship between flipper length and body mass. We will start very simple with blank canvas and will gradually build layers and complexity.</p>
-<section id="blank-canvas" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="blank-canvas"><span class="header-section-number">6.2.1</span> Blank canvas</h3>
+<section id="section" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="section"><span class="header-section-number">6.2</span> </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>aes_options <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Aesthetics"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"x ="</span>,<span class="st">"y ="</span>,<span class="st">"size ="</span>,<span class="st">"alpha ="</span>, <span class="st">"fill ="</span>, <span class="st">"colour ="</span>,<span class="st">"shape ="</span>),<span class="st">"Description"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Variable to be plotted on the X axis"</span>,<span class="st">"Variable to be plotted on the Y axis"</span>,<span class="st">"Size of the point, column or line"</span>,<span class="st">"Transparency of the object"</span>,<span class="st">"The fill colour of a column area"</span>,<span class="st">"The colour for points and lines, or the outline colour for columns and areas"</span>,<span class="st">"The shape of the point when making a scatter plot"</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(aes_options, <span class="at">caption =</span> <span class="st">"Options to be passed into the `aes` statement"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Options to be passed into the `aes` statement</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Aesthetics</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">x =</td>
+<td style="text-align: left;">Variable to be plotted on the X axis</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y =</td>
+<td style="text-align: left;">Variable to be plotted on the Y axis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">size =</td>
+<td style="text-align: left;">Size of the point, column or line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">alpha =</td>
+<td style="text-align: left;">Transparency of the object</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fill =</td>
+<td style="text-align: left;">The fill colour of a column area</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">colour =</td>
+<td style="text-align: left;">The colour for points and lines, or the outline colour for columns and areas</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape =</td>
+<td style="text-align: left;">The shape of the point when making a scatter plot</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="histograms-and-bar" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="histograms-and-bar"><span class="header-section-number">6.3</span> Histograms and Bar</h2>
+<p>Histogram are often useful to look at the distribution of the data</p>
+</section>
+<section id="scatterplots" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="scatterplots"><span class="header-section-number">6.4</span> Scatterplots</h2>
+<p>Let’s create a scatterplot showing the relationship between flipper length and body mass. We will start very simple with blank canvas and will gradually build layers and complexity.</p>
+<section id="blank-canvas" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="blank-canvas"><span class="header-section-number">6.4.1</span> Blank canvas</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -787,11 +840,11 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 </div>
 </section>
-<section id="now-we-add-aesthetics-with-aes" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="now-we-add-aesthetics-with-aes"><span class="header-section-number">6.2.2</span> Now we add aesthetics with <code>aes()</code></h3>
+<section id="now-we-add-aesthetics-with-aes" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="now-we-add-aesthetics-with-aes"><span class="header-section-number">6.4.2</span> Now we add aesthetics with <code>aes()</code></h3>
 <p>Aesthetics in ggplot2 define graphical parameters such as the variables to plot on the X and Y axes, and</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -801,13 +854,13 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 </div>
 </section>
-<section id="add-geoms" class="level3" data-number="6.2.3">
-<h3 data-number="6.2.3" class="anchored" data-anchor-id="add-geoms"><span class="header-section-number">6.2.3</span> Add geom’s</h3>
+<section id="add-geoms" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="add-geoms"><span class="header-section-number">6.4.3</span> Add geom’s</h3>
 <code>geom</code>’s define the type of plot to be produced (e.g., histogram, bar chart, scatter point, etc.). For a scatter plot, we use <code>geom_point()</code>. Graphs in ggplot2 are built as layers, as if you were drawing a picture and gradually adding complexity to your image. This is done using the plus sign (<code>+</code>) and can be read as “take my plot, and ADD this to it”.
 <p></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))<span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))<span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -818,8 +871,8 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>One of our goals in this study is to compare species. Let’s see how this figure looks if we colour the points for each of the species.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species))<span class="sc">+</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species))<span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -828,10 +881,25 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 </div>
 </div>
+<p>Now we could even add an additional layer by colouring the points by species and adding a shape for each of the island. Let’s try that!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species,<span class="at">shape=</span>island))<span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizing-different-groups-with-facet_wrap" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="visualizing-different-groups-with-facet_wrap"><span class="header-section-number">6.4.4</span> Visualizing different groups with <code>facet_wrap</code></h3>
 </section>
 </section>
-<section id="exporting-datasets-in-nice-format-for-publication" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.3</span> Exporting datasets in nice format for publication</h2>
+<section id="exporting-datasets-in-nice-format-for-publication" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.5</span> Exporting datasets in nice format for publication</h2>
 </section>
 </section>
 <section id="simple-statistics-if-time-allows" class="level1" data-number="7">

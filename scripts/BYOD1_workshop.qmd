@@ -112,7 +112,9 @@ tidyverse_packages()
 ## Let's load a few datasets in different formats
 
 ```{r eval=F}
+mydat_csv <- read_csv("data/penguin_data_final.csv") # load a .csv file into your R environment
 
+mydat_xls <- read_excel("data/penguin_data_final.xlsx") # load a .xlsx file into your R environment
 
 ```
 
@@ -411,7 +413,7 @@ cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date_t
 glimpse(cleandat) # Much better!!!
 
 # Let's save our cleaned dataset
-write_csv(cleandat,"/data/clean_peanguindat.csv")
+write_csv(cleandat,"data/clean_peanguindat.csv")
 
 ```
 
@@ -419,7 +421,7 @@ Let's compare flipper length and body mass across species. The `group_by` functi
 
 ```{r read dat,eval=T,echo=F,message=F,warning=F}
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
-cleandat<-read_csv("clean_peanguindat.csv")
+cleandat<-read_csv("data/clean_peanguindat.csv")
 
 ```
 
@@ -471,16 +473,13 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 
 ## 
 
-```{r}
+```{r, eval=T,message=F,echo=F}
 aes_options <- data.frame("Aesthetics"=c("x =","y =","size =","alpha =", "fill =", "colour =","shape ="),"Description"=c("Variable to be plotted on the X axis","Variable to be plotted on the Y axis","Size of the point, column or line","Transparency of the object","The fill colour of a column area","The colour for points and lines, or the outline colour for columns and areas","The shape of the point when making a scatter plot"))
 
 kable(aes_options, caption = "Options to be passed into the `aes` statement") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-## Histograms and Bar
-
-Histogram are often useful to look at the distribution of the data
 
 ## Scatterplots
 
@@ -512,15 +511,34 @@ One of our goals in this study is to compare species. Let's see how this figure 
 
 ```{r}
 ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species))+
-  geom_point(size=5)
+  geom_point(size=2)
 ```
 
 Now we could even add an additional layer by colouring the points by species and adding a shape for each of the island. Let's try that!
 
+### Formating labels using `labs`
+
+
 ```{r}
 ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species,shape=island))+
-  geom_point(size=5)
+  geom_point(size=2) + 
+  labs(title="Flipper length and body mass relationship by species")
 ```
+
+### Adding regression lines
+
+```{r}
+ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species))+
+  geom_point(size=2) + 
+  labs(title="Flipper length and body mass relationship by species") + 
+  geom_smooth(method = 'lm', se = TRUE) 
+```
+
+ 
+
+
+
+
 
 ### Visualizing different groups with `facet_wrap`
 
