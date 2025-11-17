@@ -1,0 +1,535 @@
+---
+title:    "Bring Your Own Data (BYOD) Series"
+subtitle: "Summarizing and Visualizing your data in R"
+author:   "Amy Kendig and Véronique St-Louis (MN-DNR)"
+date:     today
+engine:   knitr
+format: 
+  html: 
+    highlight: tango
+    css: camp_style.css
+    number-sections: true
+    fontsize: 14pt
+    toc: true
+    mainfont: Calibri
+    monofont: Aptos Mono
+---
+
+
+```{r}
+#| echo: false
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+```{css your_turn_callout}
+#| echo: false
+{
+}
+.YourTurn {
+  margin:        0em;
+  border:        2px solid #003865;
+  border-left:   5px solid #003865; 
+  border-radius: 10px;
+}
+.YourTurn-header {
+  margin-left:   0em;
+  margin-top:    0em;
+  margin-bottom: 0em;
+   /* align-items: center; */
+   /* vertical-align: text-bottom; */
+  padding-left:   10px;
+  padding-top:    5px;
+  padding-bottom: 0px;
+  background-color: #0080A6;
+  border: 2px solid #003865;
+  border-left: 10px solid #003865; 
+  border-bottom: 1px solid #003865; 
+  border-top-right-radius: 10px;
+  color: white;
+  font-size: 1.3em;
+  font-weight: bold;
+  /* background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-image: url("fa-code-icon.png"); */
+}
+.YourTurn-container {
+  border: 2px solid #003865;
+  border-left: 10px solid #003865; 
+  border-top: 1px solid #003865; 
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  color: black;
+  background-color: white;
+  border-bottom-right-radius: 10px;
+}
+```
+
+
+# Workshop goals
+
+The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying-up their data in R, creating summaries, and constructing publication-quality figures. We will also explore simple regression models as time allows. </p>
+
+Throughout this workshop will use the syntax of the tidyr packages, which offers an efficient way of coding and building complexity in data manipulation steps while retaining coding organization simplicity. 
+
+Note that some of the content presented here was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). 
+
+
+# Loading libraries and reading-in the data
+
+In this section, we will learn about the different packages that we will be using in this workshop, and will explore different functions for reading files into r.  
+
+```{r packages info,eval=T,message=F,echo=F}
+
+library(tidyverse) 
+library(kableExtra)
+
+packages_info <- data.frame(
+  Package = c("readr","readxl","tidyr","ggplot2","tidyverse"),
+  Purpose = c("Read delimited files","Read excel files", 
+             "Tidy messy data", 
+             "Create elegant data visualisations using the grammar of graphics", 
+             "Load the packages above and many others useful manipulating and visualizing data")
+)
+
+kable(packages_info, caption = "Essential R Packages for tidying and visualizing data") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+## Let's load packages and read-in data!
+
+```{r eval=F}
+# Load library
+library(tidyverse) # this automatically loads readr, readxl, tidyr, etc.
+
+# we can check what packages were loaded by running the following command line:
+tidyverse_packages()
+```
+ 
+## Let's load a few datasets in different formats
+
+```{r eval=F}
+mydat.csv<-read_csv("data/.......csv") # load a .csv file into your R environment
+
+mydat.xls<-read_excel("data/.....xlsx") # load a .xlsx file into your R environment
+
+```
+
+You can look in the environment and make sure that the files were loaded properly! We will also demonstrate ways to explore your data in the next section.  
+
+## Now we are going to load the dataset for today's demonstration. 
+
+The `palmerpenguins` packages was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within the packages, and we learn to manipulate and analyze the data using a variety of tools and techniques. 
+
+```{r eval=F}
+
+# install package (once you have installed the package you will not need to run that line)
+install.packages("palmerpenguins")
+
+# load library into your R environment. 
+library(palmerpenguins)
+
+# Get information about the palmerpenguins package:
+?palmerpenguins
+
+# Get proper citation for package if we were to be using this in publication. Note that you can use the "citation" function for any of the packages used in an analysis, which is very useful when writing the methods in a report or peer-reviewed manuscript. 
+
+citation("palmerpenguins")
+
+# The library contains two datasets which can be called without having to read them manually (as we previously did with the .csv or .xlsx files). One which contains raw penguins data (penguin_raw), and the second file (penguins) is the simplified (i.e., clean) dataset (penguins). 
+
+# Let's simplify the name of this dataset for easier coding by creating a new object:
+rawdat<-penguins_raw
+
+```
+
+# Getting to know your data
+
+There are many functions available to explore the data, here is a list of the main ones that we will be using in this workshop. 
+
+```{r useful functions,eval=T,message=F,echo=F}
+
+useful_fct_1 <- data.frame(Function=c("glimpse(...)","names(...)","head(...)","tail(...)","nrow(...)","ncol(...)","summary(...)","unique"),Purpose = c("overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", "column names","display for n rows of data (default is 6)","displays last n rows of data (default is 6)","number of rows","number of columns","summary of the data in each column","displays unique values of a variable"))
+
+kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+## Let's first take a look at the data
+
+```{r eval=F}
+# the glimpse function provides a good first overview of the data. Function "str" produces something similar. 
+glimpse(rawdat)
+
+# extract column names
+names(rawdat)
+
+# look at first and last rows
+head(rawdat,n=10)
+tail(rawdat,10)
+
+# How rows and columns do we have
+nrow(rawdat)
+ncol(rawdat)
+
+# lists unique values; this gives an overview of the number of unique values in a dataframe, and can also help identifying if there are spelling mistakes or other data entry errors. 
+unique(rawdat$Species)
+unique(rawdat$Island)
+unique(rawdat$Region)
+
+unique(rawdat$`Individual ID`) # How many unique ID's do we have? How many data points do we have? Do they match?
+
+# quick summary of all of the data
+summary(rawdat)
+
+```
+
+## Assessing quality of our data?
+
+Looking at the raw data, what do you observe could be improved for facilitating some analyses and data visualization?
+
+Here are some examples:
+
+1. species names are long
+2. some columns may not be necessary
+3. individual ID is not unique or some individuals have been measured twice
+3. we may want columns that classify the data based on some criteria (e.g., a) heavy or light and b) long-, medium-, or short-billed).  
+
+
+# Tidying your data
+
+## What is tidy data?
+
+We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The "tidyr" packages contains functions for manipulating the data... 
+
+## Why is it important to tidy our data?
+
+Taking time to tidy a dataset ensures that the data summaries, analyses, or visualizations we produce represent "true" data values to the best of our knowledge (e.g., no wrongly assigned missing data or data-entry related outliers). It is a the first and most critical step of any data analysis, and though it can be a lengthy process, it is worth the effort. 
+
+## Why tidying data in R?
+
+Using R and R scripts ensures that the original dataset is kept, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often no to little track records of changes made to a dataset. </p>
+
+## Introducing pipe operator
+
+Ton increase efficiency, the tidyr library uses pipe operators .... 
+
+## Let's clean-up some of those columns
+
+```{r useful tidy function,echo=F}
+useful_fct_2<-data.frame(Function=c("filter(...)","select(...)","arrange(...)","mutate(...)"),Purpose=c("keep (or exclude) rows that meet specific criteria","select columns to keep (or to drop)","sort a dataframe based on a column's value (or several columns' values)","add new columns or update existing columns"))
+
+kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+### Formating variable names
+
+
+```{r create tidy data, eval=F}
+# Let's take a look at the data again
+head(rawdat)
+names(rawdat)
+
+# lower column names
+names(rawdat)<-tolower(names(rawdat))
+
+names(rawdat)
+
+# replace spaces; spaces in variable names are just slightly more complicated to code and it is much simpler not to have any spaces at all
+
+names(rawdat)<-str_replace_all(names(rawdat)," ","_") # Note: str_replace_all is part of the stringr package, automatically loaded when we load tidyverse, but it could be loaded individually as well.
+
+# further modify column names for simplicity
+names(rawdat)<-str_replace_all(names(rawdat),"\\(|\\)","")
+```
+
+
+### Removing unecessary data, creating variables, and subsetting the dataset
+
+```{r reduce dataset,eval=F}
+
+# keep only columns of interest
+cleandat <- rawdat %>% select(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) 
+
+# if you wanted to remove one or severeal column it may be easier to do the following:
+cleandat<- cleandat %>% select(!stage & !region) 
+
+# remove scientific names in species
+unique(cleandat$species)
+
+cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis adeliae\\)","")
+cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis papua\\)","")
+cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis antarctica\\)","")
+
+unique(cleandat$species)
+
+# Create unique record ID
+penguins <- mutate(cleandat, 
+                   unique_id = 1:n()) 
+```
+
+### Assessing usability of data
+
+If it looks like some records may not be usable based on some criteria, it may be a good idea to create an indicator variable (yes/no) that identifies which record may not be usable for analysis. If needed, we can do this using the `mutate` and `case_when` functions. 
+
+```{r eval=F}
+# Let's look at the comments to assess if some data may not be usable for analysis.  
+unique(cleandat$comments)
+
+## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.
+
+cleandat <-cleandat %>% mutate(usable_adult_data=case_when(comments=="Adult not sampled."~"no",comments=="Adult not sampled. Nest never observed with full clutch."~"no",TRUE~"yes"))
+
+# We can now filter-out that comment column as it will no longer be necessary for our work. 
+cleandat <- cleandat %>% select(!comments)
+
+```
+
+### Creating new variables
+
+We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create 1) a culmen to body mass index, 2) flipper group category based on flipper length, and 3) a factor variable that will identify if the penguins were small, medium, or large based on their weight. We can do both of these things again using the `mutate` and `case_when` functions. 
+
+```{r eval=F}
+
+## Create a culmen to body mass index
+cleandat <- cleandat %>% mutate(body_mass_kg=body_mass_g/1000,culmen_bodymass_index=round(culmen_length_mm/body_mass_kg,2))
+
+## Assign flipper lenght category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. 
+cleandat<-cleandat %>% 
+    mutate(flipper_group = case_when(flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
+
+## Oups!! We forgot to check if we had NAs in the data before converting to a group!
+filter(cleandat,is.na(flipper_length_mm))
+
+## Let's correct that mistake and re-create the groups while accounting for NAs first.
+cleandat<-cleandat %>% 
+    mutate(flipper_group = case_when(is.na(flipper_length_mm)~"unknown",flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
+
+## Using that same logic, let's create another group absed on weight class, and let's make sure that we do not assign a class to missing data. 
+cleandat<-cleandat %>% mutate(weight_class = case_when(is.na(body_mass_g)~"unknown",body_mass_g<=3500~"small",body_mass_g<4300~"medium",TRUE~"large"))
+
+head(cleandat)
+```
+
+
+
+
+## Formatting dates and times 
+
+### Below are some useful functions for dealing with dates and times
+
+```{r useful date time functions,echo=F,eval=F}
+useful_fct_3<-data.frame(Function=c("as_date(...)"),Purpose=c("format date ....))
+
+kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+### To illustrate this, let's first add a "time" variable to our dataset
+
+The time variable will be in seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in our toolbox!
+
+```{r eval=F}
+
+# Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)
+min_start_time <- 9*60*60 # 6 am in seconds from midnight
+max_end_time <- 21*60*60 # 6 pm in seconds from midnight
+
+# Create a sequence of all possible timestamps within the range, e.g., by 10 minute segments
+full_time_sequence <- seq(min_start_time, max_end_time, 10*60)
+
+# For each record, sample a random number from the full time sequence created above
+cleandat <- cleandat %>% mutate(time_sec=sample(full_time_sequence,n(),replace=TRUE)) 
+
+# Let's look at the times generate
+hist(cleandat$time_sec,breaks=20)
+```
+
+### Formatting dates and times
+
+```{r eval=F}
+# first set date as a set date
+cleandat <- cleandat %>% mutate(date=as_date(date_egg))
+
+# create a date and time variable. Note that although the palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
+cleandat <- cleandat %>% mutate(date_time_utc=as.POSIXct(paste(as_date(date_egg,format="%Y-%m-%d"),"00:00:00",format="%Y-%m-%d %H:%M:%S"),tz="UTC")+time_sec)
+
+# Convert to proper time zone UTC-03                                    
+cleandat <- cleandat %>% mutate(date_time_utc03=as.POSIXct(format(date_time_utc,tz="Etc/GMT+3"),tz="Etc/GMT+3"))
+                                    
+# Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."
+
+```
+
+
+### Extracting information from as.POSIXct object or variable
+
+Now that we've formatted our date and time variable, we can extract all sorts of useful information very easily. 
+
+```{r eval=F}
+
+# study year
+year(cleandat$date_time_utc03)
+
+# creating a year coluymn in our dataframe
+cleandat <- cleandat %>% mutate(year=year(date_time_utc03)) 
+
+# we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately
+
+# Example of distribution of sampling hours across the dataset
+hist(hour(cleandat$date_time_utc03)) #Pretty random, but these were also sampled randomly across the range of possible  times between 6 am and 6 pm! 
+
+# Take a few minutes to experiment with some of these. 
+
+```
+
+
+# Creating data summaries
+
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The `group_by` and `summarize` functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. </p>
+
+We will summarize the penguin data to illustrate what can be done with these two functions. Let's first take a look at the data again using `glimpse` to refresh our memory on the class of data that we have on hand. </p>
+
+We also will want to filter out the data we flagged as "unusable" during our data tidying exercise.
+
+## Removing unusable and unecessary data to create our "working" dataset 
+
+```{r eval=F}
+
+# taking a look at the data
+glimpse(cleandat)
+
+# filtering out the unusable records
+cleandat <- cleandat %>% filter(usable_adult_data!="no") # using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!
+
+# cleandat contains columns which for simplicity we may want to remove
+cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date.time & !date_time_utc)
+
+glimpse(cleandat) # Much better!!!
+
+# Let's save our cleaned dataset
+out.path <- "C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"
+  
+write_csv(cleandat,paste(out.path,"clean_peanguindat.csv",sep=""))
+
+```
+
+Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarize` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.  Note that if there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.   
+
+```{r,eval=T,echo=F,message=F,warning=F}
+# read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
+input.path<-"C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"
+
+cleandat<-read_csv(paste(input.path,"clean_peanguindat.csv",sep=""))
+
+```
+
+### Summarizing flipper lengths
+
+Let's first illustrate the tidyr syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the `<-` syntax, e.g., `flipper_lt_summary <- cleandat %>% ...`. 
+
+```{r, eval=F}
+cleandat %>% 
+  group_by(species) %>% 
+  summarise(min_flipper_length=mean(flipper_length_mm,na.rm=T))
+
+```
+
+Summarizing means only may not be the most satistifying if one wanted to compare the means across species. We can combine functions in that same statement, and get a more complete summary of flipper length across species. 
+
+```{r}
+flipper_length_summary <- cleandat %>% 
+  group_by(species) %>% 
+  summarise(mean_flipper_length=mean(flipper_length_mm,na.rm=T),sd_flipper_length=sd(flipper_length_mm,na.rm=T),min_flipper_length=min(flipper_length_mm,na.rm=T),max_flipper_length=max(flipper_length_mm,na.rm=T),N=n())
+
+kable(flipper_length_summary)
+
+```
+
+Above we created a summary of mean, standard deviation, mininmum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the `summarise` statement. </p>
+
+But wait, we forgot to calculate the Standard Error which is a metric that we may need for calculating confidence intervals! You can use the `mutate` function to add that measure to the summary table previously created. 
+
+```{r}
+flipper_length_summary <- flipper_length_summary %>% 
+  group_by(species) %>% 
+mutate(se_flipper_length = sd_flipper_length/sqrt(N))
+
+kable(flipper_length_summary)
+
+```
+
+Now let's say that we want to sumarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping varibles. Hint: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use. 
+
+# Data visualization
+
+Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R as well, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).</p>
+
+
+[ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf)
+
+## Key Data Visualization principes
+
+
+
+## Scatterplots
+
+Let's create a scatterplot showing the relationship between flipper length and body mass. We will start very simple with blank canvas and will gradually build layers and complexity. 
+
+### Blank canvas
+
+```{r}
+ggplot(cleandat)
+```
+
+### Now we add aesthetics with `aes()`
+
+Aesthetics in ggplot2 define graphical parameters such as the variables to plot on the X and Y axes, and  
+```{r}
+ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm))
+```
+
+### Add geom's
+
+`geom`'s define the type of plot to be produced (e.g., histogram, bar chart, scatter point, etc.). For a scatter plot, we use `geom_point()`. Graphs in ggplot2 are built as layers, as if you were drawing a picture and gradually adding complexity to your image. This is done using the plus sign (`+`) and can be read as "take my plot, and ADD this to it".  </p>
+
+```{r}
+ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm))+
+  geom_point()
+```
+
+One of our goals in this study is to compare species. Let's see how this figure looks if we colour the points for each of the species. 
+
+```{r}
+ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species))+
+  geom_point(size=5)
+```
+
+One of our goals in this study is to compare species. Let's see how this figure looks if we colour the points for each of the species. 
+
+
+
+## Exporting datasets in nice format for publication
+
+
+
+# Simple statistics (if time allows)
+
+
+
+
+# Conclusion
+
+# Resources
+
+tidy data documentations
+
+
+

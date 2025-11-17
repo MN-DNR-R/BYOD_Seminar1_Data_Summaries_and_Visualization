@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Amy Kendig and Véronique St-Louis (MN-DNR)">
+<meta name="dcterms.date" content="2025-11-17">
+
+<title>Bring Your Own Data (BYOD) Series</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="BYOD1_workshop_files/libs/clipboard/clipboard.min.js"></script>
+<script src="BYOD1_workshop_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="BYOD1_workshop_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="BYOD1_workshop_files/libs/quarto-html/popper.min.js"></script>
+<script src="BYOD1_workshop_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="BYOD1_workshop_files/libs/quarto-html/anchor.min.js"></script>
+<link href="BYOD1_workshop_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="BYOD1_workshop_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="BYOD1_workshop_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="BYOD1_workshop_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="BYOD1_workshop_files/libs/bootstrap/bootstrap-2cd348406a6b76dd4aaff51725babb60.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="BYOD1_workshop_files/libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+
+<link href="BYOD1_workshop_files/libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+
+<script src="BYOD1_workshop_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="BYOD1_workshop_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="camp_style.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#workshop-goals" id="toc-workshop-goals" class="nav-link active" data-scroll-target="#workshop-goals"><span class="header-section-number">1</span> Workshop goals</a></li>
+  <li><a href="#loading-libraries-and-reading-in-the-data" id="toc-loading-libraries-and-reading-in-the-data" class="nav-link" data-scroll-target="#loading-libraries-and-reading-in-the-data"><span class="header-section-number">2</span> Loading libraries and reading-in the data</a>
+  <ul class="collapse">
+  <li><a href="#lets-load-packages-and-read-in-data" id="toc-lets-load-packages-and-read-in-data" class="nav-link" data-scroll-target="#lets-load-packages-and-read-in-data"><span class="header-section-number">2.1</span> Let’s load packages and read-in data!</a></li>
+  <li><a href="#lets-load-a-few-datasets-in-different-formats" id="toc-lets-load-a-few-datasets-in-different-formats" class="nav-link" data-scroll-target="#lets-load-a-few-datasets-in-different-formats"><span class="header-section-number">2.2</span> Let’s load a few datasets in different formats</a></li>
+  <li><a href="#now-we-are-going-to-load-the-dataset-for-todays-demonstration." id="toc-now-we-are-going-to-load-the-dataset-for-todays-demonstration." class="nav-link" data-scroll-target="#now-we-are-going-to-load-the-dataset-for-todays-demonstration."><span class="header-section-number">2.3</span> Now we are going to load the dataset for today’s demonstration.</a></li>
+  </ul></li>
+  <li><a href="#getting-to-know-your-data" id="toc-getting-to-know-your-data" class="nav-link" data-scroll-target="#getting-to-know-your-data"><span class="header-section-number">3</span> Getting to know your data</a>
+  <ul class="collapse">
+  <li><a href="#lets-first-take-a-look-at-the-data" id="toc-lets-first-take-a-look-at-the-data" class="nav-link" data-scroll-target="#lets-first-take-a-look-at-the-data"><span class="header-section-number">3.1</span> Let’s first take a look at the data</a></li>
+  <li><a href="#assessing-quality-of-our-data" id="toc-assessing-quality-of-our-data" class="nav-link" data-scroll-target="#assessing-quality-of-our-data"><span class="header-section-number">3.2</span> Assessing quality of our data?</a></li>
+  </ul></li>
+  <li><a href="#tidying-your-data" id="toc-tidying-your-data" class="nav-link" data-scroll-target="#tidying-your-data"><span class="header-section-number">4</span> Tidying your data</a>
+  <ul class="collapse">
+  <li><a href="#what-is-tidy-data" id="toc-what-is-tidy-data" class="nav-link" data-scroll-target="#what-is-tidy-data"><span class="header-section-number">4.1</span> What is tidy data?</a></li>
+  <li><a href="#why-is-it-important-to-tidy-our-data" id="toc-why-is-it-important-to-tidy-our-data" class="nav-link" data-scroll-target="#why-is-it-important-to-tidy-our-data"><span class="header-section-number">4.2</span> Why is it important to tidy our data?</a></li>
+  <li><a href="#why-tidying-data-in-r" id="toc-why-tidying-data-in-r" class="nav-link" data-scroll-target="#why-tidying-data-in-r"><span class="header-section-number">4.3</span> Why tidying data in R?</a></li>
+  <li><a href="#introducing-pipe-operator" id="toc-introducing-pipe-operator" class="nav-link" data-scroll-target="#introducing-pipe-operator"><span class="header-section-number">4.4</span> Introducing pipe operator</a></li>
+  <li><a href="#lets-clean-up-some-of-those-columns" id="toc-lets-clean-up-some-of-those-columns" class="nav-link" data-scroll-target="#lets-clean-up-some-of-those-columns"><span class="header-section-number">4.5</span> Let’s clean-up some of those columns</a>
+  <ul class="collapse">
+  <li><a href="#formating-variable-names" id="toc-formating-variable-names" class="nav-link" data-scroll-target="#formating-variable-names"><span class="header-section-number">4.5.1</span> Formating variable names</a></li>
+  <li><a href="#removing-unecessary-data-creating-variables-and-subsetting-the-dataset" id="toc-removing-unecessary-data-creating-variables-and-subsetting-the-dataset" class="nav-link" data-scroll-target="#removing-unecessary-data-creating-variables-and-subsetting-the-dataset"><span class="header-section-number">4.5.2</span> Removing unecessary data, creating variables, and subsetting the dataset</a></li>
+  <li><a href="#assessing-usability-of-data" id="toc-assessing-usability-of-data" class="nav-link" data-scroll-target="#assessing-usability-of-data"><span class="header-section-number">4.5.3</span> Assessing usability of data</a></li>
+  <li><a href="#creating-new-variables" id="toc-creating-new-variables" class="nav-link" data-scroll-target="#creating-new-variables"><span class="header-section-number">4.5.4</span> Creating new variables</a></li>
+  </ul></li>
+  <li><a href="#formatting-dates-and-times" id="toc-formatting-dates-and-times" class="nav-link" data-scroll-target="#formatting-dates-and-times"><span class="header-section-number">4.6</span> Formatting dates and times</a>
+  <ul class="collapse">
+  <li><a href="#below-are-some-useful-functions-for-dealing-with-dates-and-times" id="toc-below-are-some-useful-functions-for-dealing-with-dates-and-times" class="nav-link" data-scroll-target="#below-are-some-useful-functions-for-dealing-with-dates-and-times"><span class="header-section-number">4.6.1</span> Below are some useful functions for dealing with dates and times</a></li>
+  <li><a href="#to-illustrate-this-lets-first-add-a-time-variable-to-our-dataset" id="toc-to-illustrate-this-lets-first-add-a-time-variable-to-our-dataset" class="nav-link" data-scroll-target="#to-illustrate-this-lets-first-add-a-time-variable-to-our-dataset"><span class="header-section-number">4.6.2</span> To illustrate this, let’s first add a “time” variable to our dataset</a></li>
+  <li><a href="#formatting-dates-and-times-1" id="toc-formatting-dates-and-times-1" class="nav-link" data-scroll-target="#formatting-dates-and-times-1"><span class="header-section-number">4.6.3</span> Formatting dates and times</a></li>
+  <li><a href="#extracting-information-from-as.posixct-object-or-variable" id="toc-extracting-information-from-as.posixct-object-or-variable" class="nav-link" data-scroll-target="#extracting-information-from-as.posixct-object-or-variable"><span class="header-section-number">4.6.4</span> Extracting information from as.POSIXct object or variable</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#creating-data-summaries" id="toc-creating-data-summaries" class="nav-link" data-scroll-target="#creating-data-summaries"><span class="header-section-number">5</span> Creating data summaries</a>
+  <ul class="collapse">
+  <li><a href="#removing-unusable-and-unecessary-data-to-create-our-working-dataset" id="toc-removing-unusable-and-unecessary-data-to-create-our-working-dataset" class="nav-link" data-scroll-target="#removing-unusable-and-unecessary-data-to-create-our-working-dataset"><span class="header-section-number">5.1</span> Removing unusable and unecessary data to create our “working” dataset</a>
+  <ul class="collapse">
+  <li><a href="#summarizing-flipper-lengths" id="toc-summarizing-flipper-lengths" class="nav-link" data-scroll-target="#summarizing-flipper-lengths"><span class="header-section-number">5.1.1</span> Summarizing flipper lengths</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization"><span class="header-section-number">6</span> Data visualization</a>
+  <ul class="collapse">
+  <li><a href="#key-data-visualization-principes" id="toc-key-data-visualization-principes" class="nav-link" data-scroll-target="#key-data-visualization-principes"><span class="header-section-number">6.1</span> Key Data Visualization principes</a></li>
+  <li><a href="#scatterplots" id="toc-scatterplots" class="nav-link" data-scroll-target="#scatterplots"><span class="header-section-number">6.2</span> Scatterplots</a>
+  <ul class="collapse">
+  <li><a href="#blank-canvas" id="toc-blank-canvas" class="nav-link" data-scroll-target="#blank-canvas"><span class="header-section-number">6.2.1</span> Blank canvas</a></li>
+  <li><a href="#now-we-add-aesthetics-with-aes" id="toc-now-we-add-aesthetics-with-aes" class="nav-link" data-scroll-target="#now-we-add-aesthetics-with-aes"><span class="header-section-number">6.2.2</span> Now we add aesthetics with <code>aes()</code></a></li>
+  <li><a href="#add-geoms" id="toc-add-geoms" class="nav-link" data-scroll-target="#add-geoms"><span class="header-section-number">6.2.3</span> Add geom’s</a></li>
+  </ul></li>
+  <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.3</span> Exporting datasets in nice format for publication</a></li>
+  </ul></li>
+  <li><a href="#simple-statistics-if-time-allows" id="toc-simple-statistics-if-time-allows" class="nav-link" data-scroll-target="#simple-statistics-if-time-allows"><span class="header-section-number">7</span> Simple statistics (if time allows)</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">9</span> Resources</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bring Your Own Data (BYOD) Series</h1>
+<p class="subtitle lead">Summarizing and Visualizing your data in R</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Amy Kendig and Véronique St-Louis (MN-DNR) </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 17, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="cell-output-display">
+
+</div>
+</div>
+<div class="cell">
+<style type="text/css">
+{
+}
+.YourTurn {
+  margin:        0em;
+  border:        2px solid #003865;
+  border-left:   5px solid #003865; 
+  border-radius: 10px;
+}
+.YourTurn-header {
+  margin-left:   0em;
+  margin-top:    0em;
+  margin-bottom: 0em;
+   /* align-items: center; */
+   /* vertical-align: text-bottom; */
+  padding-left:   10px;
+  padding-top:    5px;
+  padding-bottom: 0px;
+  background-color: #0080A6;
+  border: 2px solid #003865;
+  border-left: 10px solid #003865; 
+  border-bottom: 1px solid #003865; 
+  border-top-right-radius: 10px;
+  color: white;
+  font-size: 1.3em;
+  font-weight: bold;
+  /* background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-image: url("fa-code-icon.png"); */
+}
+.YourTurn-container {
+  border: 2px solid #003865;
+  border-left: 10px solid #003865; 
+  border-top: 1px solid #003865; 
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  color: black;
+  background-color: white;
+  border-bottom-right-radius: 10px;
+}
+</style>
+</div>
+<section id="workshop-goals" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Workshop goals</h1>
+The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying-up their data in R, creating summaries, and constructing publication-quality figures. We will also explore simple regression models as time allows.
+<p></p>
+<p>Throughout this workshop will use the syntax of the tidyr packages, which offers an efficient way of coding and building complexity in data manipulation steps while retaining coding organization simplicity.</p>
+<p>Note that some of the content presented here was inspired by some of the courses presented at <a href="https://tidy-mn.github.io/R-camp-penguins/">MDH R Camp</a>.</p>
+</section>
+<section id="loading-libraries-and-reading-in-the-data" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Loading libraries and reading-in the data</h1>
+<p>In this section, we will learn about the different packages that we will be using in this workshop, and will explore different functions for reading files into r.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Essential R Packages for tidying and visualizing data</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Package</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">readr</td>
+<td style="text-align: left;">Read delimited files</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">readxl</td>
+<td style="text-align: left;">Read excel files</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tidyr</td>
+<td style="text-align: left;">Tidy messy data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ggplot2</td>
+<td style="text-align: left;">Create elegant data visualisations using the grammar of graphics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tidyverse</td>
+<td style="text-align: left;">Load the packages above and many others useful manipulating and visualizing data</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="lets-load-packages-and-read-in-data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="lets-load-packages-and-read-in-data"><span class="header-section-number">2.1</span> Let’s load packages and read-in data!</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># this automatically loads readr, readxl, tidyr, etc.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># we can check what packages were loaded by running the following command line:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidyverse_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lets-load-a-few-datasets-in-different-formats" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="lets-load-a-few-datasets-in-different-formats"><span class="header-section-number">2.2</span> Let’s load a few datasets in different formats</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mydat.csv<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"data/.......csv"</span>) <span class="co"># load a .csv file into your R environment</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mydat.xls<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"data/.....xlsx"</span>) <span class="co"># load a .xlsx file into your R environment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can look in the environment and make sure that the files were loaded properly! We will also demonstrate ways to explore your data in the next section.</p>
+</section>
+<section id="now-we-are-going-to-load-the-dataset-for-todays-demonstration." class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="now-we-are-going-to-load-the-dataset-for-todays-demonstration."><span class="header-section-number">2.3</span> Now we are going to load the dataset for today’s demonstration.</h2>
+<p>The <code>palmerpenguins</code> packages was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within the packages, and we learn to manipulate and analyze the data using a variety of tools and techniques.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install package (once you have installed the package you will not need to run that line)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load library into your R environment. </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get information about the palmerpenguins package:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>?palmerpenguins</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get proper citation for package if we were to be using this in publication. Note that you can use the "citation" function for any of the packages used in an analysis, which is very useful when writing the methods in a report or peer-reviewed manuscript. </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"palmerpenguins"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># The library contains two datasets which can be called without having to read them manually (as we previously did with the .csv or .xlsx files). One which contains raw penguins data (penguin_raw), and the second file (penguins) is the simplified (i.e., clean) dataset (penguins). </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's simplify the name of this dataset for easier coding by creating a new object:</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>rawdat<span class="ot">&lt;-</span>penguins_raw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="getting-to-know-your-data" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Getting to know your data</h1>
+<p>There are many functions available to explore the data, here is a list of the main ones that we will be using in this workshop.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Useful functions for data exploration</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Function</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">glimpse(...)</td>
+<td style="text-align: left;">overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">names(...)</td>
+<td style="text-align: left;">column names</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">head(...)</td>
+<td style="text-align: left;">display for n rows of data (default is 6)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tail(...)</td>
+<td style="text-align: left;">displays last n rows of data (default is 6)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nrow(...)</td>
+<td style="text-align: left;">number of rows</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ncol(...)</td>
+<td style="text-align: left;">number of columns</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">summary(...)</td>
+<td style="text-align: left;">summary of the data in each column</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">unique</td>
+<td style="text-align: left;">displays unique values of a variable</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="lets-first-take-a-look-at-the-data" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="lets-first-take-a-look-at-the-data"><span class="header-section-number">3.1</span> Let’s first take a look at the data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the glimpse function provides a good first overview of the data. Function "str" produces something similar. </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(rawdat)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract column names</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># look at first and last rows</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdat,<span class="at">n=</span><span class="dv">10</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(rawdat,<span class="dv">10</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># How rows and columns do we have</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(rawdat)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(rawdat)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lists unique values; this gives an overview of the number of unique values in a dataframe, and can also help identifying if there are spelling mistakes or other data entry errors. </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rawdat<span class="sc">$</span>Species)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rawdat<span class="sc">$</span>Island)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rawdat<span class="sc">$</span>Region)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rawdat<span class="sc">$</span><span class="st">`</span><span class="at">Individual ID</span><span class="st">`</span>) <span class="co"># How many unique ID's do we have? How many data points do we have? Do they match?</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># quick summary of all of the data</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assessing-quality-of-our-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="assessing-quality-of-our-data"><span class="header-section-number">3.2</span> Assessing quality of our data?</h2>
+<p>Looking at the raw data, what do you observe could be improved for facilitating some analyses and data visualization?</p>
+<p>Here are some examples:</p>
+<ol type="1">
+<li>species names are long</li>
+<li>some columns may not be necessary</li>
+<li>individual ID is not unique or some individuals have been measured twice</li>
+<li>we may want columns that classify the data based on some criteria (e.g., a) heavy or light and b) long-, medium-, or short-billed).</li>
+</ol>
+</section>
+</section>
+<section id="tidying-your-data" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Tidying your data</h1>
+<section id="what-is-tidy-data" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="what-is-tidy-data"><span class="header-section-number">4.1</span> What is tidy data?</h2>
+<p>We refer to “tidy data” as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The “tidyr” packages contains functions for manipulating the data…</p>
+</section>
+<section id="why-is-it-important-to-tidy-our-data" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="why-is-it-important-to-tidy-our-data"><span class="header-section-number">4.2</span> Why is it important to tidy our data?</h2>
+<p>Taking time to tidy a dataset ensures that the data summaries, analyses, or visualizations we produce represent “true” data values to the best of our knowledge (e.g., no wrongly assigned missing data or data-entry related outliers). It is a the first and most critical step of any data analysis, and though it can be a lengthy process, it is worth the effort.</p>
+</section>
+<section id="why-tidying-data-in-r" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="why-tidying-data-in-r"><span class="header-section-number">4.3</span> Why tidying data in R?</h2>
+Using R and R scripts ensures that the original dataset is kept, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often no to little track records of changes made to a dataset.
+<p></p>
+</section>
+<section id="introducing-pipe-operator" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="introducing-pipe-operator"><span class="header-section-number">4.4</span> Introducing pipe operator</h2>
+<p>Ton increase efficiency, the tidyr library uses pipe operators ….</p>
+</section>
+<section id="lets-clean-up-some-of-those-columns" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="lets-clean-up-some-of-those-columns"><span class="header-section-number">4.5</span> Let’s clean-up some of those columns</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Useful functions to create tidy data</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Function</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">filter(...)</td>
+<td style="text-align: left;">keep (or exclude) rows that meet specific criteria</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">select(...)</td>
+<td style="text-align: left;">select columns to keep (or to drop)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">arrange(...)</td>
+<td style="text-align: left;">sort a dataframe based on a column's value (or several columns' values)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mutate(...)</td>
+<td style="text-align: left;">add new columns or update existing columns</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="formating-variable-names" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="formating-variable-names"><span class="header-section-number">4.5.1</span> Formating variable names</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's take a look at the data again</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdat)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># lower column names</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">tolower</span>(<span class="fu">names</span>(rawdat))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># replace spaces; spaces in variable names are just slightly more complicated to code and it is much simpler not to have any spaces at all</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">" "</span>,<span class="st">"_"</span>) <span class="co"># Note: str_replace_all is part of the stringr package, automatically loaded when we load tidyverse, but it could be loaded individually as well.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># further modify column names for simplicity</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">"</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="removing-unecessary-data-creating-variables-and-subsetting-the-dataset" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="removing-unecessary-data-creating-variables-and-subsetting-the-dataset"><span class="header-section-number">4.5.2</span> Removing unecessary data, creating variables, and subsetting the dataset</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only columns of interest</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> rawdat <span class="sc">%&gt;%</span> <span class="fu">select</span>(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># if you wanted to remove one or severeal column it may be easier to do the following:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>stage <span class="sc">&amp;</span> <span class="sc">!</span>region) </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove scientific names in species</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis adeliae</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis papua</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis antarctica</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create unique record ID</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">mutate</span>(cleandat, </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assessing-usability-of-data" class="level3" data-number="4.5.3">
+<h3 data-number="4.5.3" class="anchored" data-anchor-id="assessing-usability-of-data"><span class="header-section-number">4.5.3</span> Assessing usability of data</h3>
+<p>If it looks like some records may not be usable based on some criteria, it may be a good idea to create an indicator variable (yes/no) that identifies which record may not be usable for analysis. If needed, we can do this using the <code>mutate</code> and <code>case_when</code> functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's look at the comments to assess if some data may not be usable for analysis.  </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>comments)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">usable_adult_data=</span><span class="fu">case_when</span>(comments<span class="sc">==</span><span class="st">"Adult not sampled."</span><span class="sc">~</span><span class="st">"no"</span>,comments<span class="sc">==</span><span class="st">"Adult not sampled. Nest never observed with full clutch."</span><span class="sc">~</span><span class="st">"no"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"yes"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="creating-new-variables" class="level3" data-number="4.5.4">
+<h3 data-number="4.5.4" class="anchored" data-anchor-id="creating-new-variables"><span class="header-section-number">4.5.4</span> Creating new variables</h3>
+<p>We’re getting close to having a dataset that will be easier to use for analysis! Now let’s say we would like to create 1) a culmen to body mass index, 2) flipper group category based on flipper length, and 3) a factor variable that will identify if the penguins were small, medium, or large based on their weight. We can do both of these things again using the <code>mutate</code> and <code>case_when</code> functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create a culmen to body mass index</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">body_mass_kg=</span>body_mass_g<span class="sc">/</span><span class="dv">1000</span>,<span class="at">culmen_bodymass_index=</span><span class="fu">round</span>(culmen_length_mm<span class="sc">/</span>body_mass_kg,<span class="dv">2</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Assign flipper lenght category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Oups!! We forgot to check if we had NAs in the data before converting to a group!</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(cleandat,<span class="fu">is.na</span>(flipper_length_mm))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Let's correct that mistake and re-create the groups while accounting for NAs first.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(flipper_length_mm)<span class="sc">~</span><span class="st">"unknown"</span>,flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Using that same logic, let's create another group absed on weight class, and let's make sure that we do not assign a class to missing data. </span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">weight_class =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(body_mass_g)<span class="sc">~</span><span class="st">"unknown"</span>,body_mass_g<span class="sc">&lt;=</span><span class="dv">3500</span><span class="sc">~</span><span class="st">"small"</span>,body_mass_g<span class="sc">&lt;</span><span class="dv">4300</span><span class="sc">~</span><span class="st">"medium"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"large"</span>))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="formatting-dates-and-times" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="formatting-dates-and-times"><span class="header-section-number">4.6</span> Formatting dates and times</h2>
+<section id="below-are-some-useful-functions-for-dealing-with-dates-and-times" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="below-are-some-useful-functions-for-dealing-with-dates-and-times"><span class="header-section-number">4.6.1</span> Below are some useful functions for dealing with dates and times</h3>
+</section>
+<section id="to-illustrate-this-lets-first-add-a-time-variable-to-our-dataset" class="level3" data-number="4.6.2">
+<h3 data-number="4.6.2" class="anchored" data-anchor-id="to-illustrate-this-lets-first-add-a-time-variable-to-our-dataset"><span class="header-section-number">4.6.2</span> To illustrate this, let’s first add a “time” variable to our dataset</h3>
+<p>The time variable will be in seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn’t a bad idea to have a way to convert them in our toolbox!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>min_start_time <span class="ot">&lt;-</span> <span class="dv">9</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 am in seconds from midnight</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>max_end_time <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 pm in seconds from midnight</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a sequence of all possible timestamps within the range, e.g., by 10 minute segments</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>full_time_sequence <span class="ot">&lt;-</span> <span class="fu">seq</span>(min_start_time, max_end_time, <span class="dv">10</span><span class="sc">*</span><span class="dv">60</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For each record, sample a random number from the full time sequence created above</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">time_sec=</span><span class="fu">sample</span>(full_time_sequence,<span class="fu">n</span>(),<span class="at">replace=</span><span class="cn">TRUE</span>)) </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's look at the times generate</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(cleandat<span class="sc">$</span>time_sec,<span class="at">breaks=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="formatting-dates-and-times-1" class="level3" data-number="4.6.3">
+<h3 data-number="4.6.3" class="anchored" data-anchor-id="formatting-dates-and-times-1"><span class="header-section-number">4.6.3</span> Formatting dates and times</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first set date as a set date</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date=</span><span class="fu">as_date</span>(date_egg))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a date and time variable. Note that although the palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc=</span><span class="fu">as.POSIXct</span>(<span class="fu">paste</span>(<span class="fu">as_date</span>(date_egg,<span class="at">format=</span><span class="st">"%Y-%m-%d"</span>),<span class="st">"00:00:00"</span>,<span class="at">format=</span><span class="st">"%Y-%m-%d %H:%M:%S"</span>),<span class="at">tz=</span><span class="st">"UTC"</span>)<span class="sc">+</span>time_sec)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to proper time zone UTC-03                                    </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc03=</span><span class="fu">as.POSIXct</span>(<span class="fu">format</span>(date_time_utc,<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>),<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                    </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extracting-information-from-as.posixct-object-or-variable" class="level3" data-number="4.6.4">
+<h3 data-number="4.6.4" class="anchored" data-anchor-id="extracting-information-from-as.posixct-object-or-variable"><span class="header-section-number">4.6.4</span> Extracting information from as.POSIXct object or variable</h3>
+<p>Now that we’ve formatted our date and time variable, we can extract all sorts of useful information very easily.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study year</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">year</span>(cleandat<span class="sc">$</span>date_time_utc03)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a year coluymn in our dataframe</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">year</span>(date_time_utc03)) </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of distribution of sampling hours across the dataset</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">hour</span>(cleandat<span class="sc">$</span>date_time_utc03)) <span class="co">#Pretty random, but these were also sampled randomly across the range of possible  times between 6 am and 6 pm! </span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a few minutes to experiment with some of these. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="creating-data-summaries" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Creating data summaries</h1>
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The <code>group_by</code> and <code>summarize</code> functions are some of the most useful functions you’ll find in R as they are very intuitive and efficient.
+<p></p>
+We will summarize the penguin data to illustrate what can be done with these two functions. Let’s first take a look at the data again using <code>glimpse</code> to refresh our memory on the class of data that we have on hand.
+<p></p>
+<p>We also will want to filter out the data we flagged as “unusable” during our data tidying exercise.</p>
+<section id="removing-unusable-and-unecessary-data-to-create-our-working-dataset" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="removing-unusable-and-unecessary-data-to-create-our-working-dataset"><span class="header-section-number">5.1</span> Removing unusable and unecessary data to create our “working” dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># taking a look at the data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering out the unusable records</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(usable_adult_data<span class="sc">!=</span><span class="st">"no"</span>) <span class="co"># using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># cleandat contains columns which for simplicity we may want to remove</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>usable_adult_data <span class="sc">&amp;</span> <span class="sc">!</span>time_sec <span class="sc">&amp;</span> <span class="sc">!</span>date <span class="sc">&amp;</span> <span class="sc">!</span>date.time <span class="sc">&amp;</span> <span class="sc">!</span>date_time_utc)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat) <span class="co"># Much better!!!</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's save our cleaned dataset</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>out.path <span class="ot">&lt;-</span> <span class="st">"C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="fu">paste</span>(out.path,<span class="st">"clean_peanguindat.csv"</span>,<span class="at">sep=</span><span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s compare flipper length and body mass across species. The <code>group_by</code> function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The <code>summarize</code> function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the <code>group_by</code> function. Note that if there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.</p>
+<section id="summarizing-flipper-lengths" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="summarizing-flipper-lengths"><span class="header-section-number">5.1.1</span> Summarizing flipper lengths</h3>
+<p>Let’s first illustrate the tidyr syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the <code>&lt;-</code> syntax, e.g., <code>flipper_lt_summary &lt;- cleandat %&gt;% ...</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min_flipper_length=</span><span class="fu">mean</span>(flipper_length_mm,<span class="at">na.rm=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Summarizing means only may not be the most satistifying if one wanted to compare the means across species. We can combine functions in that same statement, and get a more complete summary of flipper length across species.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>flipper_length_summary <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_flipper_length=</span><span class="fu">mean</span>(flipper_length_mm,<span class="at">na.rm=</span>T),<span class="at">sd_flipper_length=</span><span class="fu">sd</span>(flipper_length_mm,<span class="at">na.rm=</span>T),<span class="at">min_flipper_length=</span><span class="fu">min</span>(flipper_length_mm,<span class="at">na.rm=</span>T),<span class="at">max_flipper_length=</span><span class="fu">max</span>(flipper_length_mm,<span class="at">na.rm=</span>T),<span class="at">N=</span><span class="fu">n</span>())</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(flipper_length_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: right;">mean_flipper_length</th>
+<th style="text-align: right;">sd_flipper_length</th>
+<th style="text-align: right;">min_flipper_length</th>
+<th style="text-align: right;">max_flipper_length</th>
+<th style="text-align: right;">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie Penguin</td>
+<td style="text-align: right;">189.9536</td>
+<td style="text-align: right;">6.539457</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">151</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinstrap penguin</td>
+<td style="text-align: right;">195.8235</td>
+<td style="text-align: right;">7.131894</td>
+<td style="text-align: right;">178</td>
+<td style="text-align: right;">212</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gentoo penguin</td>
+<td style="text-align: right;">217.1870</td>
+<td style="text-align: right;">6.484976</td>
+<td style="text-align: right;">203</td>
+<td style="text-align: right;">231</td>
+<td style="text-align: right;">123</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+Above we created a summary of mean, standard deviation, mininmum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the <code>summarise</code> statement.
+<p></p>
+<p>But wait, we forgot to calculate the Standard Error which is a metric that we may need for calculating confidence intervals! You can use the <code>mutate</code> function to add that measure to the summary table previously created.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>flipper_length_summary <span class="ot">&lt;-</span> flipper_length_summary <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">se_flipper_length =</span> sd_flipper_length<span class="sc">/</span><span class="fu">sqrt</span>(N))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(flipper_length_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 3%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: right;">mean_flipper_length</th>
+<th style="text-align: right;">sd_flipper_length</th>
+<th style="text-align: right;">min_flipper_length</th>
+<th style="text-align: right;">max_flipper_length</th>
+<th style="text-align: right;">N</th>
+<th style="text-align: right;">se_flipper_length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie Penguin</td>
+<td style="text-align: right;">189.9536</td>
+<td style="text-align: right;">6.539457</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">151</td>
+<td style="text-align: right;">0.5321735</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinstrap penguin</td>
+<td style="text-align: right;">195.8235</td>
+<td style="text-align: right;">7.131894</td>
+<td style="text-align: right;">178</td>
+<td style="text-align: right;">212</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.8648692</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gentoo penguin</td>
+<td style="text-align: right;">217.1870</td>
+<td style="text-align: right;">6.484976</td>
+<td style="text-align: right;">203</td>
+<td style="text-align: right;">231</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">0.5847306</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Now let’s say that we want to sumarise flipper length by species AND island. Let’s take a few minutes to try creating different summaries based on multiple grouping varibles. Hint: the grouping variables can be added within that <code>group_by()</code> function separated by a <code>comma</code>. You can use the <code>names()</code> or <code>glimpse</code> function to remember the name of the different variables available to use.</p>
+</section>
+</section>
+</section>
+<section id="data-visualization" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Data visualization</h1>
+Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the <code>ggplot2</code> package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R as well, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).
+<p></p>
+<p><a href="https://rstudio.github.io/cheatsheets/data-visualization.pdf">ggplot2 cheatsheet</a></p>
+<section id="key-data-visualization-principes" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="key-data-visualization-principes"><span class="header-section-number">6.1</span> Key Data Visualization principes</h2>
+</section>
+<section id="scatterplots" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="scatterplots"><span class="header-section-number">6.2</span> Scatterplots</h2>
+<p>Let’s create a scatterplot showing the relationship between flipper length and body mass. We will start very simple with blank canvas and will gradually build layers and complexity.</p>
+<section id="blank-canvas" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="blank-canvas"><span class="header-section-number">6.2.1</span> Blank canvas</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="now-we-add-aesthetics-with-aes" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="now-we-add-aesthetics-with-aes"><span class="header-section-number">6.2.2</span> Now we add aesthetics with <code>aes()</code></h3>
+<p>Aesthetics in ggplot2 define graphical parameters such as the variables to plot on the X and Y axes, and</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="add-geoms" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="add-geoms"><span class="header-section-number">6.2.3</span> Add geom’s</h3>
+<code>geom</code>’s define the type of plot to be produced (e.g., histogram, bar chart, scatter point, etc.). For a scatter plot, we use <code>geom_point()</code>. Graphs in ggplot2 are built as layers, as if you were drawing a picture and gradually adding complexity to your image. This is done using the plus sign (<code>+</code>) and can be read as “take my plot, and ADD this to it”.
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm))<span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One of our goals in this study is to compare species. Let’s see how this figure looks if we colour the points for each of the species.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cleandat, <span class="fu">aes</span>(<span class="at">x=</span>body_mass_kg,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species))<span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exporting-datasets-in-nice-format-for-publication" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">6.3</span> Exporting datasets in nice format for publication</h2>
+</section>
+</section>
+<section id="simple-statistics-if-time-allows" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Simple statistics (if time allows)</h1>
+</section>
+<section id="conclusion" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
+</section>
+<section id="resources" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Resources</h1>
+<p>tidy data documentations</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
