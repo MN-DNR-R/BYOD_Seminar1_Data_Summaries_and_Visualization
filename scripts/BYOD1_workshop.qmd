@@ -402,7 +402,6 @@ We also will want to filter out the data we flagged as "unusable" during our dat
 ## Removing unusable and unecessary data to create our "working" dataset 
 
 ```{r eval=F}
-
 # taking a look at the data
 glimpse(cleandat)
 
@@ -415,9 +414,7 @@ cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date.t
 glimpse(cleandat) # Much better!!!
 
 # Let's save our cleaned dataset
-out.path <- "C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"
-  
-write_csv(cleandat,paste(out.path,"clean_peanguindat.csv",sep=""))
+write_csv(cleandat,"data/clean_peanguindat.csv")
 
 ```
 
@@ -425,9 +422,7 @@ Let's compare flipper length and body mass across species. The `group_by` functi
 
 ```{r,eval=T,echo=F,message=F,warning=F}
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
-input.path<-"C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/1. Data Summaries and Visualization/data"
-
-cleandat<-read_csv(paste(input.path,"clean_peanguindat.csv",sep=""))
+cleandat<-read_csv("clean_peanguindat.csv")
 
 ```
 
@@ -466,7 +461,7 @@ kable(flipper_length_summary)
 
 ```
 
-Now let's say that we want to sumarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping varibles. Hint: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use. 
+Now let's say that we want to summarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables. Hint: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use. 
 
 # Data visualization
 
@@ -512,8 +507,16 @@ ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species))+
   geom_point(size=5)
 ```
 
-One of our goals in this study is to compare species. Let's see how this figure looks if we colour the points for each of the species. 
+Now we could even add an additional layer by colouring the points by species and adding a shape for each of the island. Let's try that!
 
+```{r}
+ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species,shape=island))+
+  geom_point(size=5)
+```
+
+
+
+###
 
 
 ## Exporting datasets in nice format for publication
