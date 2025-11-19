@@ -829,10 +829,28 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 <p>Recall the penguin dataset and how the data is structured.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 342
+Columns: 14
+$ species               &lt;chr&gt; "Adelie Penguin", "Adelie Penguin", "Adelie Peng…
+$ island                &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgerse…
+$ clutch_completion     &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "…
+$ date_egg              &lt;date&gt; 2007-11-11, 2007-11-11, 2007-11-16, 2007-11-16,…
+$ flipper_length_mm     &lt;dbl&gt; 181, 186, 195, 193, 190, 181, 195, 193, 190, 186…
+$ culmen_length_mm      &lt;dbl&gt; 39.1, 39.5, 40.3, 36.7, 39.3, 38.9, 39.2, 34.1, …
+$ body_mass_g           &lt;dbl&gt; 3750, 3800, 3250, 3450, 3650, 3625, 4675, 3475, …
+$ sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", "FEMALE", "MALE", "F…
+$ body_mass_kg          &lt;dbl&gt; 3.750, 3.800, 3.250, 3.450, 3.650, 3.625, 4.675,…
+$ culmen_bodymass_index &lt;dbl&gt; 10.43, 10.39, 12.40, 10.64, 10.77, 10.73, 8.39, …
+$ flipper_group         &lt;chr&gt; "small flips", "small flips", "small flips", "sm…
+$ weight_class          &lt;chr&gt; "medium", "medium", "small", "small", "medium", …
+$ date_time_utc03       &lt;dttm&gt; 2007-11-11 15:50:00, 2007-11-11 20:30:00, 2007-…
+$ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, …</code></pre>
+</div>
 </div>
 <p>We may want to visualize the number of records that we have for each of the islands. Let’s first set up the basics, or canvas, for our plot and specify the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -887,6 +905,7 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>We add different elements to the blank canvas using the <strong>plus</strong> sign. Let’s count how many records we have per island in our cleaned dataset. <strong>Island</strong> will thus be on the <strong>x axis</strong>, which is our only variable in this plot.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -897,6 +916,9 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>Adding <code>aes(x=island)</code> simply added the X axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we will do a barchar, which we specify using one of the available <code>geometries</code> as noted on the <a href="https://rstudio.github.io/cheatsheets/data-visualization.pdf">ggplot2 cheatsheet</a>.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span> <span class="co"># blank canvas</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island)<span class="sc">+</span> <span class="co"># define the X axis</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="co"># type of graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -907,6 +929,9 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>We’re off to a great start! But this figure could show more information, such as the number of records for each species on each of these islands. Recall the description of the <code>aesthetics</code> options,one being <strong>fill</strong> which can indicate the fill colour of the bar based on a categorical variable.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="co"># type of graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -917,6 +942,11 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>Let’s add labels and make the graph look a little bit nice by removing the grey background colour. Labels can be added using the <code>labs</code> syntax, and the <code>theme</code> can be adjusted to change the overall appearance of the figure.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="co"># remove grey background</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -927,6 +957,12 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. An additional thing that we can do is adjust the colour. We can use the function <code>scale_fill_brewer</code> to pick a different colour scheme. The available colour palettes can be viewed in <a href="https://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3">RColorBrewer palette</a>. This tools offers an opportunity to select only colours that are colorblind safe or printer friendly, among other things.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -937,6 +973,12 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 </div>
 <p>Often it is more desirable to look at bars that aren’t stacked but that are side-by-side. The <code>position</code> of the bars can be adjusted within the <code>geom_bar()</code> statement. Let’s add this to our figure above (since it looks so nice already!) with a simple addition withih the parentheses of <code>geom_bar()</code>.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">preserve=</span><span class="st">"single"</span>))<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -954,11 +996,11 @@ In most instances we want to show relationships between two variables, sometimes
 <p></p>
 <p>We’ve already seen how to build a figure from the basic level (data only) to a nice figure with labels, titles, and better colours, so we can go ahead and build a nice scatterplot right away. The geometry to use in that instance will be <code>geom_point()</code> instead of <code>geom_bar()</code>. Here will have a <strong>X</strong> and a <strong>Y</strong> variable to pass to the <code>aes()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm)<span class="sc">+</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="co"># remove grey background</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm)<span class="sc">+</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="co"># remove grey background</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -969,12 +1011,12 @@ In most instances we want to show relationships between two variables, sometimes
 </div>
 <p>Above we see the relationship using the whole dataset. We could follow a similar approach as above to show how that relationship varies across species. We could use different colours and/or different shapes to highly species-specific patterns. Let’s experiment with this and use the same colour palette as above!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Species-specificr relationship between flipper length and body mass"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Species-specificr relationship between flipper length and body mass"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -985,13 +1027,13 @@ In most instances we want to show relationships between two variables, sometimes
 </div>
 <p>Interesting! Intuitively our eyes are trying to draw regression lines through the cloud of points. It is possible to add these lines on the figure using the <code>geom_smooth</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>) <span class="co"># se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>) <span class="co"># se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1008,14 +1050,14 @@ If you would like you can take a moment to play with other variables and make ad
 <h3 data-number="6.2.3" class="anchored" data-anchor-id="facets"><span class="header-section-number">6.2.3</span> Facets!</h3>
 <p>At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using <code>facets</code> we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use <code>facet_wrap()</code> function as below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Island comparision of the relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span> <span class="co"># se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Island comparision of the relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span> <span class="co"># se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

@@ -489,7 +489,7 @@ For each of these elements, you can find a detailed description on the [ggplot2 
 
 Recall the penguin dataset and how the data is structured. 
 
-```{r,eval=F}
+```{r,eval=T}
 glimpse(cleandat)
 ```
 
@@ -510,13 +510,13 @@ kable(aes_options, caption = "Options to be passed into the `aes` statement") %>
 
 We add different elements to the blank canvas using the **plus** sign. Let's count how many records we have per island in our cleaned dataset. **Island** will thus be on the **x axis**, which is our only variable in this plot. 
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+aes(x=island)
 ```
 
 Adding `aes(x=island)` simply added the X axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we will do a barchar, which we specify using one of the available `geometries` as noted on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf). 
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+ # blank canvas
   aes(x=island)+ # define the X axis
   geom_bar() # type of graph
@@ -524,7 +524,7 @@ ggplot(data=cleandat)+ # blank canvas
 
 We're off to a great start! But this figure could show more information, such as the number of records for each species on each of these islands. Recall the description of the `aesthetics` options,one being **fill** which can indicate the fill colour of the bar based on a categorical variable.  
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar() # type of graph
@@ -532,7 +532,7 @@ ggplot(data=cleandat)+
 
 Let's add labels and make the graph look a little bit nice by removing the grey background colour. Labels can be added using the `labs` syntax, and the `theme` can be adjusted to change the overall appearance of the figure.  
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar()+ # type of graph
@@ -542,7 +542,7 @@ labs(title="Distribution of penguins species per island in the Palmer penguins c
 
 This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. An additional thing that we can do is adjust the colour. We can use the function `scale_fill_brewer` to pick a different colour scheme. The available colour palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tools offers an opportunity to select only colours that are colorblind safe or printer friendly, among other things. 
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar()+ # type of graph
@@ -553,7 +553,7 @@ scale_fill_brewer(type="qual",palette=3)
 
 Often it is more desirable to look at bars that aren't stacked but that are side-by-side. The `position` of the bars can be adjusted within the ``geom_bar()`` statement. Let's add this to our figure above (since it looks so nice already!) with a simple addition withih the parentheses of `geom_bar()`.
 
-```{r eval=T,echo=F,message=F}
+```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar(position=position_dodge(preserve="single"))+ # type of graph
