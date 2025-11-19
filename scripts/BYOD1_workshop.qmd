@@ -518,7 +518,6 @@ Now we could even add an additional layer by colouring the points by species and
 
 ### Formating labels using `labs`
 
-
 ```{r}
 ggplot(cleandat, aes(x=body_mass_kg,y=flipper_length_mm,colour=species,shape=island))+
   geom_point(size=2) + 
