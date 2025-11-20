@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Amy Kendig and Véronique St-Louis (MN-DNR)">
+<meta name="author" content="MN-DNR Biometricians">
 <meta name="dcterms.date" content="2025-11-20">
 
 <title>Bring Your Own Data (BYOD) Series</title>
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Amy Kendig and Véronique St-Louis (MN-DNR) </p>
+             <p>MN-DNR Biometricians </p>
           </div>
   </div>
     
@@ -952,7 +952,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguin species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="co"># remove grey background</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -967,7 +967,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguin species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -983,7 +983,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>island, <span class="at">fill=</span>species)<span class="sc">+</span> <span class="co"># species will be in colour, island will be on the X axis</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">preserve=</span><span class="st">"single"</span>))<span class="sc">+</span> <span class="co"># type of graph</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguins species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Distribution of penguin species per island in the Palmer penguins clean dataset"</span>,<span class="at">x=</span><span class="st">"Island"</span>,<span class="at">y=</span><span class="st">"Number of penguins"</span>,<span class="at">fill=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels; "fill="Species" will change the legend title for the fill aesthetics </span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">

@@ -1,7 +1,7 @@
 ---
 title:    "Bring Your Own Data (BYOD) Series"
 subtitle: "Summarizing and Visualizing your data in R"
-author:   "Amy Kendig and Véronique St-Louis (MN-DNR)"
+author:   "MN-DNR Biometricians"
 date:     today
 engine:   knitr
 format: 
@@ -548,7 +548,7 @@ Let's add labels and make the graph look a little bit nice by removing the grey 
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar()+ # type of graph
-labs(title="Distribution of penguins species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
+labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
   theme_bw() # remove grey background
 ```
 
@@ -558,7 +558,7 @@ This figure is starting to look pretty good! You can spend time exploring differ
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar()+ # type of graph
-labs(title="Distribution of penguins species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
+labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
   theme_bw()+ # remove grey background
 scale_fill_brewer(type="qual",palette=3)
 ```
@@ -569,7 +569,7 @@ Often it is more desirable to look at bars that aren't stacked but that are side
 ggplot(data=cleandat)+
   aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
   geom_bar(position=position_dodge(preserve="single"))+ # type of graph
-labs(title="Distribution of penguins species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
+labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
   theme_bw()+ # remove grey background
 scale_fill_brewer(type="qual",palette=3)
 ```
