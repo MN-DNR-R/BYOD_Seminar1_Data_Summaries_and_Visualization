@@ -606,7 +606,7 @@ Above we see the relationship using the whole dataset. We could follow a similar
 ggplot(data=cleandat)+
   aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
   geom_point()+ # type of graph
-labs(title="Species-specificr relationship between flipper length and body mass",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+labs(title="Species-specific relationship between flipper length and body mass",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
   theme_bw()+ # remove grey background
   scale_colour_brewer(type="qual",palette=3)
 ```
