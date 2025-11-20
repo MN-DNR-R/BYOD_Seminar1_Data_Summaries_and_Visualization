@@ -129,6 +129,8 @@ You can look in the environment and make sure that the files were loaded properl
 
 The `palmerpenguins` package was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within this package, and we will learn to manipulate and visualize the data using a variety of tools and techniques. Below you will use the `citation()` command line to get the full citation for the package!
 
+You can read more about the package here: [PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/)
+
 ```{r eval=F}
 
 # install package (once you have installed the package you will not need to run that line)
