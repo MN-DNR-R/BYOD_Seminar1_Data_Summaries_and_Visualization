@@ -70,12 +70,17 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 # Workshop goals
 
-The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying-up their data in R, creating summaries, and constructing publication-quality figures. We will also explore simple regression models as time allows. </p>
+The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying-up their data in R, creating summaries, and generating publication-quality figures. If time allows we could also explore simple statistical models during the practice section of the workshop. </p>
 
-Throughout this workshop will use the syntax of the tidyr packages, which offers an efficient way of coding and building complexity in data manipulation steps while retaining coding organization simplicity. 
+Throughout this workshop will use the syntax of the `tidyr` package, which offers an efficient way of coding and building complexity in data manipulation steps in an organized and structured way. 
 
-Note that some of the content presented here was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). 
+The content presented in this document was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). We encourage all participants to  take a look at the material generously shared by MDH on that link, and watch some of the instructional videos.    
 
+# Setting-up our work space!
+
+Let's set up our work space for the day by first creating a new project for this workshop. All of the scripts and data used in the workshop should be saved to that project so that everything can be easily referenced in the future. </p>
+
+We will now take a few moments to demonstrate how to set-up a new project. When that is done, let's create two new R scripts: 1) Penguins_data_demo.r, 2) Your-own-data.r script. You can chose the names that you want for these scripts; one will contain everything that we will demonstrate in this class with a dataset that we will provide (penguins!), and the other will contain the code that you will develop as you work with your own data. 
 
 # Loading libraries and reading-in the data
 
@@ -122,7 +127,7 @@ You can look in the environment and make sure that the files were loaded properl
 
 ## Now we are going to load the dataset for today's demonstration. 
 
-The `palmerpenguins` packages was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within the packages, and we learn to manipulate and analyze the data using a variety of tools and techniques. 
+The `palmerpenguins` package was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within this package, and we will learn to manipulate and visualize the data using a variety of tools and techniques. Below you will use the `citation()` command line to get the full citation for the package!
 
 ```{r eval=F}
 
@@ -143,7 +148,6 @@ citation("palmerpenguins")
 
 # Let's simplify the name of this dataset for easier coding by creating a new object:
 rawdat<-penguins_raw
-
 ```
 
 # Getting to know your data
@@ -188,23 +192,24 @@ summary(rawdat)
 
 ```
 
-## Assessing quality of our data?
+## Data quality check
 
-Looking at the raw data, what do you observe could be improved for facilitating some analyses and data visualization?
+Looking at the raw data, what do you observe could be improved for facilitating some analyses and data visualizations? Is the dataset pretty clean and analysis-ready, or are these things that need to be addressed and changed so that we don't run into issues later in the process?
 
 Here are some examples:
 
 1. species names are long
 2. some columns may not be necessary
-3. individual ID is not unique or some individuals have been measured twice
+3. individual ID is not unique
 3. we may want columns that classify the data based on some criteria (e.g., a) heavy or light and b) long-, medium-, or short-billed).  
-
 
 # Tidying your data
 
 ## What is tidy data?
 
-We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The "tidyr" packages contains functions for manipulating the data... 
+We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The `tidyr` packages contains functions for manipulating the data so that we can create a clean, tidy dataset to-be-used for all analyses. </p>
+
+**Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be kept unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original data.  
 
 ## Why is it important to tidy our data?
 
@@ -417,10 +422,13 @@ write_csv(cleandat,"data/clean_peanguindat.csv")
 
 ```
 
-Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarize` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.  Note that if there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.   
+Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarize` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.</p>  
+
+**Note**: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.   
 
 ```{r read dat,eval=T,echo=F,message=F,warning=F}
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
+library(tidyverse)
 cleandat<-read_csv("../data/clean_peanguindat.csv")
 
 ```
@@ -438,7 +446,7 @@ cleandat %>%
 
 Summarizing means only may not be the most satistifying if one wanted to compare the means across species. We can combine functions in that same statement, and get a more complete summary of flipper length across species. 
 
-```{r}
+```{r,summary table, echo=F,eval=T,include=T,message=F}
 flipper_length_summary <- cleandat %>% 
   group_by(species) %>% 
   summarise(mean_flipper_length=mean(flipper_length_mm,na.rm=T),sd_flipper_length=sd(flipper_length_mm,na.rm=T),min_flipper_length=min(flipper_length_mm,na.rm=T),max_flipper_length=max(flipper_length_mm,na.rm=T),N=n())
@@ -460,17 +468,19 @@ kable(flipper_length_summary)
 
 ```
 
-Now let's say that we want to summarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables. </p>
+**Exercise**: Let's say that we want to summarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables. </p>
 
-Hint: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use. </p>
+**Hint**: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use. </p>
 
 # Data visualization
 
 Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).</p>
 
-## Key Data Visualization principes
+## Key Data Visualization principes (incomplete, need a few items here!)
 
-## Main elements of a ggplot object
+
+
+## Main elements of a ggplot figure
 
 Plots in `ggplot` are built as a series of layers sequentially added in an intuitive way. Let's think about how we would graph a figure by hand. First, we would think of the basic component or our figure or in other words the things that we want to represent (i.e., the **data**). We would then think of what specifically do we want to represent (i.e., **The Xs, the Ys, etc.**), and how (i.e., **the type of image**). `ggplot` uses this logic to sequentially add complexity and layers to plots wiht limitless options.</> 
 
@@ -485,7 +495,7 @@ kable(ggplot_elements, caption = "Elements of a plot done in ggplot") %>%
 
 For each of these elements, you can find a detailed description on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf). We will give some examples of the types of figures that we can do in ggplot, and how to add layers and complexity without having to add so many lines of code that it becomes cumbersome! Let's explore some of the syntax using examples for one variable and two variables. 
 
-### One-variable figures
+## One-variable figures
 
 Recall the penguin dataset and how the data is structured. 
 
@@ -562,7 +572,7 @@ labs(title="Distribution of penguins species per island in the Palmer penguins c
 scale_fill_brewer(type="qual",palette=3)
 ```
 
-Now it is your turn to play with single-variable plots! Refer to the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf) and try making a histogram of the penguins body weights to see how the weights are distributed across the dataset overall. In a second time, add complexity to this figure by visualizing how the distribution of body weight varies across species! Hint: if the species-specific bars are overlapping, you can add transparency using the `alpha` statement within the geometry function.   
+**Exercise**: Now it is your turn to play with single-variable plots! Refer to the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf) and try making a histogram of the penguins body weights to see how the weights are distributed across the dataset overall. In a second time, add complexity to this figure by visualizing how the distribution of body weight varies across species! Hint: if the species-specific bars are overlapping, you can add transparency using the `alpha` statement within the geometry function.   
 
 ```{r,eval=F,echo=F,message=F}
 ggplot(data=cleandat)+
@@ -574,7 +584,7 @@ ggplot(data=cleandat)+
 
 As you can see, the options are limitless!
 
-### Two-variables figures
+## Two-variables figures
 
 In most instances we want to show relationships between two variables, sometimes also show how that relationship varies across groups. We will demonstrate this with the penguin dataset by building a figure of the relationship between penguins flipper length and body mass.</p>
 
@@ -613,9 +623,9 @@ labs(title="Relationship between flipper length and body mass by species",x="Bod
 
 If you would like you can take a moment to play with other variables and make additional figures. Also note that this is a pretty clean dataset and straight regression lines seem to fit pretty well. This isn't always the case, however, and the figures do not replace thorough statistical tests and models!</p>
 
-As an exercise, repeat the same figure as above but show species in different colours and islands as different shapes. What do you notice?
+**Exercise**: Repeat the same figure as above but show `species` as different colours and `islands` as different shapes. What do you notice?
 
-### Facets!
+## Facets!
 
 At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using `facets` we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use `facet_wrap()` function as below.
 
@@ -631,23 +641,44 @@ labs(title="Island comparision of the relationship between flipper length and bo
 facet_wrap(~island)
 ```
 
-Now try adding the `scales="free"` argument within `the` facet_wrap() and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?  </p>
+**Exercise**: Try adding the `scales="free"` argument within `the` facet_wrap() and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?  </p>
 
-In this case, our latest figure was likely the best, and we now want to export it  
+## Customizing plot options (incomplete, need to add text modif and point size, etc.)
+
+```{r,echo=T,message=F,warning=FALSE}
+ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Island comparision of the relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)+ # se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.
+facet_wrap(~island)
+```
+
+
+
+
 ## Exporting datasets in nice format for publication
 
+One of the easiest way to save and export plots is to use the `ggsave` function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously-displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.  </p>
+
+Let's save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image. 
+
+```{r,echo=T,message=F,warning=FALSE}
+getwd() # To remind yourself of the current working directory. Plots will be saved in that directory unless specified otherwise
+
+ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,height=5,width=7,units = "in") 
+
+```
 
 
-# Simple statistics (if time allows)
+# Conclusion (incomplete)
 
 
 
+# Resources (incomplete)
 
-# Conclusion
-
-# Resources
-
-tidy data documentations
-
-
-
+tidy R
+ggplot
+...
