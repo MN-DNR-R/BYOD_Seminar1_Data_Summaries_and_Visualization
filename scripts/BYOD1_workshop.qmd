@@ -167,14 +167,12 @@ kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
 
 ## Data types (incomplete)
 
-There are various data types 
 
 ```{r data types,eval=T,echo=F,message=F}
-data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),Description = c("","","",""),"Exampe"=c("1.5,2.6","1,2","True/False","One cat,Two cats"))
+data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),"Exampe"=c("1.5, 2.6","1, 2","True/False","One, Two"))
 
 kable(data_types, caption = "Data types supported in R") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
-
 
 ```
 
@@ -446,6 +444,8 @@ Let's compare flipper length and body mass across species. The `group_by` functi
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
 library(tidyverse)
 cleandat<-read_csv("../data/clean_peanguindat.csv")
+
+# cleandat<-read_csv("data/clean_peanguindat.csv") To read on individual computer 
 
 ```
 
