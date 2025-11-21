@@ -170,9 +170,9 @@ kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
 There are various data types 
 
 ```{r data types,eval=T,echo=F,message=F}
-data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),Description = c(),"Exampe"=c("1.5,2.6","1,2","True/False","One cat,Two cats")
+data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),Description = c("","","",""),"Exampe"=c("1.5,2.6","1,2","True/False","One cat,Two cats"))
 
-kable(useful_fct_1, caption = "Data types supported in R") %>%
+kable(data_types, caption = "Data types supported in R") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 
