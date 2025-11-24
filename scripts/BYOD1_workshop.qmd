@@ -127,9 +127,9 @@ You can look in the environment and make sure that the files were loaded properl
 
 ## Now we are going to load the dataset for today's demonstration. 
 
-The `palmerpenguins` package was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within this package, and we will learn to manipulate and visualize the data using a variety of tools and techniques. Below you will use the `citation()` command line to get the full citation for the package!
+The `palmerpenguins` package was created by Allison Horst, Alison Hill, and Kristen Gorman as a tool for teaching data manipulation and analysis techniques in R. In the following sections we will explore the data available within this package, and we will learn to manipulate and visualize the data using a variety of tools and techniques. Below you will use the `citation()` command line to get the full citation for the package!</p>
 
-You can read more about the package here: [PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/)
+You also can read more about the package here: [PalmerPenguins](https://allisonhorst.github.io/palmerpenguins/)
 
 ```{r eval=F}
 
@@ -158,7 +158,7 @@ There are many functions available to explore the data, here is a list of the ma
 
 ```{r useful functions,eval=T,message=F,echo=F}
 
-useful_fct_1 <- data.frame(Function=c("glimpse(...)","names(...)","head(...)","tail(...)","nrow(...)","ncol(...)","summary(...)","unique"),Purpose = c("overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", "column names","display for n rows of data (default is 6)","displays last n rows of data (default is 6)","number of rows","number of columns","summary of the data in each column","displays unique values of a variable"))
+useful_fct_1 <- data.frame(Function=c("glimpse(...)","str(...)","names(...)","head(...)","tail(...)","nrow(...)","ncol(...)","summary(...)","unique(...)"),Purpose = c("overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", "Succinct summary of all columns of a dataframe; similar to glimpse but within base R","column names","display for n rows of data (default is 6)","displays last n rows of data (default is 6)","number of rows","number of columns","summary of the data in each column","displays unique values of a variable"))
 
 kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
