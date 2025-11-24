@@ -688,7 +688,6 @@ ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,heigh
 
 ```
 
-
 # Conclusion (incomplete)
 
 
@@ -700,4 +699,12 @@ ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,heigh
 
 [tidyr](https://rstudio.github.io/cheatsheets/tidyr.pdf)
 
-...
+
+# Additional resources
+
+[More on tidy data](https://tidyr.tidyverse.org/articles/tidy-data.html)
+
+[More on ggplot2](https://ggplot2.tidyverse.org/)
+
+[Key principes of effective data visualization](https://www.sciencedirect.com/science/article/pii/S2666389920301896)
+
