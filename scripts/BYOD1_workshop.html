@@ -124,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#below-are-some-useful-functions-for-handling-dates-and-times-in-r" id="toc-below-are-some-useful-functions-for-handling-dates-and-times-in-r" class="nav-link" data-scroll-target="#below-are-some-useful-functions-for-handling-dates-and-times-in-r"><span class="header-section-number">5.6.1</span> Below are some useful functions for handling dates and times in R</a></li>
   <li><a href="#lets-first-add-a-time-variable-to-our-dataset" id="toc-lets-first-add-a-time-variable-to-our-dataset" class="nav-link" data-scroll-target="#lets-first-add-a-time-variable-to-our-dataset"><span class="header-section-number">5.6.2</span> Let’s first add a “time” variable to our dataset</a></li>
   <li><a href="#formatting-dates-and-times" id="toc-formatting-dates-and-times" class="nav-link" data-scroll-target="#formatting-dates-and-times"><span class="header-section-number">5.6.3</span> Formatting dates and times</a></li>
-  <li><a href="#extracting-information-from-as.posixct-object-or-variable" id="toc-extracting-information-from-as.posixct-object-or-variable" class="nav-link" data-scroll-target="#extracting-information-from-as.posixct-object-or-variable"><span class="header-section-number">5.6.4</span> Extracting information from as.POSIXct object or variable</a></li>
+  <li><a href="#extracting-information-from-a-date-and-time-object" id="toc-extracting-information-from-a-date-and-time-object" class="nav-link" data-scroll-target="#extracting-information-from-a-date-and-time-object"><span class="header-section-number">5.6.4</span> Extracting information from a date and time object</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#creating-data-summaries" id="toc-creating-data-summaries" class="nav-link" data-scroll-target="#creating-data-summaries"><span class="header-section-number">6</span> Creating data summaries</a>
@@ -144,9 +144,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc." id="toc-customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc." class="nav-link" data-scroll-target="#customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc."><span class="header-section-number">7.6</span> Customizing plot options (incomplete, need to add text modif and point size, etc.)</a></li>
   <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">7.7</span> Exporting datasets in nice format for publication</a></li>
   </ul></li>
-  <li><a href="#conclusion-incomplete" id="toc-conclusion-incomplete" class="nav-link" data-scroll-target="#conclusion-incomplete"><span class="header-section-number">8</span> Conclusion (incomplete)</a></li>
-  <li><a href="#useful-cheatsheets" id="toc-useful-cheatsheets" class="nav-link" data-scroll-target="#useful-cheatsheets"><span class="header-section-number">9</span> Useful cheatsheets</a></li>
-  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">10</span> Additional resources</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
+  <li><a href="#your-turn-to-experiment" id="toc-your-turn-to-experiment" class="nav-link" data-scroll-target="#your-turn-to-experiment"><span class="header-section-number">9</span> Your turn to experiment!</a></li>
+  <li><a href="#useful-cheatsheets" id="toc-useful-cheatsheets" class="nav-link" data-scroll-target="#useful-cheatsheets"><span class="header-section-number">10</span> Useful cheatsheets</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">11</span> Additional resources</a></li>
   </ul>
 </nav>
 </div>
@@ -580,10 +581,13 @@ The <em>pipe</em> operator <code>%&gt;%</code> or <code>|&gt;</code> provides a 
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<span style="color:red;"><strong>Note</strong></span>: While in this example the number of unique comments to look through was relatively small and we could thus easily decide which ones to use for coding the “usable” columns as “yes” or “no”, in real life it is very impractical and not advised to store any critical information in a general free-form “comments” column, especially if that information pertains to the quality or usability of the data. The best practice is to maintain a metadata spreadsheet that contains all of the sampling information for a given sampling point, including comments, but that would also contain a column with a “yes” or a “no” value so that the analyst can quickly filter data without having to weed through long comments or make decisions on what they may mean. Just something to keep in mind!
+<p></p>
+<p>At times, though, we can create a <code>is-the-data-usable (Yes/No)</code> column based on some variables (but not free-form comments!). For example, if one had sample-site specific <code>wind</code>, <code>precipitation</code>, <code>temperature</code>, <code>time of day</code> information, it would be easy to generate a “data quality” variable based on specific sampling conditions (e.g., if wind exceeds this, exclude this data point).</p>
 </section>
 <section id="creating-new-variables" class="level3" data-number="5.5.4">
 <h3 data-number="5.5.4" class="anchored" data-anchor-id="creating-new-variables"><span class="header-section-number">5.5.4</span> Creating new variables</h3>
-<p>We’re getting close to having a dataset that will be easier to use for analysis! Now let’s say we would like to create 1) a culmen to body mass index, 2) flipper group category based on flipper length, and 3) a factor variable that will identify if the penguins were small, medium, or large based on their weight. We can do both of these things again using the <code>mutate</code> and <code>case_when</code> functions.</p>
+<p>We’re getting close to having a dataset that will be easier to use for analysis! Now let’s say we would like to create 1) a culmen to body mass index, 2) flipper group categories based on flipper length, and 3) a body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the <code>mutate()</code> and <code>case_when()</code> functions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create a culmen to body mass index</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">body_mass_kg=</span>body_mass_g<span class="sc">/</span><span class="dv">1000</span>,<span class="at">culmen_bodymass_index=</span><span class="fu">round</span>(culmen_length_mm<span class="sc">/</span>body_mass_kg,<span class="dv">2</span>))</span>
@@ -652,31 +656,29 @@ We have now generated a new variable <code>time_sec</code> which reflects the ti
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="extracting-information-from-as.posixct-object-or-variable" class="level3" data-number="5.6.4">
-<h3 data-number="5.6.4" class="anchored" data-anchor-id="extracting-information-from-as.posixct-object-or-variable"><span class="header-section-number">5.6.4</span> Extracting information from as.POSIXct object or variable</h3>
-<p>Now that we’ve formatted our date and time variable, we can extract all sorts of useful information very easily.</p>
+<section id="extracting-information-from-a-date-and-time-object" class="level3" data-number="5.6.4">
+<h3 data-number="5.6.4" class="anchored" data-anchor-id="extracting-information-from-a-date-and-time-object"><span class="header-section-number">5.6.4</span> Extracting information from a date and time object</h3>
+<p>Now that we’ve formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study year</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">year</span>(cleandat<span class="sc">$</span>date_time_utc03)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a year coluymn in our dataframe</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the mutate function to create a year column in the cleandat dataframe</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">year</span>(date_time_utc03)) </span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of distribution of sampling hours across the dataset</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">hour</span>(cleandat<span class="sc">$</span>date_time_utc03)) <span class="co">#Pretty random, but these were also sampled randomly across the range of possible  times between 6 am and 6 pm! </span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a few minutes to experiment with some of these. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a few minutes to experiment with some of these. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><em>Exercise</em>: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., <code>hour()</code>)? What happens if you run <code>as_date()</code> on a date and time POSIXct object?</p>
 </section>
 </section>
 </section>
 <section id="creating-data-summaries" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Creating data summaries</h1>
-Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The <code>group_by</code> and <code>summarize</code> functions are some of the most useful functions you’ll find in R as they are very intuitive and efficient.
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The <code>group_by</code> and <code>summarise</code> functions are some of the most useful functions you’ll find in R as they are very intuitive and efficient.
 <p></p>
-We will summarize the penguin data to illustrate what can be done with these two functions. Let’s first take a look at the data again using <code>glimpse</code> to refresh our memory on the class of data that we have on hand.
+We will summarise the penguin data to illustrate what can be done with these two functions. Let’s first take a look at the data again using <code>glimpse</code> to refresh our memory on the class of data that we have on hand.
 <p></p>
 <p>We also will want to filter out the data we flagged as “unusable” during our data tidying exercise.</p>
 <section id="removing-unusable-and-unecessary-data-to-create-our-working-dataset" class="level2" data-number="6.1">
@@ -696,7 +698,7 @@ We will summarize the penguin data to illustrate what can be done with these two
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's save our cleaned dataset</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="st">"data/clean_peanguindat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-Let’s compare flipper length and body mass across species. The <code>group_by</code> function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The <code>summarize</code> function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the <code>group_by</code> function.
+Let’s compare flipper length and body mass across species. The <code>group_by</code> function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The <code>summarise</code> function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the <code>group_by</code> function.
 <p></p>
 <p><strong>Note</strong>: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.</p>
 <section id="summarizing-flipper-lengths" class="level3" data-number="6.1.1">
@@ -758,7 +760,7 @@ Let’s compare flipper length and body mass across species. The <code>group_by<
 </table>
 </div>
 </div>
-Above we created a summary of mean, standard deviation, mininmum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the <code>summarise</code> statement.
+Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the <code>summarise</code> statement.
 <p></p>
 <p>But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the <code>mutate</code> function to add that measure to the summary table previously created.</p>
 <div class="cell">
@@ -1171,17 +1173,46 @@ One of the easiest way to save and export plots is to use the <code>ggsave</code
 </div>
 </section>
 </section>
-<section id="conclusion-incomplete" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Conclusion (incomplete)</h1>
+<section id="conclusion" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
+The goal of this workshop was not to go through each possible data summary tool or plot example, but rather to use a simple dataset to demonstrate some of the main tools that can be used for tidying data in R, and demonstrate with a few examples the structure of the ggplot syntax. There are plenty of resources available to expand on the material presented here, and we hope that as a participants you will feel it easier to continue exploring and applying these tools in to tackle your data analysis tasks!
+<p></p>
 </section>
-<section id="useful-cheatsheets" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Useful cheatsheets</h1>
+<section id="your-turn-to-experiment" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Your turn to experiment!</h1>
+<p>Now you will spend the rest of our time together implementing some of these tools with your own data. But how to get started?!!</p>
+Here is a quick guide to get you started based on the steps we have following with the palmer penguins data, but feel free to go on your own as you see fit!
+<p></p>
+<ol type="1">
+<li>Start a new project and R script.
+<p></p></li>
+<li>Load libraries (<code>tidyverse</code> and others as needed)
+<p></p></li>
+<li>Read your data in R using the appropriate function (<code>read_csv</code>,<code>read_excel</code>)</li>
+<li>Take a first look at the data using <code>glimpse()</code>,<code>str()</code>,<code>dim()</code>,<code>nrow()</code>, etc.
+<ol type="a">
+<li>Note the data structure and data types.</li>
+<li>Note the dimension of your dataset, the number of rows and number of columns</li>
+</ol></li>
+<li>Look at the data summary (<code>summary()</code>) and identify if there are any missing data or anything else that looks unusual for some of the variables.</li>
+<li>Use some of the functions that we have used below to tidy your data
+<ol type="a">
+<li>Do you need to simplify column names?</li>
+<li>Can you remove some of the columns to form a small dataframe?</li>
+<li>Do you need to created a binary variable coding if some variables are usable or not?</li>
+<li>Do you need to create some new variables (<code>mutate()</code>)?</li>
+<li>Do you need to filter out some of the data (<code>filter()</code>)?</li>
+</ol></li>
+</ol>
+</section>
+<section id="useful-cheatsheets" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Useful cheatsheets</h1>
 <p><a href="https://rstudio.github.io/cheatsheets/data-visualization.pdf">ggplot2</a></p>
 <p><a href="https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf">dplyr</a></p>
 <p><a href="https://rstudio.github.io/cheatsheets/tidyr.pdf">tidyr</a></p>
 </section>
-<section id="additional-resources" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Additional resources</h1>
+<section id="additional-resources" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Additional resources</h1>
 <p><a href="https://tidyr.tidyverse.org/articles/tidy-data.html">More on tidy data</a></p>
 <p><a href="https://ggplot2.tidyverse.org/">More on ggplot2</a></p>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S2666389920301896">Key principes of effective data visualization</a></p>
