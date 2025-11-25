@@ -187,6 +187,8 @@ kable(data_types, caption = "Data types supported in R") %>%
 # the glimpse function provides a good first overview of the data. Function "str" produces something similar. 
 glimpse(rawdat)
 
+# The str function is out of base R and also provides a quick but complete overview of the dataset and data types as detected by R
+str(rawdat)
 
 # extract column names
 names(rawdat)
@@ -316,9 +318,13 @@ cleandat <- cleandat %>% select(!comments)
 
 ```
 
+[**Note**]{style="color:red;"}: While in this example the number of unique comments to look through was relatively small and we could thus easily decide  which ones to use for coding the "usable" columns as "yes" or "no", in real life it is very impractical and not advised to store any critical information in a general free-form "comments" column, especially if that information pertains to the quality or usability of the data. The best practice is to maintain a metadata spreadsheet that contains all of the sampling information for a given sampling point, including comments, but that would also contain a column with a "yes" or a "no" value  so that the analyst can quickly filter data without having to weed through long comments or make decisions on what they may mean. Just something to keep in mind! </p>
+
+At times, though, we can create a `is-the-data-usable (Yes/No)` column based on some variables (but not free-form comments!). For example, if one had sample-site specific `wind`, `precipitation`, `temperature`, `time of day` information, it would be easy to generate a "data quality" variable based on specific sampling conditions (e.g., if wind exceeds this, exclude this data point).  
+
 ### Creating new variables
 
-We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create 1) a culmen to body mass index, 2) flipper group category based on flipper length, and 3) a factor variable that will identify if the penguins were small, medium, or large based on their weight. We can do both of these things again using the `mutate` and `case_when` functions. 
+We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create 1) a culmen to body mass index, 2) flipper group categories based on flipper length, and 3) a body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` and `case_when()` functions. 
 
 ```{r eval=F}
 
@@ -400,34 +406,30 @@ cleandat <- cleandat %>% mutate(date_time_utc03=as.POSIXct(format(date_time_utc,
 
 ```
 
+### Extracting information from a date and time object
 
-### Extracting information from as.POSIXct object or variable
-
-Now that we've formatted our date and time variable, we can extract all sorts of useful information very easily. 
+Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily. 
 
 ```{r eval=F}
-
 # study year
 year(cleandat$date_time_utc03)
 
-# creating a year coluymn in our dataframe
+# use the mutate function to create a year column in the cleandat dataframe
 cleandat <- cleandat %>% mutate(year=year(date_time_utc03)) 
 
 # we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately
-
-# Example of distribution of sampling hours across the dataset
-hist(hour(cleandat$date_time_utc03)) #Pretty random, but these were also sampled randomly across the range of possible  times between 6 am and 6 pm! 
 
 # Take a few minutes to experiment with some of these. 
 
 ```
 
+*Exercise*: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., `hour()`)? What happens if you run `as_date()` on a date and time POSIXct object?
 
 # Creating data summaries
 
-Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The `group_by` and `summarize` functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. </p>
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The `group_by` and `summarise` functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. </p>
 
-We will summarize the penguin data to illustrate what can be done with these two functions. Let's first take a look at the data again using `glimpse` to refresh our memory on the class of data that we have on hand. </p>
+We will summarise the penguin data to illustrate what can be done with these two functions. Let's first take a look at the data again using `glimpse` to refresh our memory on the class of data that we have on hand. </p>
 
 We also will want to filter out the data we flagged as "unusable" during our data tidying exercise.
 
@@ -450,13 +452,14 @@ write_csv(cleandat,"data/clean_peanguindat.csv")
 
 ```
 
-Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarize` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.</p>  
+Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarise` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.</p>  
 
 **Note**: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.   
 
 ```{r read dat,eval=T,echo=F,message=F,warning=F}
 # read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
 library(tidyverse)
+
 cleandat<-read_csv("../data/clean_peanguindat.csv")
 
 # cleandat<-read_csv("data/clean_peanguindat.csv") To read on individual computer 
@@ -485,7 +488,7 @@ kable(flipper_length_summary)
 
 ```
 
-Above we created a summary of mean, standard deviation, mininmum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the `summarise` statement. </p>
+Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the `summarise` statement. </p>
 
 But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the `mutate` function to add that measure to the summary table previously created. 
 
@@ -495,7 +498,6 @@ flipper_length_summary <- flipper_length_summary %>%
 mutate(se_flipper_length = sd_flipper_length/sqrt(N))
 
 kable(flipper_length_summary)
-
 ```
 
 **Exercise**: Let's say that we want to summarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables. </p>
@@ -507,6 +509,8 @@ kable(flipper_length_summary)
 Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).</p>
 
 ## Key Data Visualization principes (incomplete, need a few items here!)
+
+
 
 
 
@@ -702,8 +706,34 @@ ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,heigh
 
 ```
 
-# Conclusion (incomplete)
+# Conclusion
 
+The goal of this workshop was not to go through each possible data summary tool or plot example, but rather to use a simple dataset to demonstrate some of the main tools that can be used for tidying data in R, and demonstrate with a few examples the structure of the ggplot syntax. There are plenty of resources available to expand on the material presented here, and we hope that as a participants you will feel it easier to continue exploring and applying these tools in to tackle your data analysis tasks!</p>
+
+# Your turn to experiment!
+
+Now you will spend the rest of our time together implementing some of these tools with your own data. But how to get started?!! 
+
+Here is a quick guide to get you started based on the steps we have following with the palmer penguins data, but feel free to go on your own as you see fit! </p>
+
+1. Start a new project and R script.</p>
+1. Load libraries (`tidyverse` and others as needed)</p>
+1. Read your data in R using the function that correspond to your file type (`read_csv`(),`read_excel`())</p>
+1. Take a first look at the data using `glimpse()`,`str()`,`dim()`,`nrow()`, etc. 
+    a. Note the data structure and data types.
+    a. Note the dimension of your dataset, the number of rows and number of columns</p>
+1. Look at the data summary (`summary()`) and identify if there are any missing data or anything else that looks unusual for some of the variables.</p>
+1. Use some of the functions that we have used below to tidy your data
+    a. Do you need to simplify column names?
+    a. Can you remove some of the columns to form a small dataframe?
+    a. Do you need to created a binary variable coding if some variables are usable or not? 
+    a. Do you need to create some new variables (`mutate()`)?
+    a. Do you need to filter out some of the data (`filter()`)?</p>
+1. Now you can do some summaries using the `group_by` function if you have grouping variables, and the `summarise` function.</p>
+1. Take time to explore a variety of plot types, even if you wouldn't necessarily use them all, but just to get more experience with the `ggplot2` syntax and the breath of available types of plots. </p>
+1. Ask questions! We're here to help, and if there is something that we have not covered in the workshop material but that you would like to learn how to do, we will be happy to help you out!</p>
+
+Enjoy!
 
 # Useful cheatsheets
 
