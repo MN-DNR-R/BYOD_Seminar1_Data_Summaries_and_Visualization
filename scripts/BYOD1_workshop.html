@@ -1188,22 +1188,33 @@ Here is a quick guide to get you started based on the steps we have following wi
 <p></p></li>
 <li>Load libraries (<code>tidyverse</code> and others as needed)
 <p></p></li>
-<li>Read your data in R using the appropriate function (<code>read_csv</code>,<code>read_excel</code>)</li>
+<li>Read your data in R using the function that correspond to your file type (<code>read_csv</code>(),<code>read_excel</code>())
+<p></p></li>
 <li>Take a first look at the data using <code>glimpse()</code>,<code>str()</code>,<code>dim()</code>,<code>nrow()</code>, etc.
 <ol type="a">
 <li>Note the data structure and data types.</li>
-<li>Note the dimension of your dataset, the number of rows and number of columns</li>
+<li>Note the dimension of your dataset, the number of rows and number of columns
+<p></p></li>
 </ol></li>
-<li>Look at the data summary (<code>summary()</code>) and identify if there are any missing data or anything else that looks unusual for some of the variables.</li>
+<li>Look at the data summary (<code>summary()</code>) and identify if there are any missing data or anything else that looks unusual for some of the variables.
+<p></p></li>
 <li>Use some of the functions that we have used below to tidy your data
 <ol type="a">
 <li>Do you need to simplify column names?</li>
 <li>Can you remove some of the columns to form a small dataframe?</li>
 <li>Do you need to created a binary variable coding if some variables are usable or not?</li>
 <li>Do you need to create some new variables (<code>mutate()</code>)?</li>
-<li>Do you need to filter out some of the data (<code>filter()</code>)?</li>
+<li>Do you need to filter out some of the data (<code>filter()</code>)?
+<p></p></li>
 </ol></li>
+<li>Now you can do some summaries using the <code>group_by</code> function if you have grouping variables, and the <code>summarise</code> function.
+<p></p></li>
+<li>Take time to explore a variety of plot types, even if you wouldn’t necessarily use them all, but just to get more experience with the <code>ggplot2</code> syntax and the breath of available types of plots.
+<p></p></li>
+<li>Ask questions! We’re here to help, and if there is something that we have not covered in the workshop material but that you would like to learn how to do, we will be happy to help you out!
+<p></p></li>
 </ol>
+<p>Enjoy!</p>
 </section>
 <section id="useful-cheatsheets" class="level1" data-number="10">
 <h1 data-number="10"><span class="header-section-number">10</span> Useful cheatsheets</h1>
