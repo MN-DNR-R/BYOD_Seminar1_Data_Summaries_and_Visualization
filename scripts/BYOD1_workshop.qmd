@@ -167,6 +167,11 @@ kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
 
 ## Data types (incomplete)
 
+Before doing any analyses in R it is important to recognize the various possible data types. When importing your data into an R session, R will automatically recognize the type of data of each column in a given data frame. At times, however, a specific datatype may need to be set, or converted from one to another. For example, one could use the `as.numeric()` function to convert a column to *numeric*, or `as.character()` to convert to *character*. When doing such data conversion, it is important to note that some elements of a vector may be converted to NAs if R recognizes that it does not correspond to the data type specified. </p>
+
+A good example of this is when a column that should be *numeric* contains characters (e.g., instead of an actual counts one had recorded something like *more then 100 animals*). In this case, this would return an *NA* as R does not know what to do with this information, and neither do we! </p>
+
+Good data entry and data quality check practices is thus very important prior to importing any data in an R session or project.
 
 ```{r data types,eval=T,echo=F,message=F}
 data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),"Exampe"=c("1.5, 2.6","1, 2","True/False","One, Two"))
@@ -176,12 +181,13 @@ kable(data_types, caption = "Data types supported in R") %>%
 
 ```
 
-
 ## Let's first take a look at the data
 
 ```{r eval=F}
 # the glimpse function provides a good first overview of the data. Function "str" produces something similar. 
 glimpse(rawdat)
+
+
 
 # extract column names
 names(rawdat)
