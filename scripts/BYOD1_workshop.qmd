@@ -158,7 +158,7 @@ There are many functions available to explore the data, here is a list of the ma
 
 ```{r useful functions,eval=T,message=F,echo=F}
 
-useful_fct_1 <- data.frame(Function=c("glimpse(...)","str(...)","names(...)","head(...)","tail(...)","nrow(...)","ncol(...)","summary(...)","unique(...)"),Purpose = c("overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", "Succinct summary of all columns of a dataframe; similar to glimpse but within base R","column names","display for n rows of data (default is 6)","displays last n rows of data (default is 6)","number of rows","number of columns","summary of the data in each column","displays unique values of a variable"))
+useful_fct_1 <- data.frame(Function=c("glimpse()","str()","names()","head()","tail()","nrow()","ncol()","summary()","unique()"),Purpose = c("overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", "Succinct summary of all columns of a dataframe; similar to glimpse but within base R","column names","display for n rows of data (default is 6)","displays last n rows of data (default is 6)","number of rows","number of columns","summary of the data in each column","displays unique values of a variable"))
 
 kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -188,7 +188,6 @@ kable(data_types, caption = "Data types supported in R") %>%
 glimpse(rawdat)
 
 
-
 # extract column names
 names(rawdat)
 
@@ -209,7 +208,6 @@ unique(rawdat$`Individual ID`) # How many unique ID's do we have? How many data 
 
 # quick summary of all of the data
 summary(rawdat)
-
 ```
 
 ## Data quality check
@@ -229,7 +227,7 @@ Here are some examples:
 
 We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The `tidyr` packages contains functions for manipulating the data so that we can create a clean, tidy dataset to-be-used for all analyses. </p>
 
-**Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be kept unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original data.  
+**Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be kept unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original data
 
 ## Why is it important to tidy our data?
 
@@ -241,12 +239,16 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 
 ## Introducing pipe operator
 
-Ton increase efficiency, the tidyr library uses pipe operators .... 
+The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, everything time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!</p>
+
+More background on the origin and use of the pipe operator can be found [here](https://www.datacamp.com/tutorial/pipe-r-tutorial).
 
 ## Let's clean-up some of those columns
 
+Now that we've introduced a few basic tidy data concepts and coding tools, we can now start looking at our data more formally. There are many very useful functions to subset dataframes, re-arrange columns, create new columns, etc. Below are the ones you may run into more frequently as you learn to tidy your data in R and with the `tidy` package.   
+
 ```{r useful tidy function,echo=F}
-useful_fct_2<-data.frame(Function=c("filter(...)","select(...)","arrange(...)","mutate(...)"),Purpose=c("keep (or exclude) rows that meet specific criteria","select columns to keep (or to drop)","sort a dataframe based on a column's value (or several columns' values)","add new columns or update existing columns"))
+useful_fct_2<-data.frame(Function=c("filter()","select()","arrange()","mutate()"),Purpose=c("keep (or exclude) rows that meet specific criteria","select columns to keep (or to drop)","sort a dataframe based on a column's value (or several columns' values)","add new columns or update existing columns"))
 
 kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -254,7 +256,6 @@ kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
 ```
 
 ### Formating variable names
-
 
 ```{r create tidy data, eval=F}
 # Let's take a look at the data again
@@ -274,12 +275,11 @@ names(rawdat)<-str_replace_all(names(rawdat)," ","_") # Note: str_replace_all is
 names(rawdat)<-str_replace_all(names(rawdat),"\\(|\\)","")
 ```
 
-
 ### Removing unecessary data, creating variables, and subsetting the dataset
 
 ```{r reduce dataset,eval=F}
 
-# keep only columns of interest
+# keep only columns of interest; we will now create a new clean dataset so that we maintain the raw data unaltered from previous steps, and save all changes and addition into the clean data dataset. 
 cleandat <- rawdat %>% select(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) 
 
 # if you wanted to remove one or severeal column it may be easier to do the following:
@@ -297,6 +297,7 @@ unique(cleandat$species)
 # Create unique record ID
 penguins <- mutate(cleandat, 
                    unique_id = 1:n()) 
+
 ```
 
 ### Assessing usability of data
@@ -308,8 +309,6 @@ If it looks like some records may not be usable based on some criteria, it may b
 unique(cleandat$comments)
 
 ## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.
-
-
 cleandat <-cleandat %>% mutate(usable_adult_data=case_when(comments=="Adult not sampled."~"no",comments=="Adult not sampled. Nest never observed with full clutch."~"no",TRUE~"yes"))
 
 # We can now filter-out that comment column as it will no longer be necessary for our work. 
@@ -343,26 +342,29 @@ cleandat<-cleandat %>% mutate(weight_class = case_when(is.na(body_mass_g)~"unkno
 head(cleandat)
 ```
 
+## Formatting calendar dates and times 
 
+### Below are some useful functions for handling dates and times in R
 
-
-## Formatting dates and times 
-
-### Below are some useful functions for dealing with dates and times
+The package `lubridate`, which is part of the `tidyverse` collection of packages, contains many useful functions to format and manipulate date and time variables.  Some functions (e.g., `as.Date()`) are part of base R, while others are part of the lubridate packages. 
 
 ```{r useful date time functions,echo=F,eval=F}
-useful_fct_3<-data.frame(Function=c("as_date(...)"),Purpose=c("format date ....))
+useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
-
 ```
 
-### To illustrate this, let's first add a "time" variable to our dataset
+[Here](https://www.neonscience.org/resources/learning-hub/tutorials/dc-convert-date-time-posix-r) you can find a useful tutorial that explores and presents some of these functions. 
 
-The time variable will be in seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in our toolbox!
+### Let's first add a "time" variable to our dataset
+
+The time variable will be in total number of seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in your toolbox!</p>
+
+The code that we will type next is only used to generate a time variable. Don't worry too much about the specifics of the code since this is not something that you would have to do if you were receiving data that already contains a date and a time column. This is only done to illustrate how to work with both dates and times, since our original penguin data only contains dates.  
 
 ```{r eval=F}
+# Let's generate random times; this is only for illustrative purposes!!
 
 # Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)
 min_start_time <- 9*60*60 # 6 am in seconds from midnight
@@ -375,6 +377,12 @@ full_time_sequence <- seq(min_start_time, max_end_time, 10*60)
 cleandat <- cleandat %>% mutate(time_sec=sample(full_time_sequence,n(),replace=TRUE)) 
 
 ```
+
+We have now generated a new variable `time_sec` which reflects the time of day in seconds from the starting point 00:00:00. We will learn below how to re-format those times so that they are in the appropriate time zone. </p>
+
+*Note*: Time zones are important in R!!! If not specified, the dates and times will be assigned the time zone of your computer system, which may be misleading if the data was collected somewhere completely different (e.g., penguins in Antartica!).</p>
+
+*Exercise*: Check what time zone your computer is set at using the `Sys.time()` function.  
 
 ### Formatting dates and times
 
