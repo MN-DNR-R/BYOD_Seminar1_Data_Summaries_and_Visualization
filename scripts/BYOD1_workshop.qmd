@@ -72,7 +72,7 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying-up their data in R, creating summaries, and generating publication-quality figures. If time allows we could also explore simple statistical models during the practice section of the workshop. </p>
 
-Throughout this workshop will use the syntax of the `tidyr` package, which offers an efficient way of coding and building complexity in data manipulation steps in an organized and structured way. 
+Throughout this workshop we will use the syntax of the `tidyr` package, which offers an efficient way of coding and building complexity in data manipulation steps in an organized and structured way. 
 
 The content presented in this document was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). We encourage all participants to  take a look at the material generously shared by MDH on that link, and watch some of the instructional videos.    
 
@@ -174,7 +174,7 @@ A good example of this is when a column that should be *numeric* contains charac
 Good data entry and data quality check practices is thus very important prior to importing any data in an R session or project.
 
 ```{r data types,eval=T,echo=F,message=F}
-data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character"),"Exampe"=c("1.5, 2.6","1, 2","True/False","One, Two"))
+data_types <- data.frame(Type=c("Numeric","Integer","Logical","Character","Factor"),"Example"=c("1.5, 2.6","1, 2","True/False","One, Two","low, medium, high"))
 
 kable(data_types, caption = "Data types supported in R") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -241,7 +241,14 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 
 ## Introducing pipe operator
 
-Ton increase efficiency, the tidyr library uses pipe operators .... 
+R uses many different operators which includes symbols such as <- and = along with typical arithmetic (+, -, *, /, ^) and relational (<, >, <=, >=, == ,!=) symbols. Too increase efficiency, the tidyr library uses symbols called pipe operators (%>%). These allow you to string together functions to run sequentially, moving left to right, kind of like a data assembly line. It helps keep the data tidy by creating new versions of your dataset, while keeping the original version. These pipe operators also tend to be more computationally efficient than base R, leading to quicker processing times, especially for large datasets.
+```{r eval=F}
+#Edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected
+
+torg <- rawdat %>% filter(Island == "Torgersen") %>% arrange('Date Egg')
+
+
+```
 
 ## Let's clean-up some of those columns
 
@@ -678,8 +685,40 @@ labs(title="Island comparision of the relationship between flipper length and bo
 facet_wrap(~island)
 ```
 
+## Interactive plots
 
+The plotly package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the ggplotly() function which adds these tools to ggplots. This can be very useful for exploring data.
 
+```{r eval=F}
+#Install and load the plotly package
+install.package("plotly")
+library(plotly)
+
+#There are two ways to run the ggplotly() function
+
+#First simply wrap the ggplotly() function around the chain of functions used to make a ggplot
+ggplotly(
+  ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+)
+
+#The other is to name the chain of functions and wrap that named object in the ggplotly() function
+fliplen_bodmass_plot = ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+
+ggplotly(fliplen_bodmass_plot)
+
+```
 
 ## Exporting datasets in nice format for publication
 
