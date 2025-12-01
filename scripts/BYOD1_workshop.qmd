@@ -304,6 +304,15 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 ## Introducing pipe operator
 
 The `tidyr` syntax uses the *pipe* operator `%>%` or `|>`, which provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
+R uses many different operators which includes symbols such as <- and = along with typical arithmetic (+, -, *, /, ^) and relational (<, >, <=, >=, == ,!=) symbols. Too increase efficiency, the tidyr library uses symbols called pipe operators (%>%). These allow you to string together functions to run sequentially, moving left to right, kind of like a data assembly line. It helps keep the data tidy by creating new versions of your dataset, while keeping the original version. These pipe operators also tend to be more computationally efficient than base R, leading to quicker processing times, especially for large datasets.
+```{r eval=F}
+#Edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected
+
+torg <- rawdat %>% filter(Island == "Torgersen") %>% arrange('Date Egg')
+
+
+```
+The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
 
 </p>
 
@@ -774,6 +783,41 @@ labs(title="Island comparision of the relationship between flipper length and bo
   scale_colour_brewer(type="qual",palette=3)+
   geom_smooth(method="lm",se=FALSE)+ # se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.
 facet_wrap(~island)
+```
+
+## Interactive plots
+
+The plotly package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the ggplotly() function which adds these tools to ggplots. This can be very useful for exploring data.
+
+```{r eval=F}
+#Install and load the plotly package
+install.package("plotly")
+library(plotly)
+
+#There are two ways to run the ggplotly() function
+
+#First simply wrap the ggplotly() function around the chain of functions used to make a ggplot
+ggplotly(
+  ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+)
+
+#The other is to name the chain of functions and wrap that named object in the ggplotly() function
+fliplen_bodmass_plot = ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+
+ggplotly(fliplen_bodmass_plot)
+
 ```
 
 ## Exporting datasets in nice format for publication
