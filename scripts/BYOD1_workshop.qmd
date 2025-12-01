@@ -619,7 +619,7 @@ For each of these elements, you can find a detailed description on the [ggplot2 
 
 Recall the penguin dataset and how the data is structured.
 
-```{r,eval=T}
+```{r,eval=F}
 glimpse(cleandat)
 ```
 
@@ -787,7 +787,7 @@ facet_wrap(~island)
 
 ## Interactive plots
 
-The plotly package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the ggplotly() function which adds these tools to ggplots. This can be very useful for exploring data.
+The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the `ggplotly()` function which adds these tools to `ggplots`. This can be very useful for exploring data.
 
 ```{r eval=F}
 #Install and load the plotly package
