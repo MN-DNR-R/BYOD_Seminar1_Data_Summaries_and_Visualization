@@ -305,7 +305,7 @@ Using R and R scripts ensures that the original dataset is kept, and that all da
 
 ## Introducing pipe operator
 
-The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, everything time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
+The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
 
 </p>
 
