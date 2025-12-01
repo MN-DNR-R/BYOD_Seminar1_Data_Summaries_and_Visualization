@@ -143,7 +143,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#two-variables-figures" id="toc-two-variables-figures" class="nav-link" data-scroll-target="#two-variables-figures"><span class="header-section-number">7.4</span> Two-variables figures</a></li>
   <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets"><span class="header-section-number">7.5</span> Facets!</a></li>
   <li><a href="#customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc." id="toc-customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc." class="nav-link" data-scroll-target="#customizing-plot-options-incomplete-need-to-add-text-modif-and-point-size-etc."><span class="header-section-number">7.6</span> Customizing plot options (incomplete, need to add text modif and point size, etc.)</a></li>
-  <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">7.7</span> Exporting datasets in nice format for publication</a></li>
+  <li><a href="#interactive-plots" id="toc-interactive-plots" class="nav-link" data-scroll-target="#interactive-plots"><span class="header-section-number">7.7</span> Interactive plots</a></li>
+  <li><a href="#exporting-datasets-in-nice-format-for-publication" id="toc-exporting-datasets-in-nice-format-for-publication" class="nav-link" data-scroll-target="#exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">7.8</span> Exporting datasets in nice format for publication</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
   <li><a href="#your-turn-to-experiment" id="toc-your-turn-to-experiment" class="nav-link" data-scroll-target="#your-turn-to-experiment"><span class="header-section-number">9</span> Your turn to experiment!</a></li>
@@ -720,7 +721,13 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 </section>
 <section id="introducing-pipe-operator" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="introducing-pipe-operator"><span class="header-section-number">5.4</span> Introducing pipe operator</h2>
-<p>The <code>tidyr</code> syntax uses the <em>pipe</em> operator <code>%&gt;%</code> or <code>|&gt;</code>, which provides a way to efficiently chain functions together in a single statement. It is similar to saying: let’s take this data, <em>and then</em> do this with it, <em>and then</em> do this, etc. So ultimately, every time that you see or use <code>%&gt;%</code> in a script, you can think of it as being the same as if you were reading or coding <em>and then…</em>!</p>
+<p>The <code>tidyr</code> syntax uses the <em>pipe</em> operator <code>%&gt;%</code> or <code>|&gt;</code>, which provides a way to efficiently chain functions together in a single statement. It is similar to saying: let’s take this data, <em>and then</em> do this with it, <em>and then</em> do this, etc. So ultimately, every time that you see or use <code>%&gt;%</code> in a script, you can think of it as being the same as if you were reading or coding <em>and then…</em>! R uses many different operators which includes symbols such as &lt;- and = along with typical arithmetic (+, -, *, /, ^) and relational (&lt;, &gt;, &lt;=, &gt;=, == ,!=) symbols. Too increase efficiency, the tidyr library uses symbols called pipe operators (%&gt;%). These allow you to string together functions to run sequentially, moving left to right, kind of like a data assembly line. It helps keep the data tidy by creating new versions of your dataset, while keeping the original version. These pipe operators also tend to be more computationally efficient than base R, leading to quicker processing times, especially for large datasets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>torg <span class="ot">&lt;-</span> rawdat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Island <span class="sc">==</span> <span class="st">"Torgersen"</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">'Date Egg'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <em>pipe</em> operator <code>%&gt;%</code> or <code>|&gt;</code> provides a way to efficiently chain functions together in a single statement. It is similar to saying: let’s take this data, <em>and then</em> do this with it, <em>and then</em> do this, etc. So ultimately, every time that you see or use <code>%&gt;%</code> in a script, you can think of it as being the same as if you were reading or coding <em>and then…</em>!</p>
 <p></p>
 <p>More background on the origin and use of the pipe operator can be found <a href="https://www.datacamp.com/tutorial/pipe-r-tutorial">here</a>.</p>
 </section>
@@ -761,58 +768,58 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 <section id="formating-variable-names" class="level3" data-number="5.5.1">
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="formating-variable-names"><span class="header-section-number">5.5.1</span> Formating variable names</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's take a look at the data again</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdat)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># lower column names</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">tolower</span>(<span class="fu">names</span>(rawdat))</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># replace spaces; spaces in variable names are just slightly more complicated to code and it is much simpler not to have any spaces at all</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">" "</span>,<span class="st">"_"</span>) <span class="co"># Note: str_replace_all is part of the stringr package, automatically loaded when we load tidyverse, but it could be loaded individually as well.</span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># further modify column names for simplicity</span></span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">"</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's take a look at the data again</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdat)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># lower column names</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">tolower</span>(<span class="fu">names</span>(rawdat))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># replace spaces; spaces in variable names are just slightly more complicated to code and it is much simpler not to have any spaces at all</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">" "</span>,<span class="st">"_"</span>) <span class="co"># Note: str_replace_all is part of the stringr package, automatically loaded when we load tidyverse, but it could be loaded individually as well.</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co"># further modify column names for simplicity</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rawdat)<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(<span class="fu">names</span>(rawdat),<span class="st">"</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="removing-unecessary-data-creating-variables-and-subsetting-the-dataset" class="level3" data-number="5.5.2">
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="removing-unecessary-data-creating-variables-and-subsetting-the-dataset"><span class="header-section-number">5.5.2</span> Removing unecessary data, creating variables, and subsetting the dataset</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only columns of interest; we will now create a new clean dataset so that we maintain the raw data unaltered from previous steps, and save all changes and addition into the clean data dataset. </span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> rawdat <span class="sc">%&gt;%</span> <span class="fu">select</span>(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># if you wanted to remove one or several column it may be easier to do the following:</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>stage <span class="sc">&amp;</span> <span class="sc">!</span>region) </span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove scientific names in species</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis adeliae</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis papua</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis antarctica</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create unique record ID</span></span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">mutate</span>(cleandat, </span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only columns of interest; we will now create a new clean dataset so that we maintain the raw data unaltered from previous steps, and save all changes and addition into the clean data dataset. </span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> rawdat <span class="sc">%&gt;%</span> <span class="fu">select</span>(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># if you wanted to remove one or several column it may be easier to do the following:</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>stage <span class="sc">&amp;</span> <span class="sc">!</span>region) </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove scientific names in species</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis adeliae</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis papua</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">str_replace</span>(cleandat<span class="sc">$</span>species,<span class="st">" </span><span class="sc">\\</span><span class="st">(Pygoscelis antarctica</span><span class="sc">\\</span><span class="st">)"</span>,<span class="st">""</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>species)</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create unique record ID</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">mutate</span>(cleandat, </span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="assessing-usability-of-data" class="level3" data-number="5.5.3">
 <h3 data-number="5.5.3" class="anchored" data-anchor-id="assessing-usability-of-data"><span class="header-section-number">5.5.3</span> Assessing usability of data</h3>
 <p>If it looks like some records may not be usable based on some criteria, it may be a good idea to create an indicator variable (yes/no) that identifies which record may not be usable for analysis. If needed, we can do this using the <code>mutate</code> and <code>case_when</code> functions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's look at the comments to assess if some data may not be usable for analysis.  </span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>comments)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">usable_adult_data=</span><span class="fu">case_when</span>(comments<span class="sc">==</span><span class="st">"Adult not sampled."</span><span class="sc">~</span><span class="st">"no"</span>,comments<span class="sc">==</span><span class="st">"Adult not sampled. Nest never observed with full clutch."</span><span class="sc">~</span><span class="st">"no"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"yes"</span>))</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's look at the comments to assess if some data may not be usable for analysis.  </span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(cleandat<span class="sc">$</span>comments)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">usable_adult_data=</span><span class="fu">case_when</span>(comments<span class="sc">==</span><span class="st">"Adult not sampled."</span><span class="sc">~</span><span class="st">"no"</span>,comments<span class="sc">==</span><span class="st">"Adult not sampled. Nest never observed with full clutch."</span><span class="sc">~</span><span class="st">"no"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"yes"</span>))</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now filter-out that comment column as it will no longer be necessary for our work. </span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>comments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <span style="color:red;"><strong>Note</strong></span>: While in this example the number of unique comments to look through was relatively small and we could easily decide which ones to use for coding the “usable” columns as “yes” or “no”, in real life it is very impractical and not advised to store any critical information in a general free-form “comments” column, especially if that information pertains to the quality or usability of the data. The best practice is to maintain a metadata spreadsheet that contains all of the sampling information for a given sampling point, including comments, but that would also contain a column with a “yes” or a “no” value so that the analyst can quickly filter data without having to weed through long comments or make decisions on what they may mean. Just something to keep in mind!
 <p></p>
@@ -822,24 +829,24 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 <h3 data-number="5.5.4" class="anchored" data-anchor-id="creating-new-variables"><span class="header-section-number">5.5.4</span> Creating new variables</h3>
 <p>We’re getting close to having a dataset that will be easier to use for analysis! Now let’s say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the <code>mutate()</code> and <code>case_when()</code> functions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create a culmen to body mass index</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">body_mass_kg=</span>body_mass_g<span class="sc">/</span><span class="dv">1000</span>,<span class="at">culmen_bodymass_index=</span><span class="fu">round</span>(culmen_length_mm<span class="sc">/</span>body_mass_kg,<span class="dv">2</span>))</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Assign flipper length category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. </span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Oups!! We forgot to check if we had NAs in the data before converting to a group!</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(cleandat,<span class="fu">is.na</span>(flipper_length_mm))</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Let's correct that mistake and re-create the groups while accounting for NAs first.</span></span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(flipper_length_mm)<span class="sc">~</span><span class="st">"unknown"</span>,flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Using that same logic, let's create another group based on weight class, and let's make sure that we do not assign a class to missing data. </span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">weight_class =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(body_mass_g)<span class="sc">~</span><span class="st">"unknown"</span>,body_mass_g<span class="sc">&lt;=</span><span class="dv">3500</span><span class="sc">~</span><span class="st">"small"</span>,body_mass_g<span class="sc">&lt;</span><span class="dv">4300</span><span class="sc">~</span><span class="st">"medium"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"large"</span>))</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create a culmen to body mass index</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">body_mass_kg=</span>body_mass_g<span class="sc">/</span><span class="dv">1000</span>,<span class="at">culmen_bodymass_index=</span><span class="fu">round</span>(culmen_length_mm<span class="sc">/</span>body_mass_kg,<span class="dv">2</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Assign flipper length category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. </span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Oups!! We forgot to check if we had NAs in the data before converting to a group!</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(cleandat,<span class="fu">is.na</span>(flipper_length_mm))</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Let's correct that mistake and re-create the groups while accounting for NAs first.</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">flipper_group =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(flipper_length_mm)<span class="sc">~</span><span class="st">"unknown"</span>,flipper_length_mm <span class="sc">&gt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">"big flips"</span>,<span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small flips"</span> ))</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Using that same logic, let's create another group based on weight class, and let's make sure that we do not assign a class to missing data. </span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>cleandat<span class="ot">&lt;-</span>cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">weight_class =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(body_mass_g)<span class="sc">~</span><span class="st">"unknown"</span>,body_mass_g<span class="sc">&lt;=</span><span class="dv">3500</span><span class="sc">~</span><span class="st">"small"</span>,body_mass_g<span class="sc">&lt;</span><span class="dv">4300</span><span class="sc">~</span><span class="st">"medium"</span>,<span class="cn">TRUE</span><span class="sc">~</span><span class="st">"large"</span>))</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -856,17 +863,17 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <p></p>
 <p>The code that we will type next is only used to generate a time variable. Don’t worry too much about the specifics of the code since this is not something that you would have to do if you were receiving data that already contains both a <em>date</em> and a <em>time</em> column. This is only done to illustrate how to work with both dates and times, since our original penguin data only contains dates.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's generate random times; this is only for illustrative purposes!!</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>min_start_time <span class="ot">&lt;-</span> <span class="dv">9</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 am in seconds from midnight</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>max_end_time <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 pm in seconds from midnight</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a sequence of all possible timestamps within the range, e.g., by 10 minute segments</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>full_time_sequence <span class="ot">&lt;-</span> <span class="fu">seq</span>(min_start_time, max_end_time, <span class="dv">10</span><span class="sc">*</span><span class="dv">60</span>)</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># For each record, sample a random number from the full time sequence created above</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">time_sec=</span><span class="fu">sample</span>(full_time_sequence,<span class="fu">n</span>(),<span class="at">replace=</span><span class="cn">TRUE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's generate random times; this is only for illustrative purposes!!</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>min_start_time <span class="ot">&lt;-</span> <span class="dv">9</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 am in seconds from midnight</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>max_end_time <span class="ot">&lt;-</span> <span class="dv">21</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span> <span class="co"># 6 pm in seconds from midnight</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a sequence of all possible timestamps within the range, e.g., by 10 minute segments</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>full_time_sequence <span class="ot">&lt;-</span> <span class="fu">seq</span>(min_start_time, max_end_time, <span class="dv">10</span><span class="sc">*</span><span class="dv">60</span>)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># For each record, sample a random number from the full time sequence created above</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">time_sec=</span><span class="fu">sample</span>(full_time_sequence,<span class="fu">n</span>(),<span class="at">replace=</span><span class="cn">TRUE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We have now generated a new variable <code>time_sec</code> which reflects the time of day in seconds from the starting point 00:00:00. We will learn below how to re-format those times so that they are in the appropriate time zone.</p>
 <p></p>
@@ -877,31 +884,31 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <section id="formatting-dates-and-times" class="level3" data-number="5.6.3">
 <h3 data-number="5.6.3" class="anchored" data-anchor-id="formatting-dates-and-times"><span class="header-section-number">5.6.3</span> Formatting dates and times</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first set date as a date</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date=</span><span class="fu">as_date</span>(date_egg))</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a date and time variable. Note that although the Palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  </span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc=</span><span class="fu">as.POSIXct</span>(<span class="fu">paste</span>(<span class="fu">as_date</span>(date_egg,<span class="at">format=</span><span class="st">"%Y-%m-%d"</span>),<span class="st">"00:00:00"</span>,<span class="at">format=</span><span class="st">"%Y-%m-%d %H:%M:%S"</span>),<span class="at">tz=</span><span class="st">"UTC"</span>)<span class="sc">+</span>time_sec)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to proper time zone UTC-03                                    </span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc03=</span><span class="fu">as.POSIXct</span>(<span class="fu">format</span>(date_time_utc,<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>),<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>))</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                                    </span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first set date as a date</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date=</span><span class="fu">as_date</span>(date_egg))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a date and time variable. Note that although the Palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  </span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc=</span><span class="fu">as.POSIXct</span>(<span class="fu">paste</span>(<span class="fu">as_date</span>(date_egg,<span class="at">format=</span><span class="st">"%Y-%m-%d"</span>),<span class="st">"00:00:00"</span>,<span class="at">format=</span><span class="st">"%Y-%m-%d %H:%M:%S"</span>),<span class="at">tz=</span><span class="st">"UTC"</span>)<span class="sc">+</span>time_sec)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to proper time zone UTC-03                                    </span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date_time_utc03=</span><span class="fu">as.POSIXct</span>(<span class="fu">format</span>(date_time_utc,<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>),<span class="at">tz=</span><span class="st">"Etc/GMT+3"</span>))</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                                    </span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="extracting-information-from-a-date-and-time-object" class="level3" data-number="5.6.4">
 <h3 data-number="5.6.4" class="anchored" data-anchor-id="extracting-information-from-a-date-and-time-object"><span class="header-section-number">5.6.4</span> Extracting information from a date and time object</h3>
 <p>Now that we’ve formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., <code>hour()</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study year</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">year</span>(cleandat<span class="sc">$</span>date_time_utc03)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the mutate function to create a year column in the cleandat dataframe</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">year</span>(date_time_utc03)) </span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a few minutes to experiment with some of these. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study year</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">year</span>(cleandat<span class="sc">$</span>date_time_utc03)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the mutate function to create a year column in the cleandat dataframe</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">year</span>(date_time_utc03)) </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a few minutes to experiment with some of these. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><em>Exercise</em>: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., <code>hour()</code>)? What happens if you run <code>as_date()</code> on a date and time POSIXct object?</p>
 </section>
@@ -917,19 +924,19 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <section id="removing-unusable-and-unecessary-data-to-create-our-working-dataset" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="removing-unusable-and-unecessary-data-to-create-our-working-dataset"><span class="header-section-number">6.1</span> Removing unusable and unecessary data to create our “working” dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># taking a look at the data</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering out the unusable records</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(usable_adult_data<span class="sc">!=</span><span class="st">"no"</span>) <span class="co"># using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># cleandat contains columns which for simplicity we may want to remove</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>usable_adult_data <span class="sc">&amp;</span> <span class="sc">!</span>time_sec <span class="sc">&amp;</span> <span class="sc">!</span>date <span class="sc">&amp;</span> <span class="sc">!</span>date_time_utc)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat) <span class="co"># Much better!!!</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's save our cleaned dataset</span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="st">"data/clean_peanguindat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># taking a look at the data</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering out the unusable records</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(usable_adult_data<span class="sc">!=</span><span class="st">"no"</span>) <span class="co"># using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># cleandat contains columns which for simplicity we may want to remove</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>cleandat <span class="ot">&lt;-</span> cleandat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>usable_adult_data <span class="sc">&amp;</span> <span class="sc">!</span>time_sec <span class="sc">&amp;</span> <span class="sc">!</span>date <span class="sc">&amp;</span> <span class="sc">!</span>date_time_utc)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat) <span class="co"># Much better!!!</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's save our cleaned dataset</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cleandat,<span class="st">"data/clean_peanguindat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s compare flipper length and body mass across species. The <code>group_by</code> function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The <code>summarise</code> function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the <code>group_by</code> function.</p>
 <p></p>
@@ -938,9 +945,9 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <h3 data-number="6.1.1" class="anchored" data-anchor-id="summarizing-flipper-lengths"><span class="header-section-number">6.1.1</span> Summarizing flipper lengths</h3>
 <p>Let’s first illustrate the <code>tidyr</code> syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the <code>&lt;-</code> syntax, e.g., <code>flipper_lt_summary &lt;- cleandat %&gt;% ...</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cleandat <span class="sc">%&gt;%</span> </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min_flipper_length=</span><span class="fu">mean</span>(flipper_length_mm,<span class="at">na.rm=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>cleandat <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min_flipper_length=</span><span class="fu">mean</span>(flipper_length_mm,<span class="at">na.rm=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Summarizing means only may not be the most satisfying if one wanted to compare the means across species. We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.</p>
 <div class="cell">
@@ -997,11 +1004,11 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <p></p>
 <p>But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the <code>mutate</code> function to add that measure to the summary table previously created.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>flipper_length_summary <span class="ot">&lt;-</span> flipper_length_summary <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">se_flipper_length =</span> sd_flipper_length<span class="sc">/</span><span class="fu">sqrt</span>(N))</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(flipper_length_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>flipper_length_summary <span class="ot">&lt;-</span> flipper_length_summary <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">se_flipper_length =</span> sd_flipper_length<span class="sc">/</span><span class="fu">sqrt</span>(N))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(flipper_length_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -1130,25 +1137,7 @@ The time variable will be in total number of seconds from 00:00:00. We will lear
 <h2 data-number="7.3" class="anchored" data-anchor-id="one-variable-figures"><span class="header-section-number">7.3</span> One-variable figures</h2>
 <p>Recall the penguin dataset and how the data is structured.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 342
-Columns: 14
-$ species               &lt;chr&gt; "Adelie Penguin", "Adelie Penguin", "Adelie Peng…
-$ island                &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgerse…
-$ clutch_completion     &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "…
-$ date_egg              &lt;date&gt; 2007-11-11, 2007-11-11, 2007-11-16, 2007-11-16,…
-$ flipper_length_mm     &lt;dbl&gt; 181, 186, 195, 193, 190, 181, 195, 193, 190, 186…
-$ culmen_length_mm      &lt;dbl&gt; 39.1, 39.5, 40.3, 36.7, 39.3, 38.9, 39.2, 34.1, …
-$ body_mass_g           &lt;dbl&gt; 3750, 3800, 3250, 3450, 3650, 3625, 4675, 3475, …
-$ sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", "FEMALE", "MALE", "F…
-$ body_mass_kg          &lt;dbl&gt; 3.750, 3.800, 3.250, 3.450, 3.650, 3.625, 4.675,…
-$ culmen_bodymass_index &lt;dbl&gt; 10.43, 10.39, 12.40, 10.64, 10.77, 10.73, 8.39, …
-$ flipper_group         &lt;chr&gt; "small flips", "small flips", "small flips", "sm…
-$ weight_class          &lt;chr&gt; "medium", "medium", "small", "small", "medium", …
-$ date_time_utc03       &lt;dttm&gt; 2007-11-11 15:50:00, 2007-11-11 20:30:00, 2007-…
-$ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, …</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleandat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We may want to visualize the number of records that we have for each of the islands. Let’s first set up the basics, or canvas, for our plot and specify the data.</p>
 <div class="cell">
@@ -1156,7 +1145,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1211,7 +1200,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1224,7 +1213,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1237,7 +1226,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1252,7 +1241,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1270,7 +1259,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1286,7 +1275,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1308,7 +1297,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1324,7 +1313,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1341,7 +1330,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1365,7 +1354,7 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1387,23 +1376,56 @@ $ year                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="BYOD1_workshop_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="exporting-datasets-in-nice-format-for-publication" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">7.7</span> Exporting datasets in nice format for publication</h2>
+<section id="interactive-plots" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="interactive-plots"><span class="header-section-number">7.7</span> Interactive plots</h2>
+<p>The <code>plotly</code> package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the <code>ggplotly()</code> function which adds these tools to <code>ggplots</code>. This can be very useful for exploring data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install and load the plotly package</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.package</span>(<span class="st">"plotly"</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="co">#There are two ways to run the ggplotly() function</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="co">#First simply wrap the ggplotly() function around the chain of functions used to make a ggplot</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>)</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a><span class="co">#The other is to name the chain of functions and wrap that named object in the ggplotly() function</span></span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>fliplen_bodmass_plot <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data=</span>cleandat)<span class="sc">+</span></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>body_mass_g,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species)<span class="sc">+</span> </span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="co"># type of graph</span></span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between flipper length and body mass by species"</span>,<span class="at">x=</span><span class="st">"Body mass (g)"</span>,<span class="at">y=</span><span class="st">"Flipper length (mm)"</span>,<span class="at">colour=</span><span class="st">"Species"</span>)<span class="sc">+</span> <span class="co">#Customizing labels</span></span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="co"># remove grey background</span></span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type=</span><span class="st">"qual"</span>,<span class="at">palette=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>)</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(fliplen_bodmass_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exporting-datasets-in-nice-format-for-publication" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="exporting-datasets-in-nice-format-for-publication"><span class="header-section-number">7.8</span> Exporting datasets in nice format for publication</h2>
 <p>One of the easiest way to save and export plots is to use the <code>ggsave</code> function. Use the <code>?ggsave</code> to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously-displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include <code>dpi=...</code>, <code>width=...</code> and <code>height=...</code> for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.</p>
 <p></p>
 <p>Let’s save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image. Often it is by trial and errors that you will find the best format for your specific situation!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># To remind yourself of the current working directory. Plots will be saved in that directory unless specified otherwise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># To remind yourself of the current working directory. Plots will be saved in that directory unless specified otherwise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "C:/Users/vestloui/OneDrive - State of Minnesota - MN365/Documents/Teaching/BYOD Series/BYOD_Seminar1_Data_Summaries_and_Visualization/scripts"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"../outputs/penguins_data_exploration.jpg"</span>,<span class="at">plot=</span><span class="fu">last_plot</span>(),<span class="at">dpi=</span><span class="dv">300</span>,<span class="at">height=</span><span class="dv">5</span>,<span class="at">width=</span><span class="dv">7</span>,<span class="at">units =</span> <span class="st">"in"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"../outputs/penguins_data_exploration.jpg"</span>,<span class="at">plot=</span><span class="fu">last_plot</span>(),<span class="at">dpi=</span><span class="dv">300</span>,<span class="at">height=</span><span class="dv">5</span>,<span class="at">width=</span><span class="dv">7</span>,<span class="at">units =</span> <span class="st">"in"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
