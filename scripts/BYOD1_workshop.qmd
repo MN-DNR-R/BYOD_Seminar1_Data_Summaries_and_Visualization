@@ -70,9 +70,9 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 The goal of this workshop is to provide the tools and hands-on experience necessary so that participants are comfortable importing and tidying up their data in R, creating summaries, and generating publication-quality figures. If time allows we could also explore simple statistical models during the practice section of the workshop.
 
-Throughout this workshop will use the syntax of the `tidyverse` group of packages, which offers an efficient way of coding and building complexity in data manipulation steps in an organized and structured way.  
+Throughout this workshop we will use the syntax of the `tidyverse` group of packages, which offers an efficient way of coding and building complexity in data manipulation steps in an organized and structured way.  
 
-The content presented in this document was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). We encourage all participants to take a look at the material generously shared by MDH on that link, and watch some of the instructional videos.
+The content presented in this document was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). We encourage all participants to take a look at the material generously shared by MDH by following that link; it contains excellent instructional videos and coding examples.
 
 # Setting-up our work space
 
