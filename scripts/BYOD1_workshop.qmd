@@ -117,6 +117,7 @@ Let's load packages!
 ```{r load-packages}
 #| eval: true
 #| warning: false
+#| output: false
 
 # load packages in the tidyverse (e.g., readr, readxl, tidyr)
 library(tidyverse) 
@@ -168,6 +169,7 @@ You also can read more about the package here: [PalmerPenguins](https://allisonh
 #| eval: true
 #| warning: false
 #| message: false
+#| output: false
 
 # install package (delete the '#' to run the line and use the '#' after you've installed the package)
 # install.packages("palmerpenguins")
@@ -365,13 +367,13 @@ rawdat2 <- rawdat %>%
   rename_with(.fn = str_to_lower) %>% 
   rename_with(.fn = ~str_replace_all(.x, " ", "_")) %>% 
   rename_with(.fn = ~str_replace_all(.x, "/", "_")) %>% 
-  rename_with(.fn = ~str_replace_all(.x, "\\(|\\)", ""))
+  rename_with(.fn = ~str_remove_all(.x, "\\(|\\)"))
 
 # look at new names
 names(rawdat2)
 ```
 
-The functions str_to_lower() and str_replace_all() are part of the `stringr` package, automatically loaded when we load tidyverse, but it could be loaded individually as well. The function rename_with() is like rename(), but allows you to use fuunctions within it. Use rename() if you want to do a one-to-one change in column names.
+The functions `str_to_lower()` and `str_replace_all()` are part of the `stringr` package, automatically loaded when we load tidyverse, but it could be loaded individually as well. The function `rename_with()` is like `rename()`, but allows you to use functions within it. Use `rename()` if you want to do a one-to-one change in column names.
 
 
 ## Removing unecessary data
@@ -390,12 +392,14 @@ rawdat2 %>%
 # use select to remove columns (an alternative approach)
 # remove observations (rows) missing flipper length
 cleandat1 <- rawdat2 %>% 
-  select(species, region, island, stage, clutch_completion, date_egg, 
-         flipper_length_mm, culmen_length_mm, body_mass_g,sex, comments) %>% 
+  select(individual_id, species, region, island, stage, clutch_completion, 
+         date_egg, flipper_length_mm, culmen_length_mm, body_mass_g,sex, 
+         comments) %>% 
   select(!stage & !region) %>% 
   filter(!is.na(flipper_length_mm))
 
 ```
+
 
 ## Modifying variables
 
@@ -469,7 +473,7 @@ cleandat4 <- cleandat3 %>%
 
 ```
 
-**Note:** The round() function may not work as you expect. See the help file for how it rounds off at 5. If you'd like a different approach, you can use the round_half_up() or round_to_fraction() functions in the `janitor` package.
+**Note:** The `round()` function may not work as you expect. See the help file for how it rounds off at 5. If you'd like a different approach, you can use the `round_half_up()` or `round_to_fraction()` functions in the `janitor` package.
 
 ## Formatting calendar dates and times
 
@@ -478,7 +482,16 @@ The package `lubridate`, which is part of the `tidyverse` collection of packages
 ```{r useful-date}
 #| echo: false
 
-useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("Format date and time as POSIXct object","Format object as a date","Extract year from POSIXct object","Extract month from POSIXct object","Extract hour from POSIXct object"))
+useful_fct_3<-data.frame(Function = c("as.POSIXct()",
+                                      "as_date() or as.Date()",
+                                      "year()",
+                                      "month()",
+                                      "hour()"),
+                         Purpose = c("Format date and time as POSIXct object",
+                                     "Format object as a date",
+                                     "Extract year from POSIXct object",
+                                     "Extract month from POSIXct object",
+                                     "Extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -547,6 +560,7 @@ Now that we've formatted our date and time variable as POSIXct project with the 
 
 ```{r extract-time}
 #| eval: true
+#| output: false
 
 # study year
 year(cleandat6$date_time_utc03)
@@ -557,7 +571,37 @@ cleandat7 <- cleandat6 %>%
 
 ```
 
-**Exercise:** Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., hour())? What happens if you run as_date() on a date and time POSIXct object?
+**Exercise:** Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., `hour()`)? What happens if you run `as_date()` on a date and time POSIXct object?
+
+## Long and wide data
+
+One of the principles of tidy data is for it to be "long" (i.e., each observation has a row). However, it may make sense to collect data in a "wide" format. There may also be calculations that are easier to do in a wide format. The "pivot_" functions allow us to move between long and wide formats.
+
+```{r pivot}
+#| eval: false
+
+
+# make body mass wide by year
+widedat <- cleandat7 %>% 
+  select(individual_id, body_mass_kg, year) %>% 
+  pivot_wider(names_from = year,
+              values_from = body_mass_kg,
+              names_prefix = "year_")
+
+# look at new dataset
+widedat
+
+# convert it back to long
+longdat <- widedat %>% 
+  pivot_longer(cols = starts_with("year_"),
+               names_to = "year",
+               values_to = "body_mass_kg",
+               names_prefix = "year_")
+
+# look at new dataset
+longdat
+
+```
 
 ## Saving data
 
@@ -571,13 +615,13 @@ write_csv(cleandat7, "data/clean_penguindat.csv")
 
 ```
 
-If we want to import the data into a script, we can use the read_csv() function, as demonstrated above.
+If we want to import the data into a script, we can use the `read_csv()` function, as demonstrated above.
 
 # Creating data summaries
 
-Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The group_by() and summarise() (or summarize(), same function, different spelling) functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. We will summarize the penguin data to illustrate what can be done with these two functions. 
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The `group_by()` and `summarise()` (or `summarize()`, same function, different spelling) functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. We will summarize the penguin data to illustrate what can be done with these two functions. 
 
-Let's compare flipper length and body mass across species. The group_by() function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The summarise() function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the group_by() function.
+Let's compare flipper length and body mass across species. The `group_by()` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarise()` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by()` function.
 
 **Note**: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.
 
@@ -621,9 +665,9 @@ flipper_length_summary
 
 ```
 
-Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions that we can calculate within the summarise() function.
+Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions that we can calculate within the `summarise()` function.
 
-But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the mutate() function to add that measure to the summary table previously created.
+But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the `mutate()` function to add that measure to the summary table previously created.
 
 **Note:** Another way to print output is to put parentheses around it
 
@@ -641,7 +685,7 @@ But wait, we forgot to calculate the standard error which is a metric that we ma
 
 **Exercise**: Let's say that we want to summarize flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables.
 
-**Hint**: the grouping variables can be added within the group_by() function separated by a comma. You can use the names() or glimpse() function to remember the name of the different variables available to use.
+**Hint**: the grouping variables can be added within the `group_by()` function separated by a comma. You can use the `names()` or `glimpse()` function to remember the name of the different variables available to use.
 
 # Data visualization
 
@@ -793,7 +837,7 @@ ggplot(data = cleandat) +
 
 This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. 
 
-An additional thing that we can do is adjust the color. We can use the function scale_fill_brewer() to pick a different color scheme. The available color palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tool offers an opportunity to select only colors that are colorblind safe or printer friendly, among other things.
+An additional thing that we can do is adjust the color. We can use the function `scale_fill_brewer()` to pick a different color scheme. The available color palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tool offers an opportunity to select only colors that are colorblind safe or printer friendly, among other things.
 
 ```{r plot-colors}
 #| eval: true
@@ -810,7 +854,7 @@ ggplot(data = cleandat) +
 
 ```
 
-Often it is more desirable to look at bars that aren't stacked but that are side-by-side. The *position* of the bars can be adjusted with the geom_bar() function. Let's add this to our figure above since it looks so nice already!
+Often it is more desirable to look at bars that aren't stacked but that are side-by-side. The *position* of the bars can be adjusted with the `geom_bar()` function. Let's add this to our figure above since it looks so nice already!
 
 ```{r side-bars}
 #| eval: true
@@ -835,7 +879,7 @@ As you can see, the options are limitless!
 
 In most instances we want to show relationships between two variables, sometimes we also want to show how that relationship varies across groups. We will demonstrate this with the penguin dataset by building a figure of the relationship between penguins flipper length and body mass.
 
-We've already seen how to build a figure from the basic level (data only) to a nice figure with labels, titles, and better colors, so we can go ahead and build a nice scatterplot right away. The geometry to use in that instance will be geom_point() instead of geom_bar(). Here will have a **X** and a **Y** variable to pass to the aes() function.
+We've already seen how to build a figure from the basic level (data only) to a nice figure with labels, titles, and better colors, so we can go ahead and build a nice scatterplot right away. The geometry to use in that instance will be `geom_point()` instead of `geom_bar()`. Here will have a **X** and a **Y** variable to pass to the `aes()` function.
 
 ```{r scatterplot}
 #| eval: true
@@ -867,7 +911,7 @@ ggplot(data = cleandat)+
 
 ```
 
-Interesting! Intuitively our eyes are trying to draw regression lines through the cloud of points. It is possible to add these lines on the figure using the geom_smooth() function.
+Interesting! Intuitively our eyes are trying to draw regression lines through the cloud of points. It is possible to add these lines on the figure using the `geom_smooth()` function.
 
 ```{r plot-regression}
 #| eval: true
@@ -885,7 +929,7 @@ ggplot(data = cleandat) +
 
 ```
 
-**Note:** se = TRUE would show confidence limits based on the standard error. The color follows the same as the cloud of points because it's in the initial aes and does not need to be added again here. If you specify the color within geom_point() or geom_smooth() using aes(), it will only apply to that layer.
+**Note:** se = TRUE would show confidence limits based on the standard error. The color follows the same as the cloud of points because it's in the initial aes and does not need to be added again here. If you specify the color within `geom_point()` or `geom_smooth()` using aes(), it will only apply to that layer.
 
 If you would like you can take a moment to play with other variables and make additional figures. Also note that this is a pretty clean dataset and straight regression lines seem to fit pretty well. This isn't always the case, however, and the figures do not replace thorough statistical tests and models!
 
@@ -893,7 +937,7 @@ If you would like you can take a moment to play with other variables and make ad
 
 ## Facets!
 
-At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using *facets* we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use facet_wrap() function as below.
+At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using *facets* we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use `facet_wrap()` function as below.
 
 ```{r facets}
 #| eval: true
@@ -912,11 +956,11 @@ ggplot(data = cleandat) +
 
 ```
 
-**Exercise**: Try adding the `scales="free"` argument within the facet_wrap() and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?
+**Exercise**: Try adding `scales="free"` argument within `facet_wrap()` and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?
 
 ## Interactive plots
 
-The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the ggplotly() function which adds these tools to ggplots. This can be very useful for exploring data.
+The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the `ggplotly()` function which adds these tools to ggplots. This can be very useful for exploring data.
 
 ```{r plotly-start}
 #| eval: true
@@ -928,7 +972,7 @@ library(plotly)
 
 ```
 
-There are two ways to run the ggplotly() function. First, simply wrap the ggplotly() function around the chain of functions used to make a ggplot.
+There are two ways to run the `ggplotly()` function. First, simply wrap the `ggplotly()` function around the chain of functions used to make a ggplot.
 
 ```{r plotly-wrap}
 #| eval: true
@@ -948,10 +992,11 @@ ggplotly(
 
 ```
 
-The other is to name the chain of functions and wrap that named object in the ggplotly() function
+The other is to name the chain of functions and wrap that named object in the `ggplotly()` function
 
 ```{r plotly-name}
 #| eval: true
+#| output: false
 
 fliplen_bodmass_plot <-  ggplot(data = cleandat) +
   aes(x = body_mass_g, y = flipper_length_mm, color = species) +   
@@ -970,7 +1015,7 @@ ggplotly(fliplen_bodmass_plot)
 
 ## Exporting plots for publication
 
-One of the easiest way to save and export plots is to use the ggsave() function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.
+One of the easiest way to save and export plots is to use the `ggsave()` function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.
 
 Let's save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image. Often it is by trial and errors that you will find the best format for your specific situation!
 
@@ -1021,10 +1066,16 @@ Enjoy!
 
 [tidyr](https://rstudio.github.io/cheatsheets/tidyr.pdf)
 
+[lubridate](https://rstudio.github.io/cheatsheets/lubridate.pdf)
+
+[stringr](https://rstudio.github.io/cheatsheets/strings.pdf)
+
+[more cheatsheets!](https://posit.co/resources/cheatsheets/)
+
 # Additional resources
 
 [More on tidy data](https://tidyr.tidyverse.org/articles/tidy-data.html)
 
 [More on ggplot2](https://ggplot2.tidyverse.org/)
 
-[Key principes of effective data visualization](https://www.sciencedirect.com/science/article/pii/S2666389920301896)
+[dplyr for Gen Z](https://hadley.github.io/genzplyr/)
