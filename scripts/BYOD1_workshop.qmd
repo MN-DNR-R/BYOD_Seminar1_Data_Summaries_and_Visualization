@@ -195,7 +195,7 @@ There are many functions available to explore the data. Here is a list of the ma
 #| echo: false
 
 useful_fct_1 <- data.frame(Function = c("glimpse()", "str()", "names()", "head()", "tail()"," nrow()", "ncol()", "summary()", "unique()"),
-                           Purpose = c("Overview of dataframe rows, columns, column names, daraframe dimension, and a glimpse of first values", 
+                           Purpose = c("Overview of dataframe rows, columns, column names, dataframe dimension, and a glimpse of first values", 
                                        "Succinct summary of all columns of a dataframe; similar to glimpse but within base R",
                                        "Column names",
                                        "Display first n rows of data (default is 6)",
@@ -214,9 +214,9 @@ kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
 
 Before doing any data manipulation in R, it is important to recognize the different data types. When importing your data into R, R will automatically recognize the type of data of each column. At times, however, a specific data type may need to be set or converted from one to another. 
 
-For example, one could use the `as.numeric()` function to convert a column to *numeric*, or `as.character()` to convert to *character*. When doing such data conversion, it is important to note that some elements of a vector may be converted to NAs if R recognizes that it does not correspond to the data type specified.
+For example, one could use the `as.numeric()` function to convert a column to *numeric*, or `as.character()` to convert to *character*. When doing such data conversions, it is important to note that some elements of a vector may be converted to NAs if R recognizes that it does not correspond to the data type specified.
 
-A good example of this is when a column that should be *numeric* contains characters (e.g., instead of an actual counts one had recorded something like "more then 100 animals"). In this case, this would return an "NA" as R does not know what to do with this information! Good data entry and quality checks prior to importing data into R are very important  to help prevent data loss.
+A good example of this is when a column that should be *numeric* contains characters (e.g., instead of an actual count one had recorded something like "more then 100 animals"). In this case, this would return an "NA" as R does not know what to do with this information! Good data entry and quality checks prior to importing data into R are very important to help prevent data loss.
 
 With a *factor* data type, you can specify the order of variables, such as "low", "medium", "high". This defined order can then make data visualizations and analyses more intuitive.
 
@@ -370,12 +370,12 @@ rawdat2 <- rawdat %>%
 names(rawdat2)
 ```
 
-The functions str_to_lower() and str_replace_all() are part of the `stringr` package, automatically loaded when we load tidyverse, but it could be loaded individually as well. The function rename_with() is like rename(), but allows you to use fuunctions within it. Use rename() if you want to do a one-to-one change in column names.
+The functions str_to_lower() and str_replace_all() are part of the `stringr` package, automatically loaded when we load tidyverse, but it could be loaded individually as well. The function rename_with() is like rename(), but allows you to use functions within it. Use rename() if you want to do a one-to-one change in column names.
 
 
 ## Removing unecessary data
 
-To simplify the dataset, let's remove columns and rows we don't need. We will now rename the dataset as "cleandat" so that we maintain the raw data unaltered, and save all changes and addition into the clean data dataset. The columns we select will correspond to the analyses we're interested in. If data are missing, we may want to remove those observations from the dataset
+To simplify the dataset, let's remove columns and rows we don't need. We will now rename the dataset as "cleandat" so that we maintain the raw data unaltered, and save all changes and additions into the clean dataset. The columns we select will correspond to the analyses we're interested in. If data are missing, we may want to remove those observations from the dataset.
 
 ```{r reduce-dataset}
 #| eval: true
@@ -445,7 +445,7 @@ At times, though, we can create a `is-the-data-usable (Yes/No)` column based on 
 
 ## Creating new variables
 
-We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` function.
+We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do all three of these things using the `mutate()` function.
 
 ```{r new-variables}
 #| eval: true
@@ -474,7 +474,7 @@ The package `lubridate`, which is part of the `tidyverse` collection of packages
 ```{r useful-date}
 #| echo: false
 
-useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
+useful_fct_3 <- data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -507,7 +507,7 @@ cleandat5$time_sec
 
 We have now generated a new variable `time_sec` which reflects the time of day in seconds from the starting point 00:00:00. We will learn below how to re-format those times so that they are in the appropriate time zone.
 
-*Note*: Time zones are important in R!!! If not specified, the dates and times will be assigned the time zone of your computer system, which may be misleading if the data was collected somewhere completely different (e.g., penguins in Antartica!).
+*Note*: Time zones are important in R!!! If not specified, the dates and times will be assigned the time zone of your computer system, which may be misleading if the data was collected somewhere completely different (e.g., penguins in Antarctica!).
 
 Let's format our new time variable to make it more usable in analyses and visualizations.
 
@@ -537,7 +537,7 @@ cleandat6 %>%
 
 **Note:** From R [help file](https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html) on time zones : "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."
 
-Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., hour(), month(), year()).
+Now that we've formatted our date and time variable as POSIXct object with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., hour(), month(), year()).
 
 ```{r extract-time}
 #| eval: true
@@ -640,7 +640,7 @@ Now that we have a clean dataset and have created useful summaries, we can now t
 
 ## Key data visualization principles
 
-[Rougier et al.](https://doi.org/10.1371/journal.pcbi.1003833) present ten simple rules for better figures in ther 2014 paper:
+[Rougier et al.](https://doi.org/10.1371/journal.pcbi.1003833) present ten simple rules for better figures in their 2014 paper:
 
 1. Know your audience
 2. Identify your message
@@ -672,7 +672,7 @@ ggplot_elements <- data.frame("Element" = c("Basics",
                                             "Statistics",
                                             "Coordinate systems"),
                               "Definition" = c("Data to be mapped",
-                                               "Aesthetics of the graph such as X and Y (if more then one variable),grouping variables, or colours or shape",
+                                               "Aesthetics of the graph such as X and Y (if more then one variable), grouping variables, or colours or shape",
                                                "Defines the type of plot",
                                                "Axis and legend labels",
                                                "Define the appearance of the plot",
@@ -765,7 +765,7 @@ ggplot(data = cleandat) +
 
 ```
 
-Let's add labels and make the graph look a little bit nice by removing the grey background color. Labels can be added using the `labs()` function, and the theme can be adjusted to change the overall appearance of the figure. Here, we use a black-and-white theme, but there are many available.
+Let's add labels and make the graph look a little bit nicer by removing the grey background color. Labels can be added using the `labs()` function, and the theme can be adjusted to change the overall appearance of the figure. Here, we use a black-and-white theme, but there are many available.
 
 ```{r label-plot}
 #| eval: true
@@ -982,7 +982,7 @@ The goal of this workshop was not to go through each possible data summary tool 
 
 Now you will spend the rest of our time together implementing some of these tools with your own data. But how to get started?!!
 
-Here is a quick guide to get you started based on the steps we have following with the palmer penguins data, but feel free to go on your own as you see fit!
+Here is a quick guide to get you started based on the steps we have followed with the palmer penguins data, but feel free to go on your own as you see fit!
 
 1.  Start a new project and R script.
 2.  Load libraries (`tidyverse` and others as needed)
@@ -993,7 +993,7 @@ Here is a quick guide to get you started based on the steps we have following wi
 5.  Look at the data summary (`summary()`) and identify if there are any missing data or anything else that looks unusual for some of the variables.
 6.  Use some of the functions that we have used below to tidy your data
     a.  Do you need to simplify column names?
-    b.  Can you remove some of the columns to form a small dataframe?
+    b.  Can you remove some of the columns to form a smaller dataframe?
     c.  Do you need to created a binary variable coding if some variables are usable or not?
     d.  Do you need to create some new variables (`mutate()`)?
     e.  Do you need to filter out some of the data (`filter()`)?
