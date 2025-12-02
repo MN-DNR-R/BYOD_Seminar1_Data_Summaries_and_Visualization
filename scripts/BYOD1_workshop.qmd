@@ -236,7 +236,7 @@ kable(data_types, caption = "Data types supported in R") %>%
 Let's use the functions from the function description table above to examine what is contained in our dataset.
 
 ```{r examine-data}
-#| eval: true
+#| eval: false
 
 # the glimpse function provides a good first overview of the data
 glimpse(rawdat)
@@ -277,7 +277,7 @@ Here are some examples:
 1.  names in the Species column are long
 2.  the Sex and Stage columns are characters, but they would be more useful as factors  
 
-Can you think of any others?  
+**Exercise:** Can you think of any others?  
 
 # Tidying your data
 
@@ -333,11 +333,11 @@ useful_fct_2<-data.frame(Function=c("filter()",
                                     "arrange()",
                                     "mutate()",
                                     "rename()"),
-                         Purpose=c("keep (or exclude) rows that meet specific criteria",
-                                   "select columns to keep (or to drop)",
-                                   "sort a dataframe based on a column's value (or several columns' values)",
-                                   "add new columns or update existing columns",
-                                   "rename columns"))
+                         Purpose=c("Keep (or exclude) rows that meet specific criteria",
+                                   "Select columns to keep (or to drop)",
+                                   "Sort a dataframe based on a column's value (or several columns' values)",
+                                   "Add new columns or update existing columns",
+                                   "Rename columns"))
 
 kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -350,6 +350,7 @@ Some of the column names are difficult to work with because they have spaces and
 
 ```{r column-names}
 #| eval: true
+#| output: false
 
 # look at the column names
 head(rawdat)
@@ -379,6 +380,7 @@ To simplify the dataset, let's remove columns and rows we don't need. We will no
 
 ```{r reduce-dataset}
 #| eval: true
+#| output: false
 
 # let's see whether all the observations have flipper length
 rawdat2 %>% 
@@ -401,6 +403,7 @@ Often, variables that are characters need to be formatted to make them easier to
 
 ```{r modify-variables}
 #| eval: true
+#| output: false
 
 # look at species names
 unique(cleandat1$species)
@@ -422,6 +425,7 @@ If it looks like some records may not be usable based on some criteria, it may b
 
 ```{r usability}
 #| eval: true
+#| output: false
 
 # look at the comments to assess if some data may not be usable for analysis  
 unique(cleandat2$comments)
@@ -474,7 +478,7 @@ The package `lubridate`, which is part of the `tidyverse` collection of packages
 ```{r useful-date}
 #| echo: false
 
-useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
+useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("Format date and time as POSIXct object","Format object as a date","Extract year from POSIXct object","Extract month from POSIXct object","Extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -488,6 +492,7 @@ The code that we will type next is only used to generate a time variable. Don't 
 
 ```{r generate-time}
 #| eval: true
+#| output: false
 
 # define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)
 start_time <- 9*60*60 # 9 am in seconds from midnight
@@ -513,6 +518,7 @@ Let's format our new time variable to make it more usable in analyses and visual
 
 ```{r format-time}
 #| eval: true
+#| output: false
 
 # check the timezone of your computer
 Sys.time()
@@ -551,7 +557,7 @@ cleandat7 <- cleandat6 %>%
 
 ```
 
-*Exercise*: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., hour())? What happens if you run as_date() on a date and time POSIXct object?
+**Exercise:** Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., hour())? What happens if you run as_date() on a date and time POSIXct object?
 
 ## Saving data
 
@@ -577,6 +583,7 @@ Let's compare flipper length and body mass across species. The group_by() functi
 
 ```{r summarize}
 #| eval: true
+#| output: false
 
 # remind ourselves what's in our dataset
 glimpse(cleandat7)
@@ -599,6 +606,7 @@ We can combine several functions in the same statement to get a more complete su
 
 ```{r summary-table}
 #| eval: true
+#| output: false
 
 flipper_length_summary <- cleandat7 %>% 
   group_by(species) %>% 
@@ -621,6 +629,7 @@ But wait, we forgot to calculate the standard error which is a metric that we ma
 
 ```{r summary-mutate}
 #| eval: true
+#| output: false
 
 # add standard error column
 (flipper_length_summary2 <- flipper_length_summary %>% 
@@ -693,6 +702,7 @@ We'll start with our cleaned dataset, but let's save it to a final name, cleanda
 
 ```{r data-glimpse}
 #| eval: true
+#| output: false
 
 # save final dataset with consistent name
 cleandat <- cleandat7
