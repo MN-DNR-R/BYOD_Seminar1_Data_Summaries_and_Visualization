@@ -13,6 +13,9 @@ format:
     toc: true
     mainfont: Calibri
     monofont: Aptos Mono
+project:
+  type: website
+  output-dir: docs
 ---
 
 ```{r fonts}
