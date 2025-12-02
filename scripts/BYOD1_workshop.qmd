@@ -192,8 +192,6 @@ rawdat <- penguins_raw
 There are many functions available to explore the data. Here is a list of the main ones that we will be using in this workshop.
 
 ```{r useful-functions}
-#| eval: true
-#| warning: false
 #| echo: false
 
 useful_fct_1 <- data.frame(Function = c("glimpse()", "str()", "names()", "head()", "tail()"," nrow()", "ncol()", "summary()", "unique()"),
@@ -223,8 +221,6 @@ A good example of this is when a column that should be *numeric* contains charac
 With a *factor* data type, you can specify the order of variables, such as "low", "medium", "high". This defined order can then make data visualizations and analyses more intuitive.
 
 ```{r data-types}
-#| eval: true
-#| warning: false
 #| echo: false
 
 data_types <- data.frame(Type = c("Numeric", "Integer", "Logical", "Character", "Factor"),
@@ -291,101 +287,155 @@ We refer to "tidy data" as a dataset where each column is a variable, each row i
 
 **Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original data
 
-## Why is it important to tidy our data?
+**Why is it important to tidy our data?**
 
 Taking time to tidy a dataset ensures that the data summaries, analyses, or visualizations we produce represent "true" data values to the best of our knowledge (e.g., no wrongly assigned values, missing data, or data entry errors). It is a the first and most critical step of any data analysis, and though it can be a lengthy process, it is worth the effort.
 
-## Why tidy data in R?
+**Why tidy data in R?**
 
-Using R and R scripts ensures that the original dataset is kept unaltered, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often few to no records of changes made to a dataset.
+Using R ensures that the original dataset is kept unaltered, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often few to no records of changes made to a dataset.
 
-## Introducing pipe operator
+## The pipe operator
 
-The `tidyr` syntax uses the *pipe* operator `%>%` or `|>`, which provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
-R uses many different operators which includes symbols such as <- and = along with typical arithmetic (+, -, *, /, ^) and relational (<, >, <=, >=, == ,!=) symbols. Too increase efficiency, the tidyr library uses symbols called pipe operators (%>%). These allow you to string together functions to run sequentially, moving left to right, kind of like a data assembly line. It helps keep the data tidy by creating new versions of your dataset, while keeping the original version. These pipe operators also tend to be more computationally efficient than base R, leading to quicker processing times, especially for large datasets.
-```{r eval=F}
-#Edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected
+R uses many different operators such as <- and = along with typical arithmetic (+, -, `*`, /, ^) and relational (<, >, <=, >=, == ,!=) symbols. The *pipe* operator (`%>%` or `|>`) provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, kind of like a data assembly line! So ultimately, every time that you see or use `%>%` or `|>` in a script, you can think of it as being the same as if you were reading or coding *and then...*! It is a very useful tool for tidying data.
 
-torg <- rawdat %>% filter(Island == "Torgersen") %>% arrange('Date Egg')
+The operator `|>` is from base R while `%>%` is from the `tidyverse` package `magrittr`. More background on the origin and use of the pipe operator can be found [here](https://www.datacamp.com/tutorial/pipe-r-tutorial).
 
+Let's look at an example of tidying data with and without the pipe operator.
+
+```{r pipe-example}
+#| eval: true
+
+# edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected
+
+# without the pipe operator
+torg1 <- filter(rawdat, Island == "Torgersen")
+torg2 <- arrange(torg1, 'Date Egg')
+
+# with the pipe operator
+torg <- rawdat %>% 
+  filter(Island == "Torgersen") %>% 
+  arrange('Date Egg')
 
 ```
-The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
 
-The operator `|>` is from base R while `%>%` is from the `tidyverse` package `magrittr`.
+## Tidy functions
 
-More background on the origin and use of the pipe operator can be found [here](https://www.datacamp.com/tutorial/pipe-r-tutorial).
+Now that we've introduced a few basic tidy data concepts and tools, we can start tidying our data. There are many very useful functions to subset data, re-arrange columns, create new columns, etc. Below are the ones you may use more frequently as you learn to tidy your data in R and with the `tidyverse` packages.
 
-## Let's clean-up some of those columns
+```{r tidy-functions}
+#| echo: false
 
-Now that we've introduced a few basic tidy data concepts and coding tools, we can now start looking at our data more formally. There are many very useful functions to subset dataframes, re-arrange columns, create new columns, etc. Below are the ones you may run into more frequently as you learn to tidy your data in R and with the `tidyr` package.
-
-```{r useful tidy function,echo=F}
-useful_fct_2<-data.frame(Function=c("filter()","select()","arrange()","mutate()"),Purpose=c("keep (or exclude) rows that meet specific criteria","select columns to keep (or to drop)","sort a dataframe based on a column's value (or several columns' values)","add new columns or update existing columns"))
+useful_fct_2<-data.frame(Function=c("filter()",
+                                    "select()",
+                                    "arrange()",
+                                    "mutate()",
+                                    "summarize()",
+                                    "rename()"),
+                         Purpose=c("keep (or exclude) rows that meet specific criteria",
+                                   "select columns to keep (or to drop)",
+                                   "sort a dataframe based on a column's value (or several columns' values)",
+                                   "add new columns or update existing columns",
+                                   "calculate summary variables for groups",
+                                   "rename columns"))
 
 kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 ```
 
-### Formating variable names
+## Formating column names
 
-```{r create tidy data, eval=F}
-# Let's take a look at the data again
+Some of the column names are difficult to work with because they have spaces and symbols. Let's fix that.
+
+```{r column-names}
+#| eval: true
+
+# look at the column names
 head(rawdat)
 names(rawdat)
 
-# lower column names
-names(rawdat)<-tolower(names(rawdat))
+# let's make the following changes:
+# lowercase names
+# replace spaces with _
+# replace / with _
+# remove parentheses
+rawdat2 <- rawdat %>% 
+  rename_with(.fn = str_to_lower) %>% 
+  rename_with(.fn = ~str_replace_all(.x, " ", "_")) %>% 
+  rename_with(.fn = ~str_replace_all(.x, "/", "_")) %>% 
+  rename_with(.fn = ~str_replace_all(.x, "\\(|\\)", ""))
 
-names(rawdat)
-
-# replace spaces; spaces in variable names are just slightly more complicated to code and it is much simpler not to have any spaces at all
-
-names(rawdat)<-str_replace_all(names(rawdat)," ","_") # Note: str_replace_all is part of the stringr package, automatically loaded when we load tidyverse, but it could be loaded individually as well.
-
-# further modify column names for simplicity
-names(rawdat)<-str_replace_all(names(rawdat),"\\(|\\)","")
+# look at new names
+names(rawdat2)
 ```
 
-### Removing unecessary data, creating variables, and subsetting the dataset
+The functions str_to_lower() and str_replace_all() are part of the `stringr` package, automatically loaded when we load tidyverse, but it could be loaded individually as well. The function rename_with() is like rename(), but allows you to use fuunctions within it. Use rename() if you want to do a one-to-one change in column names.
 
-```{r reduce dataset,eval=F}
 
-# keep only columns of interest; we will now create a new clean dataset so that we maintain the raw data unaltered from previous steps, and save all changes and addition into the clean data dataset. 
-cleandat <- rawdat %>% select(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) 
+## Removing unecessary data
 
-# if you wanted to remove one or several column it may be easier to do the following:
-cleandat<- cleandat %>% select(!stage & !region) 
+To simplify the dataset, let's remove columns and rows we don't need. We will now rename the dataset as "cleandat" so that we maintain the raw data unaltered, and save all changes and addition into the clean data dataset. The columns we select will correspond to the analyses we're interested in. If data are missing, we may want to remove those observations from the dataset
 
-# remove scientific names in species
-unique(cleandat$species)
+```{r reduce-dataset}
+#| eval: true
 
-cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis adeliae\\)","")
-cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis papua\\)","")
-cleandat$species<-str_replace(cleandat$species," \\(Pygoscelis antarctica\\)","")
+# let's see whether all the observations have flipper length
+rawdat2 %>% 
+  filter(is.na(flipper_length_mm))
 
-unique(cleandat$species)
-
-# Create unique record ID
-penguins <- mutate(cleandat, 
-                   unique_id = 1:n()) 
+# keep only columns of interest
+# use select to remove columns (an alternative approach)
+# remove observations (rows) missing flipper length
+cleandat <- rawdat2 %>% 
+  select(species, region, island, stage, clutch_completion, date_egg, 
+         flipper_length_mm, culmen_length_mm, body_mass_g,sex, comments) %>% 
+  select(!stage & !region) %>% 
+  filter(!is.na(flipper_length_mm))
 
 ```
 
-### Assessing usability of data
+## Modifying variables
 
-If it looks like some records may not be usable based on some criteria, it may be a good idea to create an indicator variable (yes/no) that identifies which record may not be usable for analysis. If needed, we can do this using the `mutate` and `case_when` functions.
+Often, variables that are characters need to be formatted to make them easier to use for analyses. We'll rename the dataset again to keep the original data saved.
 
-```{r eval=F}
-# Let's look at the comments to assess if some data may not be usable for analysis.  
-unique(cleandat$comments)
+```{r modify-variables}
+#| eval: true
 
-## Create an indicator variable for the "adult not sampled" comments so that we can easilly remove them from future analyses if needed.
-cleandat <-cleandat %>% mutate(usable_adult_data=case_when(comments=="Adult not sampled."~"no",comments=="Adult not sampled. Nest never observed with full clutch."~"no",TRUE~"yes"))
+# look at species names
+unique(cleandat$species)
 
-# We can now filter-out that comment column as it will no longer be necessary for our work. 
-cleandat <- cleandat %>% select(!comments)
+# remove the scientific name
+cleandat2 <- cleandat %>% 
+  mutate(species = str_remove(species, " \\(Pygoscelis adeliae\\)") %>% 
+           str_remove(" \\(Pygoscelis papua\\)") %>% 
+           str_remove(" \\(Pygoscelis antarctica\\)"))
+
+# look at new species names
+unique(cleandat2$species)
+
+```
+
+### Flagging usability of data
+
+If it looks like some records may not be usable based on some criteria, it may be a good idea to create an indicator variable (yes/no) that identifies which record may not be usable for a specific analysis. If needed, we can do this using the `mutate` and `case_when` functions.
+
+```{r usability}
+#| eval: true
+
+# look at the comments to assess if some data may not be usable for analysis  
+unique(cleandat2$comments)
+
+# create an indicator variable for whether the sex variable is usable
+cleandat3 <- cleandat2 %>% 
+  mutate(usable_sex_data = case_when(
+    str_detect(comments, "No blood sample obtained") ~ "no",
+    str_detect(comments, "Sexing primers did not amplify") ~ "no",
+    TRUE ~ "yes"))
+
+# let's see if this flag works
+cleandat3 %>% 
+  distinct(usable_sex_data, sex)
 
 ```
 
@@ -393,39 +443,35 @@ cleandat <- cleandat %>% select(!comments)
 
 At times, though, we can create a `is-the-data-usable (Yes/No)` column based on some variables (but not free-form comments!). For example, if one had sample-site specific `wind`, `precipitation`, `temperature`, `time of day` information, it would be easy to generate a "data quality" variable based on specific sampling conditions (e.g., if wind exceeds this, exclude this data point).
 
-### Creating new variables
+## Creating new variables
 
-We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` and `case_when()` functions.
+We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` function.
 
-```{r eval=F}
+```{r new-variables}
+#| eval: true
 
-## Create a culmen to body mass index
-cleandat <- cleandat %>% mutate(body_mass_kg=body_mass_g/1000,culmen_bodymass_index=round(culmen_length_mm/body_mass_kg,2))
+# create a culmen to body mass index
+# assign a flipper length category
+# create another group based on weight class, and let's make sure that we do not assign a class to missing data
+cleandat4 <- cleandat3 %>% 
+  mutate(body_mass_kg = body_mass_g/1000,
+         culmen_bodymass_index = round(culmen_length_mm/body_mass_kg, 2),
+         flipper_group = if_else(flipper_length_mm > 210, "big flips", 
+                                 "small flips" ),
+         weight_class = case_when(is.na(body_mass_g) ~ "unknown", 
+                                  body_mass_g <= 3500 ~ "small", 
+                                  body_mass_g < 4300 ~ "medium", 
+                                  TRUE ~ "large"))
 
-## Assign flipper length category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. 
-cleandat<-cleandat %>% 
-    mutate(flipper_group = case_when(flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
-
-## Oups!! We forgot to check if we had NAs in the data before converting to a group!
-filter(cleandat,is.na(flipper_length_mm))
-
-## Let's correct that mistake and re-create the groups while accounting for NAs first.
-cleandat<-cleandat %>% 
-    mutate(flipper_group = case_when(is.na(flipper_length_mm)~"unknown",flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
-
-## Using that same logic, let's create another group based on weight class, and let's make sure that we do not assign a class to missing data. 
-cleandat<-cleandat %>% mutate(weight_class = case_when(is.na(body_mass_g)~"unknown",body_mass_g<=3500~"small",body_mass_g<4300~"medium",TRUE~"large"))
-
-head(cleandat)
 ```
+
+**Note:** The round() function may not work as you expect. See the help file for how it rounds off at 5. If you'd like a different approach, you can use the round_half_up() or round_to_fraction() functions in the `janitor` package.
 
 ## Formatting calendar dates and times
 
-### Below are some useful functions for handling dates and times in R
+The package `lubridate`, which is part of the `tidyverse` collection of packages, contains many useful functions to format and manipulate date and time variables. Some functions (e.g., `as.Date()`) are part of base R, while others are part of the `lubridate` package.
 
-The package `lubridate`, which is part of the `tidyverse` collection of packages, contains many useful functions to format and manipulate date and time variables. Some functions (e.g., `as.Date()`) are part of base R, while others are part of the lubridate packages.
-
-```{r useful date time functions,echo=F,eval=F}
+```{r useful-date}
 useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
