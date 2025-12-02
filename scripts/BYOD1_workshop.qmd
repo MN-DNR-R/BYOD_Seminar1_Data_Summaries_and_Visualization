@@ -553,6 +553,20 @@ cleandat7 <- cleandat6 %>%
 
 *Exercise*: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., hour())? What happens if you run as_date() on a date and time POSIXct object?
 
+## Saving data
+
+Now that we've cleaned our data, let's save it to our project. That way, if we want to put down our work and come back later, we can start with clean data and not re-do the steps. We can also give this dataset to collaborators.
+
+```{r write-data}
+#| eval: false
+
+# write to a csv file
+write_csv(cleandat7, "data/clean_penguindat.csv")
+
+```
+
+If we want to import the data into a script, we can use the read_csv() function, as demonstrated above.
+
 # Creating data summaries
 
 Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The group_by() and summarise() (or summarize(), same function, different spelling) functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. We will summarize the penguin data to illustrate what can be done with these two functions. 
@@ -561,7 +575,7 @@ Let's compare flipper length and body mass across species. The group_by() functi
 
 **Note**: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.
 
-```{r, summarize}
+```{r summarize}
 #| eval: true
 
 # remind ourselves what's in our dataset
@@ -583,7 +597,7 @@ cleandat7 %>%
 
 We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.
 
-```{r,summary-table}
+```{r summary-table}
 #| eval: true
 
 flipper_length_summary <- cleandat7 %>% 
@@ -606,6 +620,7 @@ But wait, we forgot to calculate the standard error which is a metric that we ma
 **Note:** Another way to print output is to put parentheses around it
 
 ```{r summary-mutate}
+#| eval: true
 
 # add standard error column
 (flipper_length_summary2 <- flipper_length_summary %>% 
@@ -621,18 +636,50 @@ But wait, we forgot to calculate the standard error which is a metric that we ma
 
 # Data visualization
 
-Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).
+Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R, `ggplot2` provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).
 
-## Key Data Visualization principes (incomplete, need a few items here!)
+## Key data visualization principles
+
+[Rougier et al.](https://doi.org/10.1371/journal.pcbi.1003833) present ten simple rules for better figures in ther 2014 paper:
+
+1. Know your audience
+2. Identify your message
+3. Adapt the figure to support the medium (e.g., presentation, report)
+4. Captions are not optional
+5. Do not trust the defaults
+6. Use color effectively
+7. Do not mislead the reader/viewer
+8. Avoid "chartjunk"
+9. Message > beauty
+10. Get the right tool
+
+R can be the right tool for many data visualizations. Start by thinking about your audience, message, and medium. This can help you decide whether R is a good fit.
 
 ## Main elements of a ggplot figure
 
-Plots in `ggplot` are built as a series of layers sequentially added in an intuitive way. Let's think about how we would graph a figure by hand. First, we would think of the basic component of our figure or in other words the things that we want to represent (i.e., the **data**). We would then think of what specifically we want to represent (i.e., **The Xs, the Ys, etc.**), and how (i.e., **the type of image**). `ggplot` uses this logic to sequentially add complexity and layers to plots with limitless options!\</\>
+Plots in `ggplot` are built as a series of layers sequentially added in an intuitive way. Let's think about how we would graph a figure by hand. First, we would think of the basic component of our figure or in other words the things that we want to represent (i.e., the **data**). We would then think of what specifically we want to represent (i.e., **The Xs, the Ys, etc.**), and how (i.e., **the type of chart**). `ggplot` uses this logic to sequentially add complexity and layers to plots with limitless options!
 
-Below are the main elements of a plot built in ggplot:
+```{r ggplot-elements}
+#| echo: false
 
-```{r elements of ggplot, eval=T,echo=F,message=F}
-ggplot_elements<-data.frame("Element"=c("Basics","Aesthetics","Geometry","Labels and legents","Themes","Scales","Faceting","Statistics","Coordinate systems"),"Definition"=c("Data to be mapped","aesthetics of the graph such as X and Y (if more then one variable),grouping variables, or colours or shape","Defines the type of plot","Axis and legend labels","Define the appearance of the plot","Scales for the X and Y axis","Divides the plot into subplots","Builds new variables (e.g., regression line) to plot","Defines the relationship between X and Y"))
+ggplot_elements <- data.frame("Element" = c("Basics",
+                                            "Aesthetics",
+                                            "Geometry",
+                                            "Labels and legends",
+                                            "Themes",
+                                            "Scales",
+                                            "Faceting",
+                                            "Statistics",
+                                            "Coordinate systems"),
+                              "Definition" = c("Data to be mapped",
+                                               "Aesthetics of the graph such as X and Y (if more then one variable),grouping variables, or colours or shape",
+                                               "Defines the type of plot",
+                                               "Axis and legend labels",
+                                               "Define the appearance of the plot",
+                                               "Scales for the X and Y axis",
+                                               "Divides the plot into subplots",
+                                               "Builds new variables (e.g., regression line) to plot",
+                                               "Defines the relationship between X and Y"))
 
 kable(ggplot_elements, caption = "Elements of a plot done in ggplot") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
@@ -642,94 +689,135 @@ For each of these elements, you can find a detailed description on the [ggplot2 
 
 ## One-variable figures
 
-Recall the penguin dataset and how the data is structured.
+We'll start with our cleaned dataset, but let's save it to a final name, cleandat. That way, if we change the cleaning steps above, we just need to update the number here without changing all of our code for figures.
 
-```{r,eval=F}
+```{r data-glimpse}
+#| eval: true
+
+# save final dataset with consistent name
+cleandat <- cleandat7
+
+# remind ourselves of the dataset
 glimpse(cleandat)
+
 ```
 
 We may want to visualize the number of records that we have for each of the islands. Let's first set up the basics, or canvas, for our plot and specify the data.
 
-```{r eval=T,message=T,echo=T}
-ggplot(data=cleandat)
+```{r base-plot}
+#| eval: true
+
+ggplot(data = cleandat)
 ```
 
-This is pretty much a blank slate on which we can add `aesthetics` (fancy word to mean: what is it that we want to show on our figure?). Let's first take a look at the list of possible `aesthetics`.
+This is pretty much a blank slate on which we can add *aesthetics* (fancy word to mean: what is it that we want to show on our figure?). Let's first take a look at the list of possible *aesthetics*.
 
-```{r, eval=T,message=F,echo=F}
-aes_options <- data.frame("Aesthetics"=c("x =","y =","size =","alpha =", "fill =", "colour =","shape ="),"Description"=c("Variable to be plotted on the X axis","Variable to be plotted on the Y axis","Size of the point, column or line","Transparency of the object","The fill colour of a column area","The colour for points and lines, or the outline colour for columns and areas","The shape of the point when making a scatter plot"))
+```{r aesthetic-table}
+#| echo: false
+
+aes_options <- data.frame("Aesthetics" = c("x",
+                                           "y",
+                                           "size",
+                                           "alpha", 
+                                           "fill", 
+                                           "colour",
+                                           "shape"),
+                          "Description"=c("Variable to be plotted on the X axis",
+                                          "Variable to be plotted on the Y axis",
+                                          "Size of the point, column or line",
+                                          "Transparency of the object",
+                                          "The fill colour of a column area",
+                                          "The colour for points and lines, or the outline colour for columns and areas",
+                                          "The shape of the point when making a scatter plot"))
 
 kable(aes_options, caption = "Options to be passed into the `aes` statement") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-We add different elements to the blank canvas using the **plus** sign. Let's count how many records we have per island in our cleaned dataset. **Island** will thus be on the **x axis**, which is our only variable in this plot.
+We add different elements to the blank canvas using the **plus** sign. Let's count how many records we have per island in our cleaned dataset. **Island** will thus be on the **x-axis**, which is our only variable in this plot.
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+aes(x=island)
+```{r add-x}
+#| eval: true
+
+ggplot(data = cleandat) + 
+  aes(x = island)
 ```
 
-Adding `aes(x=island)` simply added the X axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we can do a barchart, which we specify using one of the available `geometries` as noted on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
+Adding `aes(x = island)` simply added the x-axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we can do a barchart, which we specify using one of the available *geometries* as noted on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+ # blank canvas
-  aes(x=island)+ # define the X axis
+```{r add-geom}
+#| eval: true
+
+ggplot(data = cleandat) + # blank canvas
+  aes(x = island) + # define the X-axis
   geom_bar() # type of graph
+
 ```
 
-We're off to a great start! But this figure could show more information, such as the number of records for each species on each of these islands. Recall the description of the `aesthetics` options,one being **fill** which can indicate the fill colour of the bar based on a categorical variable.
+We're off to a great start! But this figure could show more information, such as the number of records for each species on each of these islands. Recall the description of the *aesthetics* options, one being **fill** which can indicate the fill color of the bar based on a categorical variable.
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+
-  aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
-  geom_bar() # type of graph
+```{r bar-fill}
+#| eval: true
+
+ggplot(data = cleandat) +
+  aes(x = island, fill = species) +
+  geom_bar()
+
 ```
 
-Let's add labels and make the graph look a little bit nice by removing the grey background colour. Labels can be added using the `labs` syntax, and the `theme` can be adjusted to change the overall appearance of the figure.
+Let's add labels and make the graph look a little bit nice by removing the grey background color. Labels can be added using the `labs()` function, and the theme can be adjusted to change the overall appearance of the figure. Here, we use a black-and-white theme, but there are many available.
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+
-  aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
-  geom_bar()+ # type of graph
-labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
-  theme_bw() # remove grey background
+```{r label-plot}
+#| eval: true
+
+ggplot(data = cleandat) +
+  aes(x = island, fill= species) +
+  geom_bar() +
+  labs(title = "Penguin species per island",
+       x = "Island",
+       y = "Number of penguins",
+       fill = "Species") + # "fill="Species" will change the legend title for the fill aesthetics 
+  theme_bw()
+
 ```
 
 This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. 
 
-</p>
+An additional thing that we can do is adjust the color. We can use the function scale_fill_brewer() to pick a different color scheme. The available color palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tool offers an opportunity to select only colors that are colorblind safe or printer friendly, among other things.
 
-An additional thing that we can do is adjust the colour. We can use the function `scale_fill_brewer` to pick a different colour scheme. The available colour palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tools offers an opportunity to select only colours that are colorblind safe or printer friendly, among other things.
+```{r plot-colors}
+#| eval: true
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+
-  aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
-  geom_bar()+ # type of graph
-labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
-  theme_bw()+ # remove grey background
-scale_fill_brewer(type="qual",palette=3)
+ggplot(data = cleandat) +
+  aes(x = island, fill= species) +
+  geom_bar() +
+  labs(title = "Penguin species per island",
+       x = "Island",
+       y = "Number of penguins",
+       fill = "Species") + 
+  theme_bw() + 
+  scale_fill_brewer(type = "qual", palette = 3)
+
 ```
 
-Often it is more desirable to look at bars that aren't stacked but that are side-by-side. The `position` of the bars can be adjusted within the `geom_bar()` statement. Let's add this to our figure above (since it looks so nice already!) with a simple addition withih the parentheses of `geom_bar()`.
+Often it is more desirable to look at bars that aren't stacked but that are side-by-side. The *position* of the bars can be adjusted with the geom_bar() function. Let's add this to our figure above since it looks so nice already!
 
-```{r eval=T,echo=T,message=F}
-ggplot(data=cleandat)+
-  aes(x=island, fill=species)+ # species will be in colour, island will be on the X axis
-  geom_bar(position=position_dodge(preserve="single"))+ # type of graph
-labs(title="Distribution of penguin species per island in the Palmer penguins clean dataset",x="Island",y="Number of penguins",fill="Species")+ #Customizing labels; "fill="Species" will change the legend title for the fill aesthetics 
-  theme_bw()+ # remove grey background
-scale_fill_brewer(type="qual",palette=3)
+```{r side-bars}
+#| eval: true
+
+ggplot(data = cleandat) +
+  aes(x = island, fill= species) +
+  geom_bar(position = position_dodge(preserve = "single")) +
+  labs(title = "Penguin species per island",
+       x = "Island",
+       y = "Number of penguins",
+       fill = "Species") + 
+  theme_bw() + 
+  scale_fill_brewer(type = "qual", palette = 3)
+
 ```
 
-**Exercise**: Now it is your turn to play with single-variable plots! Refer to the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf) and try making a histogram of the penguins body weights to see how the weights are distributed across the dataset overall. In a second time, add complexity to this figure by visualizing how the distribution of body weight varies across species! Hint: if the species-specific bars are overlapping, you can add transparency using the `alpha` statement within the geometry function.
-
-```{r,eval=F,echo=F,message=F}
-ggplot(data=cleandat)+
-  aes(x=body_mass_g, fill=species)+ # species will be in colour, island will be on the X axis
-  geom_histogram(alpha=0.65)+
-  scale_fill_brewer(type="qual",palette=3)+
-  theme_bw()
-```
+**Exercise**: Now it is your turn to play with single-variable plots! Refer to the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf) and try making a histogram of the penguins body weights to see how the weights are distributed across the dataset overall. Then, add complexity to this figure by visualizing how the distribution of body weight varies across species! Hint: if the species-specific bars are overlapping, you can add transparency using the alpha aesthetic within the geometry function.
 
 As you can see, the options are limitless!
 
@@ -737,126 +825,151 @@ As you can see, the options are limitless!
 
 In most instances we want to show relationships between two variables, sometimes we also want to show how that relationship varies across groups. We will demonstrate this with the penguin dataset by building a figure of the relationship between penguins flipper length and body mass.
 
-</p>
+We've already seen how to build a figure from the basic level (data only) to a nice figure with labels, titles, and better colors, so we can go ahead and build a nice scatterplot right away. The geometry to use in that instance will be geom_point() instead of geom_bar(). Here will have a **X** and a **Y** variable to pass to the aes() function.
 
-We've already seen how to build a figure from the basic level (data only) to a nice figure with labels, titles, and better colours, so we can go ahead and build a nice scatterplot right away. The geometry to use in that instance will be `geom_point()` instead of `geom_bar()`. Here will have a **X** and a **Y** variable to pass to the `aes()` function.
+```{r scatterplot}
+#| eval: true
 
-```{r }
-ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm)+ 
-  geom_point()+ # type of graph
-labs(title="Relationship between flipper length and body mass",x="Body mass (g)",y="Flipper length (mm)")+ #Customizing labels
-  theme_bw() # remove grey background
+ggplot(data = cleandat)+
+  aes(x = body_mass_g, y = flipper_length_mm) + 
+  geom_point() +
+  labs(title = "Relationship between flipper length and body mass",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)") +
+  theme_bw()
+
 ```
 
-Above we see the relationship using the full dataset (i.e., all species across all islands). We could follow a similar approach as above to show how that relationship varies across species. We could use different colours and/or different shapes to highly species-specific patterns. Let's experiment with this and use the same colour palette as above!
+Above we see the relationship using the full dataset (i.e., all species across all islands). We could follow a similar approach as above to show how that relationship varies across species. We could use different colors and/or different shapes to highly species-specific patterns. Let's experiment with this and use the same colour palette as above!
 
-```{r,echo=T,message=F,warning=FALSE}
-ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Species-specific relationship between flipper length and body mass",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)
+```{r scatterplot-colors}
+#| eval: true
+
+ggplot(data = cleandat)+
+  aes(x = body_mass_g, y = flipper_length_mm, color = species) + 
+  geom_point() +
+  labs(title = "Relationship between flipper length and body mass",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)",
+       color = "Species") +
+  theme_bw() +
+  scale_colour_brewer(type = "qual", palette = 3)
+
 ```
 
-Interesting! Intuitively our eyes are trying to draw regression lines through the cloud of points. It is possible to add these lines on the figure using the `geom_smooth` function.
+Interesting! Intuitively our eyes are trying to draw regression lines through the cloud of points. It is possible to add these lines on the figure using the geom_smooth() function.
 
-```{r,echo=T,message=F,warning=FALSE}
-ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)+
-  geom_smooth(method="lm",se=FALSE) # se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.
+```{r plot-regression}
+#| eval: true
+
+ggplot(data = cleandat) +
+  aes(x = body_mass_g, y = flipper_length_mm, color = species) + 
+  geom_point() +
+  labs(title = "Relationship between flipper length and body mass",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)",
+       color = "Species") +
+  theme_bw() +
+  scale_colour_brewer(type ="qual", palette = 3) +
+  geom_smooth(method = "lm", se = FALSE, formula = 'y ~ x') 
+
 ```
+
+**Note:** se = TRUE would show confidence limits based on the standard error. The color follows the same as the cloud of points because it's in the initial aes and does not need to be added again here. If you specify the color within geom_point() or geom_smooth() using aes(), it will only apply to that layer.
 
 If you would like you can take a moment to play with other variables and make additional figures. Also note that this is a pretty clean dataset and straight regression lines seem to fit pretty well. This isn't always the case, however, and the figures do not replace thorough statistical tests and models!
 
-</p>
-
-**Exercise**: Repeat the same figure as above but show `species` as different colours and `islands` as different shapes. What do you notice?
+**Exercise**: Repeat the same figure as above but show `species` as different colors and `islands` as different shapes. What do you notice?
 
 ## Facets!
 
-At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using `facets` we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use `facet_wrap()` function as below.
+At times we may want to display complex information for several categories simultaneously, and adding all of that complexity to one graph leads to figures that can be difficult to interpret. Using *facets* we can display the same figure in different panels based on the values of a categorical variable. For example, instead of using different shapes for the different islands, we could use facet_wrap() function as below.
 
-```{r,echo=T,message=F,warning=FALSE}
-ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Island comparision of the relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)+
-  geom_smooth(method="lm",se=FALSE)+ # se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.
-facet_wrap(~island)
+```{r facets}
+#| eval: true
+
+ggplot(data = cleandat) +
+  aes(x = body_mass_g, y = flipper_length_mm, color = species) +   
+  geom_point() +
+  labs(title="Island comparision of flipper length and body mass by species",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)",
+       color = "Species") + 
+  theme_bw() +
+  scale_colour_brewer(type = "qual", palette = 3) +
+  geom_smooth(method = "lm", se = FALSE, formula = 'y ~ x') +
+  facet_wrap(~island)
+
 ```
 
-**Exercise**: Try adding the `scales="free"` argument within `the` facet_wrap() and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?
-
-</p>
-
-## Customizing plot options (incomplete, need to add text modif and point size, etc.)
-
-```{r,echo=T,message=F,warning=FALSE}
-ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Island comparision of the relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)+
-  geom_smooth(method="lm",se=FALSE)+ # se=T would show confidence limits based on the standard error. The colour follows the same as the cloud of points and does not need to be added again here.
-facet_wrap(~island)
-```
+**Exercise**: Try adding the `scales="free"` argument within the facet_wrap() and see what happens. Would this be a useful figure if the purpose was to compare the different islands? Are there cases where it would be useful?
 
 ## Interactive plots
 
-The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the `ggplotly()` function which adds these tools to `ggplots`. This can be very useful for exploring data.
+The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the ggplotly() function which adds these tools to ggplots. This can be very useful for exploring data.
 
-```{r eval=F}
-#Install and load the plotly package
-install.package("plotly")
+```{r plotly-start}
+#| eval: true
+#| warning: false
+
+# install and load the plotly package
+# install.package("plotly") # delete the '#' to install
 library(plotly)
 
-#There are two ways to run the ggplotly() function
+```
 
-#First simply wrap the ggplotly() function around the chain of functions used to make a ggplot
+There are two ways to run the ggplotly() function. First, simply wrap the ggplotly() function around the chain of functions used to make a ggplot.
+
+```{r plotly-wrap}
+#| eval: true
+
 ggplotly(
-  ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)+
-  geom_smooth(method="lm",se=FALSE)
+  ggplot(data = cleandat) +
+  aes(x = body_mass_g, y = flipper_length_mm, color = species) +   
+  geom_point() +
+  labs(title="Island comparision of flipper length and body mass by species",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)",
+       color = "Species") + 
+  theme_bw() +
+  scale_colour_brewer(type = "qual", palette = 3) +
+  geom_smooth(method = "lm", se = FALSE, formula = 'y ~ x')
 )
 
-#The other is to name the chain of functions and wrap that named object in the ggplotly() function
-fliplen_bodmass_plot = ggplot(data=cleandat)+
-  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
-  geom_point()+ # type of graph
-labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
-  theme_bw()+ # remove grey background
-  scale_colour_brewer(type="qual",palette=3)+
-  geom_smooth(method="lm",se=FALSE)
+```
+
+The other is to name the chain of functions and wrap that named object in the ggplotly() function
+
+```{r plotly-name}
+#| eval: true
+
+fliplen_bodmass_plot <-  ggplot(data = cleandat) +
+  aes(x = body_mass_g, y = flipper_length_mm, color = species) +   
+  geom_point() +
+  labs(title="Island comparision of flipper length and body mass by species",
+       x = "Body mass (g)",
+       y = "Flipper length (mm)",
+       color = "Species") + 
+  theme_bw() +
+  scale_colour_brewer(type = "qual", palette = 3) +
+  geom_smooth(method = "lm", se = FALSE, formula = 'y ~ x')
 
 ggplotly(fliplen_bodmass_plot)
 
 ```
 
-## Exporting datasets in nice format for publication
+## Exporting plots for publication
 
-One of the easiest way to save and export plots is to use the `ggsave` function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously-displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.
-
-</p>
+One of the easiest way to save and export plots is to use the ggsave() function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.
 
 Let's save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image. Often it is by trial and errors that you will find the best format for your specific situation!
 
-```{r,echo=T,message=F,warning=FALSE}
-getwd() # To remind yourself of the current working directory. Plots will be saved in that directory unless specified otherwise
+```{r ggsave}
+#| eval: false
 
-ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,height=5,width=7,units = "in") 
+ggsave("outputs/penguins_data_exploration.jpg",
+       plot = fliplen_bodmass_plot,
+       dpi = 300, height = 5, width = 7, units = "in") 
 
 ```
 
@@ -864,7 +977,6 @@ ggsave("../outputs/penguins_data_exploration.jpg",plot=last_plot(),dpi=300,heigh
 
 The goal of this workshop was not to go through each possible data summary tool or plot example, but rather to use a simple dataset to demonstrate some of the main tools that can be used for tidying data in R, and demonstrate with a few examples the structure of the ggplot syntax. There are plenty of resources available to expand on the material presented here, and we hope that as a participants you will feel it easier to continue exploring and applying these tools in to tackle your data analysis tasks!
 
-</p>
 
 # Your turn to experiment!
 
@@ -872,57 +984,22 @@ Now you will spend the rest of our time together implementing some of these tool
 
 Here is a quick guide to get you started based on the steps we have following with the palmer penguins data, but feel free to go on your own as you see fit!
 
-</p>
-
 1.  Start a new project and R script.
-
-    </p>
-
 2.  Load libraries (`tidyverse` and others as needed)
-
-    </p>
-
 3.  Read your data in R using the function that correspond to your file type (`read_csv`(),`read_excel`())
-
-    </p>
-
 4.  Take a first look at the data using `glimpse()`,`str()`,`dim()`,`nrow()`, etc.
-
     a.  Note the data structure and data types.
-
     b.  Note the dimension of your dataset, the number of rows and number of columns
-
-        </p>
-
 5.  Look at the data summary (`summary()`) and identify if there are any missing data or anything else that looks unusual for some of the variables.
-
-    </p>
-
 6.  Use some of the functions that we have used below to tidy your data
-
     a.  Do you need to simplify column names?
-
     b.  Can you remove some of the columns to form a small dataframe?
-
     c.  Do you need to created a binary variable coding if some variables are usable or not?
-
     d.  Do you need to create some new variables (`mutate()`)?
-
     e.  Do you need to filter out some of the data (`filter()`)?
-
-        </p>
-
 7.  Now you can do some summaries using the `group_by` function if you have grouping variables, and the `summarise` function.
-
-    </p>
-
 8.  Take time to explore a variety of plot types, even if you wouldn't necessarily use them all, but just to get more experience with the `ggplot2` syntax and the breath of available types of plots.
-
-    </p>
-
 9.  Ask questions! We're here to help, and if there is something that we have not covered in the workshop material but that you would like to learn how to do, we will be happy to help you out!
-
-    </p>
 
 Enjoy!
 
