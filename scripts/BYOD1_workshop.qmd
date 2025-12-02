@@ -74,13 +74,13 @@ Throughout this workshop we will use the syntax of the `tidyverse` group of pack
 
 The content presented in this document was inspired by some of the courses presented at [MDH R Camp](https://tidy-mn.github.io/R-camp-penguins/). We encourage all participants to take a look at the material generously shared by MDH by following that link; it contains excellent instructional videos and coding examples.
 
-# Setting-up our work space
+# Setting-up your work space
 
 Let's set up our work space for the day by first creating a new RStudio project for this workshop. All of the scripts and data used in the workshop should be saved to that project so that everything can be easily referenced in the future.
 
 We will now take a few moments to demonstrate how to set-up a new RStudio project. When that is done, we'll create folders for data, scripts, and outputs in our project folder. Finally, let's create a new R script. We can name it penguins_data_demo.r or you can chose another script name if you'd like. This script will contain everything that we will demonstrate in this class with a dataset that we will provide (penguins!).
 
-# Loading our tools
+# Loading your tools
 
 ## Packages
 
@@ -319,6 +319,8 @@ torg <- rawdat %>%
 
 ```
 
+When using the pipe operator, the input from before the pipe becomes the first argument in the function after the pipe. If you want the input to be the second, third, etc. argument, represent its location with `.`.
+
 ## Tidy functions
 
 Now that we've introduced a few basic tidy data concepts and tools, we can start tidying our data. There are many very useful functions to subset data, re-arrange columns, create new columns, etc. Below are the ones you may use more frequently as you learn to tidy your data in R and with the `tidyverse` packages.
@@ -330,13 +332,11 @@ useful_fct_2<-data.frame(Function=c("filter()",
                                     "select()",
                                     "arrange()",
                                     "mutate()",
-                                    "summarize()",
                                     "rename()"),
                          Purpose=c("keep (or exclude) rows that meet specific criteria",
                                    "select columns to keep (or to drop)",
                                    "sort a dataframe based on a column's value (or several columns' values)",
                                    "add new columns or update existing columns",
-                                   "calculate summary variables for groups",
                                    "rename columns"))
 
 kable(useful_fct_2, caption = "Useful functions to create tidy data") %>%
@@ -387,7 +387,7 @@ rawdat2 %>%
 # keep only columns of interest
 # use select to remove columns (an alternative approach)
 # remove observations (rows) missing flipper length
-cleandat <- rawdat2 %>% 
+cleandat1 <- rawdat2 %>% 
   select(species, region, island, stage, clutch_completion, date_egg, 
          flipper_length_mm, culmen_length_mm, body_mass_g,sex, comments) %>% 
   select(!stage & !region) %>% 
@@ -403,10 +403,10 @@ Often, variables that are characters need to be formatted to make them easier to
 #| eval: true
 
 # look at species names
-unique(cleandat$species)
+unique(cleandat1$species)
 
 # remove the scientific name
-cleandat2 <- cleandat %>% 
+cleandat2 <- cleandat1 %>% 
   mutate(species = str_remove(species, " \\(Pygoscelis adeliae\\)") %>% 
            str_remove(" \\(Pygoscelis papua\\)") %>% 
            str_remove(" \\(Pygoscelis antarctica\\)"))
@@ -472,6 +472,8 @@ cleandat4 <- cleandat3 %>%
 The package `lubridate`, which is part of the `tidyverse` collection of packages, contains many useful functions to format and manipulate date and time variables. Some functions (e.g., `as.Date()`) are part of base R, while others are part of the `lubridate` package.
 
 ```{r useful-date}
+#| echo: false
+
 useful_fct_3<-data.frame(Function=c("as.POSIXct()","as_date() or as.Date()","year()","month()","hour()"),Purpose=c("format date and time as POSIXct object","format object as a date","extract year from POSIXct object","extract month from POSIXct object","extract hour from POSIXct object"))
 
 kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
@@ -480,163 +482,142 @@ kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
 
 [Here](https://www.neonscience.org/resources/learning-hub/tutorials/dc-convert-date-time-posix-r) you can find a useful tutorial that explores and presents some of these functions.
 
-### Let's first add a "time" variable to our dataset
-
-The time variable will be in total number of seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in your toolbox!</p>
-
+Let's first add a "time" variable to our dataset. The time variable will be in total number of seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in your toolbox!
 
 The code that we will type next is only used to generate a time variable. Don't worry too much about the specifics of the code since this is not something that you would have to do if you were receiving data that already contains both a *date* and a *time* column. This is only done to illustrate how to work with both dates and times, since our original penguin data only contains dates.
 
-```{r eval=F}
-# Let's generate random times; this is only for illustrative purposes!!
+```{r generate-time}
+#| eval: true
 
-# Define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)
-min_start_time <- 9*60*60 # 6 am in seconds from midnight
-max_end_time <- 21*60*60 # 6 pm in seconds from midnight
+# define the start and end dates/times for the range of sampling times (in UTC, i.e., 3 hours ahead of the time zone where penguins were observed - see note below)
+start_time <- 9*60*60 # 9 am in seconds from midnight
+end_time <- 21*60*60 # 9 pm in seconds from midnight
 
 # Create a sequence of all possible timestamps within the range, e.g., by 10 minute segments
-full_time_sequence <- seq(min_start_time, max_end_time, 10*60)
+full_time_sequence <- seq(start_time, end_time, 10*60)
 
 # For each record, sample a random number from the full time sequence created above
-cleandat <- cleandat %>% mutate(time_sec=sample(full_time_sequence,n(),replace=TRUE)) 
+cleandat5 <- cleandat4 %>% 
+  mutate(time_sec = sample(full_time_sequence, n(), replace=TRUE)) 
+
+# check variable
+cleandat5$time_sec
 
 ```
 
 We have now generated a new variable `time_sec` which reflects the time of day in seconds from the starting point 00:00:00. We will learn below how to re-format those times so that they are in the appropriate time zone.
 
-</p>
-
 *Note*: Time zones are important in R!!! If not specified, the dates and times will be assigned the time zone of your computer system, which may be misleading if the data was collected somewhere completely different (e.g., penguins in Antartica!).
 
-</p>
+Let's format our new time variable to make it more usable in analyses and visualizations.
 
-*Exercise*: Check what time zone your computer is set at using the `Sys.time()` function.
+```{r format-time}
+#| eval: true
 
-### Formatting dates and times
+# check the timezone of your computer
+Sys.time()
 
-```{r eval=F}
-# first set date as a date
-cleandat <- cleandat %>% mutate(date=as_date(date_egg))
-
-# create a date and time variable. Note that although the Palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
-cleandat <- cleandat %>% mutate(date_time_utc=as.POSIXct(paste(as_date(date_egg,format="%Y-%m-%d"),"00:00:00",format="%Y-%m-%d %H:%M:%S"),tz="UTC")+time_sec)
-
-# Convert to proper time zone UTC-03                                    
-cleandat <- cleandat %>% mutate(date_time_utc03=as.POSIXct(format(date_time_utc,tz="Etc/GMT+3"),tz="Etc/GMT+3"))
+# set date_egg as the date
+# create a date and time variable. Note that although the penguins are from the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
+# convert to proper time zone UTC-03 
+cleandat6 <- cleandat5 %>% 
+  mutate(date = as_date(date_egg),
+         date_time_utc = as_date(date_egg, format = "%Y-%m-%d") %>% 
+           paste("00:00:00") %>% 
+           as.POSIXct(format="%Y-%m-%d %H:%M:%S", tz = "UTC") + time_sec,
+         date_time_utc03 = as.POSIXct(date_time_utc, tz = "Etc/GMT+3"))
                                     
-# Note from R help file on time zones (https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html): "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."
+
+# look at the first few entries
+cleandat6 %>% 
+  select(date, time_sec, date_time_utc, date_time_utc03) %>% 
+  head(n = 10)
 
 ```
 
-### Extracting information from a date and time object
+**Note:** From R [help file](https://stat.ethz.ch/R-manual/R-devel/library/base/html/timezones.html) on time zones : "Most platforms support time zones of the form ‘⁠Etc/GMT+n⁠’ and ‘⁠Etc/GMT-n⁠’ (possibly also without prefix ‘⁠Etc/⁠’), which assume a fixed offset from UTC (hence no DST). Contrary to some expectations (but consistent with names such as ‘⁠PST8PDT⁠’), negative offsets are times ahead of (East of) UTC, positive offsets are times behind (West of) UTC."
 
-Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., `hour()`).
+Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., hour(), month(), year()).
 
-```{r eval=F}
+```{r extract-time}
+#| eval: true
+
 # study year
-year(cleandat$date_time_utc03)
+year(cleandat6$date_time_utc03)
 
 # use the mutate function to create a year column in the cleandat dataframe
-cleandat <- cleandat %>% mutate(year=year(date_time_utc03)) 
-
-# we can extract all sorts of information, month, day, hour, minute, etc. from date time objects when they are formatted adequately
-
-# Take a few minutes to experiment with some of these. 
+cleandat7 <- cleandat6 %>% 
+  mutate(year = year(date_time_utc03)) 
 
 ```
 
-*Exercise*: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., `hour()`)? What happens if you run `as_date()` on a date and time POSIXct object?
+*Exercise*: Take a few minutes to experiment extracting different types of information from the POSIXct object. Are there situations where you see this could be useful (e.g., hour())? What happens if you run as_date() on a date and time POSIXct object?
 
 # Creating data summaries
 
-Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The `group_by` and `summarise` functions are some of the most useful functions you'll find in R as they are very intuitive and efficient.
+Creating data summaries is often the first step of a thorough Exploratory Data Analysis (EDA). The group_by() and summarise() (or summarize(), same function, different spelling) functions are some of the most useful functions you'll find in R as they are very intuitive and efficient. We will summarize the penguin data to illustrate what can be done with these two functions. 
 
-</p>
-
-We will summarise the penguin data to illustrate what can be done with these two functions. Let's first take a look at the data again using `glimpse` to refresh our memory on the class of data that we have on hand.
-
-</p>
-
-We also will want to filter out the data we flagged as "unusable" during our data tidying exercise.
-
-## Removing unusable and unecessary data to create our "working" dataset
-
-```{r eval=F}
-# taking a look at the data
-glimpse(cleandat)
-
-# filtering out the unusable records
-cleandat <- cleandat %>% filter(usable_adult_data!="no") # using the != syntax means "not equal to", so basically here we are saying that we are keeping everything that is not equal to "no", i.e., we are keeping the "yes"!
-
-# cleandat contains columns which for simplicity we may want to remove
-cleandat <- cleandat %>% select(!usable_adult_data & !time_sec & !date & !date_time_utc)
-
-glimpse(cleandat) # Much better!!!
-
-# Let's save our cleaned dataset
-write_csv(cleandat,"data/clean_peanguindat.csv")
-
-```
-
-Let's compare flipper length and body mass across species. The `group_by` function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The `summarise` function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the `group_by` function.
-
-</p>
+Let's compare flipper length and body mass across species. The group_by() function allows summarizing information for one or multiple nested groups (e.g., species alone, or species within islands, etc.). The summarise() function will allow creating summaries such as mean, standard deviation, sample size, for the groups we defined with the group_by() function.
 
 **Note**: If there are missing data in a column, the output of a summary will return NA unless it is specified that the NAs need to be ignored from the calculation.
 
-```{r read dat,eval=T,echo=F,message=F,warning=F}
-# read cleandat created above; this chunk is for course developers only because we are not actually creating the script when running the report since it is to demonstrate and go over each command line with  participants. Dataset will thus be created in class, but we need to upload it if we want to print some of the summaries and graphs in lines of code that follow 
-library(tidyverse)
+```{r, summarize}
+#| eval: true
 
-cleandat<-read_csv("../data/clean_peanguindat.csv")
+# remind ourselves what's in our dataset
+glimpse(cleandat7)
 
-# cleandat<-read_csv("data/clean_peanguindat.csv") To read on individual computer 
-
-```
-
-### Summarizing flipper lengths
-
-Let's first illustrate the `tidyr` syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the `<-` syntax, e.g., `flipper_lt_summary <- cleandat %>% ...`.
-
-```{r, eval=F}
-cleandat %>% 
+# minimum flipper length by species
+cleandat7 %>% 
   group_by(species) %>% 
-  summarise(min_flipper_length=mean(flipper_length_mm,na.rm=T))
+  summarise(min_flipper_length = min(flipper_length_mm))
+
+# maximum flipper length by sex
+cleandat7 %>% 
+  group_by(sex) %>% 
+  summarise(max_flipper_length = max(flipper_length_mm))
 
 ```
 
-Summarizing means only may not be the most satisfying if one wanted to compare the means across species. We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.
+**Exercise:** The maximum flipper length summary contains NA values for sex. Generate this summary without those values. There are at least two ways to find these NAs in the dataset.  
 
-```{r,summary table, echo=F,eval=T,include=T,message=F}
-flipper_length_summary <- cleandat %>% 
+We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.
+
+```{r,summary-table}
+#| eval: true
+
+flipper_length_summary <- cleandat7 %>% 
   group_by(species) %>% 
-  summarise(mean_flipper_length=mean(flipper_length_mm,na.rm=T),sd_flipper_length=sd(flipper_length_mm,na.rm=T),min_flipper_length=min(flipper_length_mm,na.rm=T),max_flipper_length=max(flipper_length_mm,na.rm=T),N=n())
+  summarise(mean_flipper_length = mean(flipper_length_mm),
+            sd_flipper_length = sd(flipper_length_mm),
+            min_flipper_length = min(flipper_length_mm),
+            max_flipper_length = max(flipper_length_mm),
+            N=n())
 
-kable(flipper_length_summary)
+# print the summary
+flipper_length_summary
 
 ```
 
-Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions that we can calculate within the `summarise` statement.
+Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions that we can calculate within the summarise() function.
 
-</p>
+But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the mutate() function to add that measure to the summary table previously created.
 
-But wait, we forgot to calculate the standard error which is a metric that we may need for calculating confidence intervals! You can use the `mutate` function to add that measure to the summary table previously created.
+**Note:** Another way to print output is to put parentheses around it
 
-```{r}
-flipper_length_summary <- flipper_length_summary %>% 
+```{r summary-mutate}
+
+# add standard error column
+(flipper_length_summary2 <- flipper_length_summary %>% 
   group_by(species) %>% 
-mutate(se_flipper_length = sd_flipper_length/sqrt(N))
+  mutate(se_flipper_length = sd_flipper_length/sqrt(N)))
 
-kable(flipper_length_summary)
+
 ```
 
-**Exercise**: Let's say that we want to summarise flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables.
+**Exercise**: Let's say that we want to summarize flipper length by species AND island. Let's take a few minutes to try creating different summaries based on multiple grouping variables.
 
-</p>
-
-**Hint**: the grouping variables can be added within that `group_by()` function separated by a `comma`. You can use the `names()` or `glimpse` function to remember the name of the different variables available to use.
-
-</p>
+**Hint**: the grouping variables can be added within the group_by() function separated by a comma. You can use the names() or glimpse() function to remember the name of the different variables available to use.
 
 # Data visualization
 
