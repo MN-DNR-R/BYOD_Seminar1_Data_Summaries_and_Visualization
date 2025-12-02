@@ -39,15 +39,12 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
-
 # translation temp files
 po/*~
 
 # RStudio Connect folder
 rsconnect/
 
-# folder and files
-scripts/BYOD1_workshop_files/
-scripts/BYOD1_workshop_files/*
+# quarto
+/.quarto/
+**/*.quarto_ipynb
