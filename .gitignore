@@ -49,6 +49,5 @@ po/*~
 rsconnect/
 
 # folder and files
-/docs/
 scripts/BYOD1_workshop_files/
 scripts/BYOD1_workshop_files/*
