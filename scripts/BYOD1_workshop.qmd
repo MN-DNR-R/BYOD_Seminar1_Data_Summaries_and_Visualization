@@ -78,13 +78,13 @@ The content presented in this document was inspired by some of the courses prese
 
 Let's set up our work space for the day by first creating a new RStudio project for this workshop. All of the scripts and data used in the workshop should be saved to that project so that everything can be easily referenced in the future.
 
-We will now take a few moments to demonstrate how to set-up a new RStudio project. When that is done, we'll create folders for data, scripts, and outputs in our project folder. Finally, let's create a new R script. We'll name it penguins_data_demo.r, and you can chose the names that you want to use. This script will contain everything that we will demonstrate in this class with a dataset that we will provide (penguins!).
+We will now take a few moments to demonstrate how to set-up a new RStudio project. When that is done, we'll create folders for data, scripts, and outputs in our project folder. Finally, let's create a new R script. We can name it penguins_data_demo.r or you can chose another script name if you'd like. This script will contain everything that we will demonstrate in this class with a dataset that we will provide (penguins!).
 
 # Loading our tools
 
 ## Packages
 
-In this section, we will learn about the different packages that we will be using in this workshop, and will explore different functions for reading files into r.
+In this section, we will learn about the different packages that we will be using in this workshop and will explore different functions for reading files into r.
 
 ```{r packages-info}
 #| eval: true
@@ -132,7 +132,7 @@ Let's load a few datasets in different formats. First, you'll need to download t
 
 [penguin_data_final.xlsx](https://github.com/MN-DNR-R/BYOD_Seminar1_Data_Summaries_and_Visualization/raw/refs/heads/main/data/penguin_data_final.xlsx)
 
-Since we stored the data inside a folder in the project, the file path is very simple. If you need to load data that's stored outside the project, you'll need to specify the whole file path.
+Since we stored the data inside a folder in the project, the file path is very simple. If you need to load data that is stored outside the project, you will need to specify the whole file path.
 
 ```{r load-excel}
 #| eval: false
@@ -214,7 +214,7 @@ kable(useful_fct_1, caption = "Useful functions for data exploration") %>%
 
 ## Data types
 
-Before doing any data manipulation in R, it is important to recognize the different data types. When importing your data into R, R will automatically recognize the type of data of each column. At times, however, a specific data type may need to be set, or converted from one to another. 
+Before doing any data manipulation in R, it is important to recognize the different data types. When importing your data into R, R will automatically recognize the type of data of each column. At times, however, a specific data type may need to be set or converted from one to another. 
 
 For example, one could use the `as.numeric()` function to convert a column to *numeric*, or `as.character()` to convert to *character*. When doing such data conversion, it is important to note that some elements of a vector may be converted to NAs if R recognizes that it does not correspond to the data type specified.
 
@@ -237,7 +237,7 @@ kable(data_types, caption = "Data types supported in R") %>%
 
 ## Examining the data
 
-Let's use the functions from the tables above to examine what's in the dataset
+Let's use the functions from the function description table above to examine what is contained in our dataset.
 
 ```{r examine-data}
 #| eval: true
@@ -299,10 +299,18 @@ Taking time to tidy a dataset ensures that the data summaries, analyses, or visu
 
 Using R and R scripts ensures that the original dataset is kept unaltered, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often few to no records of changes made to a dataset.
 
+## Introducing pipe operator
 
-## Introducing the pipe operator
+The `tidyr` syntax uses the *pipe* operator `%>%` or `|>`, which provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
+R uses many different operators which includes symbols such as <- and = along with typical arithmetic (+, -, *, /, ^) and relational (<, >, <=, >=, == ,!=) symbols. Too increase efficiency, the tidyr library uses symbols called pipe operators (%>%). These allow you to string together functions to run sequentially, moving left to right, kind of like a data assembly line. It helps keep the data tidy by creating new versions of your dataset, while keeping the original version. These pipe operators also tend to be more computationally efficient than base R, leading to quicker processing times, especially for large datasets.
+```{r eval=F}
+#Edit the raw data to filter for samples collected from Torgersen Island and arrange the table by the date the egg was collected
 
-The *pipe* operator (`%>%` or `|>`) provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` or `|>` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
+torg <- rawdat %>% filter(Island == "Torgersen") %>% arrange('Date Egg')
+
+
+```
+The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
 
 The operator `|>` is from base R while `%>%` is from the `tidyverse` package `magrittr`.
 
@@ -310,7 +318,7 @@ More background on the origin and use of the pipe operator can be found [here](h
 
 ## Let's clean-up some of those columns
 
-Now that we've introduced a few basic tidy data concepts and coding tools, we can now start looking at our data more formally. There are many very useful functions to subset dataframes, re-arrange columns, create new columns, etc. Below are the ones you may run into more frequently as you learn to tidy your data in R and with the `tidy` package.
+Now that we've introduced a few basic tidy data concepts and coding tools, we can now start looking at our data more formally. There are many very useful functions to subset dataframes, re-arrange columns, create new columns, etc. Below are the ones you may run into more frequently as you learn to tidy your data in R and with the `tidyr` package.
 
 ```{r useful tidy function,echo=F}
 useful_fct_2<-data.frame(Function=c("filter()","select()","arrange()","mutate()"),Purpose=c("keep (or exclude) rows that meet specific criteria","select columns to keep (or to drop)","sort a dataframe based on a column's value (or several columns' values)","add new columns or update existing columns"))
@@ -347,7 +355,7 @@ names(rawdat)<-str_replace_all(names(rawdat),"\\(|\\)","")
 # keep only columns of interest; we will now create a new clean dataset so that we maintain the raw data unaltered from previous steps, and save all changes and addition into the clean data dataset. 
 cleandat <- rawdat %>% select(species,region,island,stage,clutch_completion,date_egg,flipper_length_mm,culmen_length_mm,body_mass_g,sex,comments) 
 
-# if you wanted to remove one or severeal column it may be easier to do the following:
+# if you wanted to remove one or several column it may be easier to do the following:
 cleandat<- cleandat %>% select(!stage & !region) 
 
 # remove scientific names in species
@@ -381,22 +389,20 @@ cleandat <- cleandat %>% select(!comments)
 
 ```
 
-[**Note**]{style="color:red;"}: While in this example the number of unique comments to look through was relatively small and we could thus easily decide which ones to use for coding the "usable" columns as "yes" or "no", in real life it is very impractical and not advised to store any critical information in a general free-form "comments" column, especially if that information pertains to the quality or usability of the data. The best practice is to maintain a metadata spreadsheet that contains all of the sampling information for a given sampling point, including comments, but that would also contain a column with a "yes" or a "no" value so that the analyst can quickly filter data without having to weed through long comments or make decisions on what they may mean. Just something to keep in mind!
-
-</p>
+[**Note**]{style="color:red;"}: While in this example the number of unique comments to look through was relatively small and we could easily decide which ones to use for coding the "usable" columns as "yes" or "no", in real life it is very impractical and not advised to store any critical information in a general free-form "comments" column, especially if that information pertains to the quality or usability of the data. The best practice is to maintain a metadata spreadsheet that contains all of the sampling information for a given sampling point, including comments, but that would also contain a column with a "yes" or a "no" value so that the analyst can quickly filter data without having to weed through long comments or make decisions on what they may mean. Just something to keep in mind!</p>
 
 At times, though, we can create a `is-the-data-usable (Yes/No)` column based on some variables (but not free-form comments!). For example, if one had sample-site specific `wind`, `precipitation`, `temperature`, `time of day` information, it would be easy to generate a "data quality" variable based on specific sampling conditions (e.g., if wind exceeds this, exclude this data point).
 
 ### Creating new variables
 
-We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create 1) a culmen to body mass index, 2) flipper group categories based on flipper length, and 3) a body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` and `case_when()` functions.
+We're getting close to having a dataset that will be easier to use for analysis! Now let's say we would like to create a few additional columns to document: 1) culmen to body mass index, 2) flipper group categories based on flipper length, and 3) body size category identifying if the penguins were small, medium, or large based on their weight. We can do both of these things using the `mutate()` and `case_when()` functions.
 
 ```{r eval=F}
 
 ## Create a culmen to body mass index
 cleandat <- cleandat %>% mutate(body_mass_kg=body_mass_g/1000,culmen_bodymass_index=round(culmen_length_mm/body_mass_kg,2))
 
-## Assign flipper lenght category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. 
+## Assign flipper length category; the TRUE statement means that anything not assigned to "big flips" will be assigned to "small flips" in that example. 
 cleandat<-cleandat %>% 
     mutate(flipper_group = case_when(flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
 
@@ -407,7 +413,7 @@ filter(cleandat,is.na(flipper_length_mm))
 cleandat<-cleandat %>% 
     mutate(flipper_group = case_when(is.na(flipper_length_mm)~"unknown",flipper_length_mm > 210 ~ "big flips",TRUE ~ "small flips" ))
 
-## Using that same logic, let's create another group absed on weight class, and let's make sure that we do not assign a class to missing data. 
+## Using that same logic, let's create another group based on weight class, and let's make sure that we do not assign a class to missing data. 
 cleandat<-cleandat %>% mutate(weight_class = case_when(is.na(body_mass_g)~"unknown",body_mass_g<=3500~"small",body_mass_g<4300~"medium",TRUE~"large"))
 
 head(cleandat)
@@ -430,11 +436,10 @@ kable(useful_fct_3, caption = "Useful functions to format dates and times") %>%
 
 ### Let's first add a "time" variable to our dataset
 
-The time variable will be in total number of seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in your toolbox!
+The time variable will be in total number of seconds from 00:00:00. We will learn how to re-format this in proper time stamp (hour:minute:second) so that it is more intuitive to work with and visualize. Times in seconds frequently happen with GPS Location data, for example. It isn't a bad idea to have a way to convert them in your toolbox!</p>
 
-</p>
 
-The code that we will type next is only used to generate a time variable. Don't worry too much about the specifics of the code since this is not something that you would have to do if you were receiving data that already contains a date and a time column. This is only done to illustrate how to work with both dates and times, since our original penguin data only contains dates.
+The code that we will type next is only used to generate a time variable. Don't worry too much about the specifics of the code since this is not something that you would have to do if you were receiving data that already contains both a *date* and a *time* column. This is only done to illustrate how to work with both dates and times, since our original penguin data only contains dates.
 
 ```{r eval=F}
 # Let's generate random times; this is only for illustrative purposes!!
@@ -464,10 +469,10 @@ We have now generated a new variable `time_sec` which reflects the time of day i
 ### Formatting dates and times
 
 ```{r eval=F}
-# first set date as a set date
+# first set date as a date
 cleandat <- cleandat %>% mutate(date=as_date(date_egg))
 
-# create a date and time variable. Note that although the palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
+# create a date and time variable. Note that although the Palmer penguins dataset was collaected at the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
 cleandat <- cleandat %>% mutate(date_time_utc=as.POSIXct(paste(as_date(date_egg,format="%Y-%m-%d"),"00:00:00",format="%Y-%m-%d %H:%M:%S"),tz="UTC")+time_sec)
 
 # Convert to proper time zone UTC-03                                    
@@ -479,7 +484,7 @@ cleandat <- cleandat %>% mutate(date_time_utc03=as.POSIXct(format(date_time_utc,
 
 ### Extracting information from a date and time object
 
-Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily.
+Now that we've formatted our date and time variable as POSIXct project with the appropriate time zone, we can extract all sorts of useful information very easily (e.g., `hour()`).
 
 ```{r eval=F}
 # study year
@@ -545,7 +550,7 @@ cleandat<-read_csv("../data/clean_peanguindat.csv")
 
 ### Summarizing flipper lengths
 
-Let's first illustrate the tidyr syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the `<-` syntax, e.g., `flipper_lt_summary <- cleandat %>% ...`.
+Let's first illustrate the `tidyr` syntax by creating a summary of flipper length by species. We can run this list of commands as they are, or create an R object if we wanted to store the summary using the `<-` syntax, e.g., `flipper_lt_summary <- cleandat %>% ...`.
 
 ```{r, eval=F}
 cleandat %>% 
@@ -554,7 +559,7 @@ cleandat %>%
 
 ```
 
-Summarizing means only may not be the most satistifying if one wanted to compare the means across species. We can combine functions in that same statement, and get a more complete summary of flipper length across species.
+Summarizing means only may not be the most satisfying if one wanted to compare the means across species. We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.
 
 ```{r,summary table, echo=F,eval=T,include=T,message=F}
 flipper_length_summary <- cleandat %>% 
@@ -565,7 +570,7 @@ kable(flipper_length_summary)
 
 ```
 
-Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions we can calculate with thing the `summarise` statement.
+Above we created a summary of mean, standard deviation, minimum, and maximum flipper length. There is no limit on the number of functions that we can calculate within the `summarise` statement.
 
 </p>
 
@@ -591,13 +596,11 @@ kable(flipper_length_summary)
 
 Now that we have a clean dataset and have created useful summaries, we can now think of how to best visualize the data. We will be using the `ggplot2` package to demonstrate various data visualization options. While it is certainly possible to create high-quality figures in base R, ggplot2 provides a powerful way to create and customize figures in an intuitive way (after getting comfortable with the syntax and structure!).
 
-</p>
-
 ## Key Data Visualization principes (incomplete, need a few items here!)
 
 ## Main elements of a ggplot figure
 
-Plots in `ggplot` are built as a series of layers sequentially added in an intuitive way. Let's think about how we would graph a figure by hand. First, we would think of the basic component or our figure or in other words the things that we want to represent (i.e., the **data**). We would then think of what specifically do we want to represent (i.e., **The Xs, the Ys, etc.**), and how (i.e., **the type of image**). `ggplot` uses this logic to sequentially add complexity and layers to plots wiht limitless options.\</\>
+Plots in `ggplot` are built as a series of layers sequentially added in an intuitive way. Let's think about how we would graph a figure by hand. First, we would think of the basic component of our figure or in other words the things that we want to represent (i.e., the **data**). We would then think of what specifically we want to represent (i.e., **The Xs, the Ys, etc.**), and how (i.e., **the type of image**). `ggplot` uses this logic to sequentially add complexity and layers to plots with limitless options!\</\>
 
 Below are the main elements of a plot built in ggplot:
 
@@ -614,7 +617,7 @@ For each of these elements, you can find a detailed description on the [ggplot2 
 
 Recall the penguin dataset and how the data is structured.
 
-```{r,eval=T}
+```{r,eval=F}
 glimpse(cleandat)
 ```
 
@@ -624,7 +627,7 @@ We may want to visualize the number of records that we have for each of the isla
 ggplot(data=cleandat)
 ```
 
-This is pretty much a blank slate on which we can add `aesthetics` (what is it that we want to show on our figure?). Let's first take a look at the list of possible `aesthetics`.
+This is pretty much a blank slate on which we can add `aesthetics` (fancy word to mean: what is it that we want to show on our figure?). Let's first take a look at the list of possible `aesthetics`.
 
 ```{r, eval=T,message=F,echo=F}
 aes_options <- data.frame("Aesthetics"=c("x =","y =","size =","alpha =", "fill =", "colour =","shape ="),"Description"=c("Variable to be plotted on the X axis","Variable to be plotted on the Y axis","Size of the point, column or line","Transparency of the object","The fill colour of a column area","The colour for points and lines, or the outline colour for columns and areas","The shape of the point when making a scatter plot"))
@@ -639,7 +642,7 @@ We add different elements to the blank canvas using the **plus** sign. Let's cou
 ggplot(data=cleandat)+aes(x=island)
 ```
 
-Adding `aes(x=island)` simply added the X axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we will do a barchar, which we specify using one of the available `geometries` as noted on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
+Adding `aes(x=island)` simply added the X axis to our blank canvas. We can now fill it by specifying the type of plot that we want to make with this. For simply visualizing the number of records per island we can do a barchart, which we specify using one of the available `geometries` as noted on the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
 
 ```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+ # blank canvas
@@ -665,7 +668,11 @@ labs(title="Distribution of penguin species per island in the Palmer penguins cl
   theme_bw() # remove grey background
 ```
 
-This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. An additional thing that we can do is adjust the colour. We can use the function `scale_fill_brewer` to pick a different colour scheme. The available colour palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tools offers an opportunity to select only colours that are colorblind safe or printer friendly, among other things.
+This figure is starting to look pretty good! You can spend time exploring different themes and taking a look at what the output looks like. 
+
+</p>
+
+An additional thing that we can do is adjust the colour. We can use the function `scale_fill_brewer` to pick a different colour scheme. The available colour palettes can be viewed in [RColorBrewer palette](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). This tools offers an opportunity to select only colours that are colorblind safe or printer friendly, among other things.
 
 ```{r eval=T,echo=T,message=F}
 ggplot(data=cleandat)+
@@ -701,7 +708,7 @@ As you can see, the options are limitless!
 
 ## Two-variables figures
 
-In most instances we want to show relationships between two variables, sometimes also show how that relationship varies across groups. We will demonstrate this with the penguin dataset by building a figure of the relationship between penguins flipper length and body mass.
+In most instances we want to show relationships between two variables, sometimes we also want to show how that relationship varies across groups. We will demonstrate this with the penguin dataset by building a figure of the relationship between penguins flipper length and body mass.
 
 </p>
 
@@ -715,7 +722,7 @@ labs(title="Relationship between flipper length and body mass",x="Body mass (g)"
   theme_bw() # remove grey background
 ```
 
-Above we see the relationship using the whole dataset. We could follow a similar approach as above to show how that relationship varies across species. We could use different colours and/or different shapes to highly species-specific patterns. Let's experiment with this and use the same colour palette as above!
+Above we see the relationship using the full dataset (i.e., all species across all islands). We could follow a similar approach as above to show how that relationship varies across species. We could use different colours and/or different shapes to highly species-specific patterns. Let's experiment with this and use the same colour palette as above!
 
 ```{r,echo=T,message=F,warning=FALSE}
 ggplot(data=cleandat)+
@@ -776,13 +783,48 @@ labs(title="Island comparision of the relationship between flipper length and bo
 facet_wrap(~island)
 ```
 
+## Interactive plots
+
+The `plotly` package provides functionality for making interactive plots that has tools for zooming in and out, panning, hovering and among others. While this package has many different ways to create these plots with different level of functionality, the simplest is the `ggplotly()` function which adds these tools to `ggplots`. This can be very useful for exploring data.
+
+```{r eval=F}
+#Install and load the plotly package
+install.package("plotly")
+library(plotly)
+
+#There are two ways to run the ggplotly() function
+
+#First simply wrap the ggplotly() function around the chain of functions used to make a ggplot
+ggplotly(
+  ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+)
+
+#The other is to name the chain of functions and wrap that named object in the ggplotly() function
+fliplen_bodmass_plot = ggplot(data=cleandat)+
+  aes(x=body_mass_g,y=flipper_length_mm,colour=species)+ 
+  geom_point()+ # type of graph
+labs(title="Relationship between flipper length and body mass by species",x="Body mass (g)",y="Flipper length (mm)",colour="Species")+ #Customizing labels
+  theme_bw()+ # remove grey background
+  scale_colour_brewer(type="qual",palette=3)+
+  geom_smooth(method="lm",se=FALSE)
+
+ggplotly(fliplen_bodmass_plot)
+
+```
+
 ## Exporting datasets in nice format for publication
 
 One of the easiest way to save and export plots is to use the `ggsave` function. Use the `?ggsave` to obtain more information on how the function works. By default, the latest plot displayed will be saved, but if a previously-displayed plot had been saved as an R object, the name of that R object can be specified to save that one instead of the last one. Options available here include `dpi=...`, `width=...` and `height=...` for our figure. This is where we can make the final adjustments depending if the plot is to be used in a powerpoint presentation, or a word document, for example.
 
 </p>
 
-Let's save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image.
+Let's save one figure, and then play with these format options to see how it changes the appearance and quality of the exported image. Often it is by trial and errors that you will find the best format for your specific situation!
 
 ```{r,echo=T,message=F,warning=FALSE}
 getwd() # To remind yourself of the current working directory. Plots will be saved in that directory unless specified otherwise
