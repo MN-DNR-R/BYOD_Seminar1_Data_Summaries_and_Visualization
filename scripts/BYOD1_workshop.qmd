@@ -172,13 +172,13 @@ You also can read more about the package here: [PalmerPenguins](https://allisonh
 # install package (delete the '#' to run the line and use the '#' after you've installed the package)
 # install.packages("palmerpenguins")
 
-# load library into your R environment. 
+# load library into your R environment 
 library(palmerpenguins)
 
-# get information about the palmerpenguins package:
+# get information about the package:
 ?palmerpenguins
 
-# Get proper citation for package if we were to be using this in publication. Note that you can use the "citation" function for any of the packages used in an analysis, which is very useful when writing the methods in a report or peer-reviewed manuscript. 
+# Get proper citation for the package (e.g., to use in a publication). Note that you can use the "citation" function for any of the packages used in an analysis, which is very useful when writing the methods in a report or peer-reviewed manuscript. 
 citation("palmerpenguins")
 
 # let's save the raw data in our environment
@@ -218,7 +218,7 @@ Before doing any data manipulation in R, it is important to recognize the differ
 
 For example, one could use the `as.numeric()` function to convert a column to *numeric*, or `as.character()` to convert to *character*. When doing such data conversion, it is important to note that some elements of a vector may be converted to NAs if R recognizes that it does not correspond to the data type specified.
 
-A good example of this is when a column that should be *numeric* contains characters (e.g., instead of an actual counts one had recorded something like *more then 100 animals*). In this case, this would return an *NA* as R does not know what to do with this information! Good data entry and quality checks prior to importing data into R are very important  to help prevent data loss.
+A good example of this is when a column that should be *numeric* contains characters (e.g., instead of an actual counts one had recorded something like "more then 100 animals"). In this case, this would return an "NA" as R does not know what to do with this information! Good data entry and quality checks prior to importing data into R are very important  to help prevent data loss.
 
 With a *factor* data type, you can specify the order of variables, such as "low", "medium", "high". This defined order can then make data visualizations and analyses more intuitive.
 
@@ -274,32 +274,30 @@ unique(rawdat$`Individual ID`)
 
 ## Data quality check
 
-Looking at the raw data, what do you observe could be improved for facilitating some analyses and data visualizations? Is the dataset pretty clean and analysis-ready, or are there things that need to be addressed and changed so that we don't run into issues later in the process?
+Looking at the raw data, what could be improved for analyses and data visualizations? Is the dataset pretty clean and analysis-ready, or are these things that need to be addressed and changed so that we don't run into issues later in the process?
 
 Here are some examples:
 
-1.  species names are long
-2.  some columns may not be necessary
-3.  individual ID is not unique
-4.  we may want columns that classify the data based on some criteria (e.g., a) heavy or light and b) long-, medium-, or short-billed).
+1.  names in the Species column are long
+2.  the Sex and Stage columns are characters, but they would be more useful as factors  
+
+Can you think of any others?  
 
 # Tidying your data
 
 ## What is tidy data?
 
-We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The `tidyr` package contains functions for manipulating the data so that we can create a clean, tidy dataset to-be-used for all analyses.
+We refer to "tidy data" as a dataset where each column is a variable, each row is an observation, and each cell contains a single value and a data type that is consistent across a given column (e.g., all numeric). The `tidyverse` packages contains functions for manipulating the data so that we can create a clean, tidy dataset to be used for all analyses.
 
-</p>
-
-**Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be kept unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original unaltered data.
+**Note**: Recall that we will never overwrite the original dataset. The raw data should always remain in its original location and be unaltered. The beauty of R scripts is that we can save all data cleaning and data manipulation steps while retaining the original data
 
 ## Why is it important to tidy our data?
 
-Taking time to tidy a dataset ensures that the data summaries, analyses, or visualizations we produce represent "true" data values to the best of our knowledge (e.g., no wrongly assigned missing data or data-entry related outliers). It is the first and most critical step of any data analysis, and though it can be a lengthy process, it is worth the effort!
+Taking time to tidy a dataset ensures that the data summaries, analyses, or visualizations we produce represent "true" data values to the best of our knowledge (e.g., no wrongly assigned values, missing data, or data entry errors). It is a the first and most critical step of any data analysis, and though it can be a lengthy process, it is worth the effort.
 
-## Why tidying data in R?
+## Why tidy data in R?
 
-Using R and R scripts ensures that the original dataset is kept, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often no to little track records of changes made to a dataset.
+Using R and R scripts ensures that the original dataset is kept unaltered, and that all data manipulation steps are documented and reproducible. This is a major advantage of tidying data in R as opposed to using spreadsheet applications such as Excel, where there is often few to no records of changes made to a dataset.
 
 ## Introducing pipe operator
 
@@ -314,7 +312,7 @@ torg <- rawdat %>% filter(Island == "Torgersen") %>% arrange('Date Egg')
 ```
 The *pipe* operator `%>%` or `|>` provides a way to efficiently chain functions together in a single statement. It is similar to saying: let's take this data, *and then* do this with it, *and then* do this, etc. So ultimately, every time that you see or use `%>%` in a script, you can think of it as being the same as if you were reading or coding *and then...*!
 
-</p>
+The operator `|>` is from base R while `%>%` is from the `tidyverse` package `magrittr`.
 
 More background on the origin and use of the pipe operator can be found [here](https://www.datacamp.com/tutorial/pipe-r-tutorial).
 
