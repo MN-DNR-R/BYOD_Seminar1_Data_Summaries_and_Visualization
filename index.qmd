@@ -312,12 +312,12 @@ Let's look at an example of tidying data with and without the pipe operator.
 
 # without the pipe operator
 torg1 <- filter(rawdat, Island == "Torgersen")
-torg2 <- arrange(torg1, 'Date Egg')
+torg2 <- arrange(torg1, `Date Egg`)
 
 # with the pipe operator
 torg <- rawdat %>% 
   filter(Island == "Torgersen") %>% 
-  arrange('Date Egg')
+  arrange(`Date Egg`)
 
 ```
 
@@ -393,7 +393,7 @@ rawdat2 %>%
 # remove observations (rows) missing flipper length
 cleandat1 <- rawdat2 %>% 
   select(individual_id, species, region, island, stage, clutch_completion, 
-         date_egg, flipper_length_mm, culmen_length_mm, body_mass_g,sex, 
+         date_egg, flipper_length_mm, culmen_length_mm, body_mass_g, sex, 
          comments) %>% 
   select(!stage & !region) %>% 
   filter(!is.na(flipper_length_mm))
@@ -414,9 +414,9 @@ unique(cleandat1$species)
 
 # remove the scientific name
 cleandat2 <- cleandat1 %>% 
-  mutate(species = str_remove(species, " \\(Pygoscelis adeliae\\)") %>% 
-           str_remove(" \\(Pygoscelis papua\\)") %>% 
-           str_remove(" \\(Pygoscelis antarctica\\)"))
+  mutate(species = str_remove(species, " Penguin \\(Pygoscelis adeliae\\)") %>% 
+           str_remove(" penguin \\(Pygoscelis papua\\)") %>% 
+           str_remove(" penguin \\(Pygoscelis antarctica\\)"))
 
 # look at new species names
 unique(cleandat2$species)
@@ -536,21 +536,24 @@ Let's format our new time variable to make it more usable in analyses and visual
 # check the timezone of your computer
 Sys.time()
 
+# default time zone of data
+tz(cleandat5$date_egg)
+
 # set date_egg as the date
 # create a date and time variable. Note that although the penguins are from the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
 # convert to proper time zone UTC-03 
 cleandat6 <- cleandat5 %>% 
-  mutate(date = as_date(date_egg),
-         date_time_utc = as_date(date_egg, format = "%Y-%m-%d") %>% 
-           paste("00:00:00") %>% 
-           as.POSIXct(format="%Y-%m-%d %H:%M:%S", tz = "UTC") + time_sec,
-         date_time_utc03 = as.POSIXct(date_time_utc, tz = "Etc/GMT+3"))
+  mutate(date_time_utc = as_datetime(date_egg) + time_sec,
+         date_time_utc03 = with_tz(date_time_utc, tzone = "Etc/GMT+3"))
                                     
-
 # look at the first few entries
 cleandat6 %>% 
   select(date, time_sec, date_time_utc, date_time_utc03) %>% 
   head(n = 10)
+
+# check time zones
+tz(cleandat6$date_time_utc)
+tz(cleandat6$date_time_utc03)
 
 ```
 
@@ -644,7 +647,7 @@ cleandat7 %>%
 
 ```
 
-**Exercise:** The maximum flipper length summary contains NA values for sex. Generate this summary without those values. There are at least two ways to find these NAs in the dataset.  
+**Exercise:** The maximum flipper length summary contains NA values for sex. Generate this summary without those values.
 
 We can combine several functions in the same statement to get a more complete summary of flipper lengths across species.
 
@@ -677,9 +680,7 @@ But wait, we forgot to calculate the standard error which is a metric that we ma
 
 # add standard error column
 (flipper_length_summary2 <- flipper_length_summary %>% 
-  group_by(species) %>% 
   mutate(se_flipper_length = sd_flipper_length/sqrt(N)))
-
 
 ```
 
