@@ -149,7 +149,7 @@ Next, let's try loading data from a url. We would use the read_csv function for 
 #| eval: false
 
 # load a .csv file into your R environment
-mydat_csv <- read_csv("https://raw.githubusercontent.com/MN-DNR-R/BYOD_Seminar1_Data_Summaries_and_Visualization/refs/heads/main/data/penguin_data_final.csv?token=GHSAT0AAAAAADGVPTNKVJGII66G3RODGYUA2JGFBOA") 
+mydat_csv <- read_csv("https://raw.githubusercontent.com/MN-DNR-R/BYOD_Seminar1_Data_Summaries_and_Visualization/refs/heads/main/data/penguin_data_final.csv") 
 
 ```
 
