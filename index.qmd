@@ -547,9 +547,9 @@ tz(cleandat5$date_egg)
 # create a date and time variable. Note that although the penguins are from the Palmer LTER in Antarctica, which is in UTC-03, data were collected in UTC times and will need to be converted to UTC-03.  
 # convert to proper time zone UTC-03 
 cleandat6 <- cleandat5 %>% 
-  mutate(date_time_utc = as_datetime(date_egg) + time_sec,  # Create a date and time variable in UTC
+  mutate(date_time_utc = as_datetime(date_egg) + time_sec,  # Create a date and time variable
          date_time_utc03 = with_tz(date_time_utc, tzone = "Etc/GMT+3")) # Convert to GMT-03
-                                    
+
 # look at the first few entries to ensure that everything was converted correctly
 cleandat6 %>% 
   select(date_egg, time_sec, date_time_utc, date_time_utc03) %>% 
